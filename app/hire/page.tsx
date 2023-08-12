@@ -2,7 +2,7 @@
 
 import Socials from '@/components/Socials'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { PiArrowLeft } from 'react-icons/pi'
@@ -48,6 +48,20 @@ const Page = () => {
         })
       })
       router.push(picked.link)
+      setTimeout(() => {
+        setOptions((prev) => {
+          return prev.map((option) => {
+            if (option.id === picked.id) {
+              return {
+                ...option,
+                loading: false,
+              }
+            } else {
+              return option
+            }
+          })
+        })
+      }, 500)
       return
     }
 
