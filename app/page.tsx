@@ -6,17 +6,7 @@ import Socials from '@/components/Socials'
 
 export default function Home() {
   return (
-    <div className=" flex min-h-[100dvh] w-full flex-col items-start justify-start gap-10 p-4 text-sm sm:p-10">
-      <div className="flex flex-col">
-        <h1 className=" font-black">kyzo</h1>
-        <Socials />
-      </div>
-
-      <div>
-        <h3>build, automate, manage, scale</h3>
-        <h3 className="lowercase">operations | process automation | zapier | nextJS | sheets</h3>
-      </div>
-
+    <>
       <HireMeButton />
 
       <div className="flex w-full items-center gap-2 text-xs">
@@ -92,6 +82,6 @@ export default function Home() {
           )
         })}
       </ul>
-    </div>
+    </>
   )
 }

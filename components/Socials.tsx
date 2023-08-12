@@ -2,7 +2,7 @@ import React from 'react'
 
 const Socials = () => {
   return (
-    <div className="text-md flex gap-2">
+    <div className="flex gap-4 text-lg">
       <a
         href="https://twitter.com/ky__zo"
         className=" hover:underline">
