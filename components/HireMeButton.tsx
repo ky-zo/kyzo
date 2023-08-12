@@ -18,7 +18,7 @@ const HireMeButton = () => {
       </Link>
 
       <p className="invisible right-0 translate-x-full text-xs text-gray-400 opacity-0 transition-all duration-300 peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100">
-        {"let's you pick the preferred way of contact"}
+        {'lets you pick the preferred way of contact'}
       </p>
     </div>
   )
