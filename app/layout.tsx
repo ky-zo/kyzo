@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <div>
             <h3>build, automate, manage, scale</h3>
-            <h3 className="lowercase">operations | process automation | zapier | nextJS | sheets</h3>
+            <h3 className="lowercase">nextjs | zapier | supabase | operations | process automation | sheets </h3>
           </div>
 
           {children}
