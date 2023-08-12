@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,7 +40,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <div className="flex min-h-[100dvh] w-full flex-col items-start justify-start gap-10 p-4 text-sm lowercase sm:p-10">
           <div className="flex flex-col gap-1">
-            <h1 className=" font-black">kyzo</h1>
+            <Link href="/">
+              <h1 className=" font-black">kyzo</h1>
+            </Link>
             <Socials />
           </div>
 
