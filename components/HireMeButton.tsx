@@ -21,7 +21,7 @@ const HireMeButton = () => {
         onClick={handleButtonClick}
         className={`group peer relative flex h-8 min-w-[120px] items-center justify-center overflow-hidden rounded-xl border-[1px] border-gray-500 bg-black font-medium text-white transition-all duration-300 hover:bg-white`}>
         <span className="relative tracking-wide transition-all duration-300 group-hover:tracking-tight  group-hover:text-black">
-          hire me
+          {`hire me`}
         </span>
         <div className="absolute right-4 flex translate-x-8 transform items-center justify-start text-black duration-300  group-hover:translate-x-0">
           {' '}
