@@ -19,9 +19,9 @@ export default function Home() {
 
       <HireMeButton />
 
-      <div className="flex items-center gap-2 text-xs">
-        <span className="text-gray-300">my collection</span>
-        <div className="border-grey-500 min-w-[400px] border-b" />
+      <div className="flex w-full items-center gap-2 text-xs">
+        <span className="w-4/12 text-gray-300 sm:max-w-[80px]">my collection</span>
+        <div className="border-grey-500 w-full border-b sm:max-w-[400px]" />
       </div>
 
       <ul className="space-y-10">
