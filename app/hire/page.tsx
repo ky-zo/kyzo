@@ -73,7 +73,7 @@ const Page = () => {
                       </span>
                     )}
                   </a>
-                  <p className="invisible absolute -bottom-6 translate-x-full text-gray-500 opacity-0 transition-all duration-300 peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100">
+                  <p className="invisible absolute -bottom-6 translate-x-full text-xs text-gray-500 opacity-0 transition-all duration-300 peer-hover:visible peer-hover:translate-x-0 peer-hover:opacity-100">
                     {option.description}
                   </p>
                 </div>
