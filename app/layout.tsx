@@ -7,8 +7,30 @@ import { Analytics } from '@vercel/analytics/react'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'kyzo.io',
+  title: 'kyzo',
   description: 'kyzo.io',
+  openGraph: {
+    title: 'kyzo',
+    description: 'kyzo.io',
+    url: 'https://kyzo.io',
+    siteName: 'kyzo.io',
+    images: [
+      {
+        url: '/public/og/og.png',
+        width: 1600,
+        height: 800,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kyzo',
+    description: 'kyzo.io',
+    creator: '@ky__zo',
+    images: ['/public/og/og.png'],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <div>
             <h3>build, automate, manage, scale</h3>
-            <h3 className="lowercase">nextjs | zapier | supabase | operations | process automation | sheets </h3>
+            <h3 className="lowercase">react | nextjs | zapier | supabase | operations | process automation | sheets</h3>
           </div>
 
           {children}
