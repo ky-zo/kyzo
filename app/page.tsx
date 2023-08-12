@@ -1,8 +1,6 @@
-import { exp } from '@/content/exp'
-import { GoDotFill } from 'react-icons/go'
-import { PiArrowDownLight, PiArrowUpLight } from 'react-icons/pi'
 import HireMeButton from '@/components/HireMeButton'
-import Socials from '@/components/Socials'
+import { exp } from '@/content/exp'
+import { PiArrowDownLight, PiArrowUpLight } from 'react-icons/pi'
 
 export default function Home() {
   return (
@@ -22,7 +20,6 @@ export default function Home() {
               className="flex flex-col gap-1">
               <div className="flex flex-col items-start sm:flex-row sm:items-center sm:gap-2">
                 <div className="flex items-center">
-                  {/* <span className='pr-2 hidden sm:inline'><GoDotFill className="w-2 h-2" /></span> */}
                   {e.title} @
                   <a
                     href={e.company.href}
