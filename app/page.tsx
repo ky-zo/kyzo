@@ -11,7 +11,7 @@ export default function Home() {
 
       <div className="flex w-full items-center gap-2 text-xs">
         <span className="w-4/12 text-gray-300 sm:max-w-[80px]">my collection</span>
-        <div className="border-grey-500 w-full border-b sm:max-w-[400px]" />
+        <div className="border-grey-500 w-full border-b sm:max-w-[500px]" />
       </div>
 
       <ul className="space-y-10">
