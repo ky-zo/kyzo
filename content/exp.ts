@@ -26,7 +26,7 @@ export const exp: expProps[] = [
     oneLiner: 'AI-powered copywriting tool for Social Media',
     stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
     props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
-    lessons: ['Failed to turn users into paying customers', 'Ambiguous value proposition'],
+    lessons: ['Failed to turn users into paying customers'],
   },
   {
     id: uuidv4(),
@@ -40,10 +40,7 @@ export const exp: expProps[] = [
     oneLiner: 'Files & email automation workflows',
     props: ['Built first project in 2 weeks', 'Integration with 3rd party APIs'],
     lessons: [
-      'Could not turn mega social media reach into product traction',
       'Users did not understand how the product could help',
-      'Failed with go-to-market activities',
-      'Spent too much time detailing small features',
       'Lack of TypeScript led to a complicated codebase',
     ],
   },
@@ -66,10 +63,7 @@ export const exp: expProps[] = [
     ],
     lessons: [
       'Failed to build a sustainable revenue stream',
-      'Focused on "agency" model instead of "product" model',
-      'Spent too much time chasing happy clients rather than building the product',
       'Scaled too quickly pre-PMF',
-      `Failed to align the founders' team on one vision`,
       'Spent too much time on cap-table issues',
     ],
   },
