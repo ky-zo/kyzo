@@ -12,9 +12,24 @@ type expProps = {
   oneLiner?: string
   props?: string[]
   lessons?: string[]
+  status: 'discontinued' | 'exit' | 'active'
 }
 
 export const exp: expProps[] = [
+  {
+    id: uuidv4(),
+    dates: '08.2023',
+    title: 'Creator',
+    company: {
+      name: 'finey',
+      href: 'https://finey.io',
+    },
+    oneLiner: 'finance management toolkit for founders',
+    stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Tailwind', 'Shadcn/ui'],
+    props: [],
+    lessons: [],
+    status: 'active',
+  },
   {
     id: uuidv4(),
     dates: '07.2023',
@@ -27,6 +42,7 @@ export const exp: expProps[] = [
     stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
     props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
     lessons: ['Failed to turn users into paying customers'],
+    status: 'active',
   },
   {
     id: uuidv4(),
@@ -43,6 +59,7 @@ export const exp: expProps[] = [
       'Users did not understand how the product could help',
       'Lack of TypeScript led to a complicated codebase',
     ],
+    status: 'discontinued',
   },
   {
     id: uuidv4(),
@@ -57,14 +74,13 @@ export const exp: expProps[] = [
     props: [
       'Managed 500+ remote workers worldwide',
       'Built solely on no-code, 100% automated',
-      'From zero to €1.4m seed VC round',
-      '+50 B2B clients over the course of 2 years',
-      '~€50k MRR with a peak of ~€100k Monthly Revenue',
+      '~€50k MRR with a peak of ~€100k Monthly Revenue, 1.4k€ Seed',
     ],
     lessons: [
       'Failed to build a sustainable revenue stream',
       'Scaled too quickly pre-PMF',
       'Spent too much time on cap-table issues',
     ],
+    status: 'exit',
   },
 ]
