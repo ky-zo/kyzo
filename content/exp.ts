@@ -74,7 +74,7 @@ export const exp: expProps[] = [
     props: [
       'Managed 500+ remote workers worldwide',
       'Built solely on no-code, 100% automated',
-      '~€50k MRR with a peak of ~€100k Monthly Revenue, 1.4k€ Seed',
+      '~€50k MRR with a peak of ~€100k Monthly Revenue, 1.4m€ Seed',
     ],
     lessons: [
       'Failed to build a sustainable revenue stream',
