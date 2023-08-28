@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import Link from 'next/link'
+import { Suspense } from 'react'
+import { PHProvider, PostHogPageview } from '@/lib/providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,23 +39,30 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex min-h-[100dvh] w-full flex-col items-start justify-start gap-10 p-4 text-sm lowercase sm:p-10">
-          <div className="flex flex-col gap-1">
-            <Link href="/">
-              <h1 className=" font-black">kyzo</h1>
-            </Link>
-            <Socials />
-          </div>
+      <Suspense>
+        <PostHogPageview />
+      </Suspense>
+      <PHProvider>
+        <body className={inter.className}>
+          <div className="flex min-h-[100dvh] w-full flex-col items-start justify-start gap-10 p-4 text-sm lowercase sm:p-10">
+            <div className="flex flex-col gap-1">
+              <Link href="/">
+                <h1 className=" font-black">kyzo</h1>
+              </Link>
+              <Socials />
+            </div>
 
-          <div>
-            <h3>build, automate, manage, scale</h3>
-            <h3 className="lowercase">react | nextjs | zapier | supabase | operations | process automation | sheets</h3>
-          </div>
+            <div>
+              <h3>build, automate, manage, scale</h3>
+              <h3 className="lowercase">
+                react | nextjs | zapier | supabase | operations | process automation | sheets
+              </h3>
+            </div>
 
-          {children}
-        </div>
-      </body>
+            {children}
+          </div>
+        </body>
+      </PHProvider>
       <Analytics />
     </html>
   )
