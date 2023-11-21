@@ -51,11 +51,13 @@ export default function Home() {
               </div>
               <div className="flex  flex-col-reverse gap-2 sm:flex-row">
                 <div className="flex flex-wrap gap-1 sm:gap-2">
-                  {e.stack.map((s) => {
+                  {e.stack.map((s, index) => {
                     return (
-                      <>
-                        <div className="text-xs">{s}</div>
-                      </>
+                      <div
+                        key={index}
+                        className="text-xs">
+                        {s}
+                      </div>
                     )
                   })}
                 </div>
