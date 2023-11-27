@@ -24,7 +24,7 @@ export default function Home() {
               <div className="flex flex-col items-start ">
                 <div className="flex w-full items-center justify-between">
                   <div>
-                    {e.title} @
+                    {/* {e.title} @ */}
                     <a
                       href={e.company.href}
                       className="font-bold  hover:underline"
@@ -36,7 +36,7 @@ export default function Home() {
                     variant={'outline'}
                     className={` px-1 font-normal
                     ${e.status === 'discontinued' && 'border-red-300 bg-red-50 text-red-700'}
-                    ${e.status === 'exit' && 'border-green-300 bg-green-50 text-green-700'}
+                    ${e.status === 'left' && 'border-green-300 bg-green-50 text-green-700'}
                     ${e.status === 'active' && 'border-blue-300 bg-blue-50 text-blue-700'}
 
                     `}>
@@ -61,7 +61,7 @@ export default function Home() {
                     )
                   })}
                 </div>
-                <div className="border-black text-xs text-gray-500 sm:border-l sm:pl-2">{e.dates}</div>
+                {/* <div className="border-black text-xs text-gray-500 sm:border-l sm:pl-2">{e.dates}</div> */}
               </div>
 
               <div className="w-full space-y-2 sm:max-w-[400px]">
@@ -70,11 +70,11 @@ export default function Home() {
                     {/* <div className="px-1 py-1">
                       <PiArrowUpLight />
                     </div> */}
-                    <ul className="text-xs text-gray-500 ">
+                    {/* <ul className="text-xs text-gray-500 ">
                       {e.props.map((prop) => {
                         return <li key={prop}>{prop}</li>
                       })}
-                    </ul>
+                    </ul> */}
                   </div>
                 )}
                 {e.lessons &&

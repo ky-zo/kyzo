@@ -12,7 +12,7 @@ type expProps = {
   oneLiner?: string
   props?: string[]
   lessons?: string[]
-  status: 'discontinued' | 'exit' | 'active'
+  status: 'discontinued' | 'left' | 'active'
 }
 
 export const exp: expProps[] = [
@@ -21,11 +21,11 @@ export const exp: expProps[] = [
     dates: '08.2023',
     title: 'Creator',
     company: {
-      name: 'finey',
-      href: 'https://finey.io',
+      name: 'Yove',
+      href: 'https://www.hiyove.com',
     },
-    oneLiner: 'finance management toolkit for founders',
-    stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Tailwind', 'Shadcn/ui'],
+    oneLiner: 'reach your personal goals with a little help from AI',
+    stack: ['NextJS', 'TS', 'Supabase', 'Vercel', 'Tailwind', 'Shadcn/ui', 'LangChain', 'OpenAI'],
     props: [],
     lessons: [],
     status: 'active',
@@ -81,6 +81,6 @@ export const exp: expProps[] = [
       'Scaled too quickly pre-PMF',
       'Spent too much time on cap-table issues',
     ],
-    status: 'exit',
+    status: 'left',
   },
 ]
