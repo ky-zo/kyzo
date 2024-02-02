@@ -1,14 +1,20 @@
-import HireMeButton from '@/components/HireMeButton'
+import Socials from '@/components/Socials'
 import { Badge } from '@/components/ui/badge'
 import { exp } from '@/content/exp'
-import { PiArrowDownLight, PiArrowUpLight } from 'react-icons/pi'
+import { PiArrowDownLight } from 'react-icons/pi'
 
 export default function Home() {
   return (
-    <>
-      <HireMeButton />
+    <div className="flex min-h-[100dvh] w-full  flex-col items-center justify-start gap-10 p-4 text-sm lowercase sm:p-10">
+      <div className="flex w-full max-w-md flex-col gap-8 ">
+        <h1 className="text-2xl">
+          👋 Hi, I&apos;m <span className=" font-bold">kyzo</span>{' '}
+        </h1>
+        <h3>ex-coo, founder, entrepreneur, builder, indie hacker</h3>
+        <Socials />
+      </div>
 
-      <div className="flex w-full items-center gap-2 text-xs">
+      <div className="flex w-full max-w-md items-center gap-2 text-xs">
         <span className="w-4/12 text-gray-300 sm:max-w-[80px]">my collection</span>
         <div className="border-grey-500 w-full border-b sm:max-w-[500px]" />
       </div>
@@ -18,13 +24,13 @@ export default function Home() {
           return (
             <li
               key={e.id}
-              className={`flex min-h-[50px] w-full flex-col gap-2 rounded-md border p-4 ${
-                e.status === 'discontinued' && 'bg-gray-50'
+              className={`shadow-neumorphic flex min-h-[50px] w-full flex-col gap-2  rounded-2xl border-[0.5px] p-4 ${
+                (e.status === 'failed' || e.status === 'left') && 'bg-gray-50'
               } `}>
               <div className="flex flex-col items-start ">
                 <div className="flex w-full items-center justify-between">
                   <div>
-                    {/* {e.title} @ */}
+                    {e.title && e.title + '@'}
                     <a
                       href={e.company.href}
                       className="font-bold  hover:underline"
@@ -34,10 +40,10 @@ export default function Home() {
                   </div>
                   <Badge
                     variant={'outline'}
-                    className={` px-1 font-normal
-                    ${e.status === 'discontinued' && 'border-red-300 bg-red-50 text-red-700'}
-                    ${e.status === 'left' && 'border-green-300 bg-green-50 text-green-700'}
-                    ${e.status === 'active' && 'border-blue-300 bg-blue-50 text-blue-700'}
+                    className={` font-normal 
+                    ${e.status === 'failed' && 'border-red-300 bg-red-50 text-red-500'}
+                    ${e.status === 'left' && 'border-green-300 bg-green-50 text-green-500'}
+                    ${e.status === 'building' && 'border-blue-300 bg-blue-50 text-blue-500'}
 
                     `}>
                     {e.status}
@@ -85,7 +91,6 @@ export default function Home() {
                         <div className="px-1 py-2">
                           <PiArrowDownLight />
                         </div>
-
                         <ul className="text-xs text-gray-400">
                           {e.lessons!.map((lesson) => {
                             return <li key={lesson}>{lesson}</li>
@@ -99,6 +104,6 @@ export default function Home() {
           )
         })}
       </ul>
-    </>
+    </div>
   )
 }

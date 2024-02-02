@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 type expProps = {
   id: string
   dates: string
-  title: string
+  title?: string
   company: {
     name: string
     href: string
@@ -12,14 +12,13 @@ type expProps = {
   oneLiner?: string
   props?: string[]
   lessons?: string[]
-  status: 'discontinued' | 'left' | 'active'
+  status: 'failed' | 'left' | 'building'
 }
 
 export const exp: expProps[] = [
   {
     id: uuidv4(),
     dates: '08.2023',
-    title: 'Creator',
     company: {
       name: 'Yove',
       href: 'https://www.hiyove.com',
@@ -28,12 +27,11 @@ export const exp: expProps[] = [
     stack: ['NextJS', 'TS', 'Supabase', 'Vercel', 'Tailwind', 'Shadcn/ui', 'LangChain', 'OpenAI'],
     props: [],
     lessons: [],
-    status: 'active',
+    status: 'building',
   },
   {
     id: uuidv4(),
     dates: '07.2023',
-    title: 'Co-Creator',
     company: {
       name: 'copycopter',
       href: 'https://copycopter.ai',
@@ -42,12 +40,28 @@ export const exp: expProps[] = [
     stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
     props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
     lessons: ['Failed to turn users into paying customers'],
-    status: 'active',
+    status: 'building',
+  },
+
+  {
+    id: uuidv4(),
+    dates: '06.2023',
+    company: {
+      name: 'finey',
+      href: 'https://finey.io',
+    },
+    stack: ['NextJS', 'Supabase', 'Vercel'],
+    oneLiner: 'Invoice sortiong automation',
+    props: ['Built first project in 2 weeks', 'Integration with 3rd party APIs'],
+    lessons: [
+      'Users did not understand how the product could help',
+      'Lack of TypeScript led to a complicated codebase',
+    ],
+    status: 'failed',
   },
   {
     id: uuidv4(),
     dates: '06.2023',
-    title: 'Creator',
     company: {
       name: 'flyfile',
       href: 'https://flyfile.io',
@@ -59,12 +73,12 @@ export const exp: expProps[] = [
       'Users did not understand how the product could help',
       'Lack of TypeScript led to a complicated codebase',
     ],
-    status: 'discontinued',
+    status: 'failed',
   },
   {
     id: uuidv4(),
     dates: '07.2020-02.2023',
-    title: 'Ex-COO/Co-Founder',
+    title: 'COO & co-founder',
     company: {
       name: 'epinote',
       href: 'https://epinote.io',
