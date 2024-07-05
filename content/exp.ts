@@ -12,10 +12,24 @@ type expProps = {
   oneLiner?: string
   props?: string[]
   lessons?: string[]
-  status: 'failed' | 'left' | 'building'
+  status: 'failed' | 'quit' | 'building'
 }
 
 export const exp: expProps[] = [
+  
+  {
+    id: uuidv4(),
+    dates: '01.2024',
+    company: {
+      name: 'copycopter',
+      href: 'https://copycopter.ai',
+    },
+    oneLiner: 'AI-powered copywriting tool for Social Media',
+    stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
+    props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
+    lessons: ['Failed to turn users into paying customers'],
+    status: 'building',
+  },
   {
     id: uuidv4(),
     dates: '08.2023',
@@ -27,20 +41,7 @@ export const exp: expProps[] = [
     stack: ['NextJS', 'TS', 'Supabase', 'Vercel', 'Tailwind', 'Shadcn/ui', 'LangChain', 'OpenAI'],
     props: [],
     lessons: [],
-    status: 'building',
-  },
-  {
-    id: uuidv4(),
-    dates: '07.2023',
-    company: {
-      name: 'copycopter',
-      href: 'https://copycopter.ai',
-    },
-    oneLiner: 'AI-powered copywriting tool for Social Media',
-    stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
-    props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
-    lessons: ['Failed to turn users into paying customers'],
-    status: 'building',
+    status: 'failed',
   },
 
   {
@@ -95,6 +96,6 @@ export const exp: expProps[] = [
       'Scaled too quickly pre-PMF',
       'Spent too much time on cap-table issues',
     ],
-    status: 'left',
+    status: 'quit',
   },
 ]

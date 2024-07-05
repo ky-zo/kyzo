@@ -6,6 +6,9 @@ import { Analytics } from '@vercel/analytics/react'
 import Link from 'next/link'
 
 import Script from 'next/script'
+import Socials from '@/components/Socials'
+import { PiArrowRight } from 'react-icons/pi'
+import Navigation from './Navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -49,7 +52,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('config', 'GTM-WG9PHW88');
         `}
       </Script>
-      <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>{children}</body>
+      <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>
+        <div className="flex min-h-[100dvh] w-full  flex-col items-center justify-start gap-10 p-4 text-sm lowercase sm:p-10">
+          <div className="flex w-full max-w-md flex-col gap-8 ">
+            <div className="text-2xl">
+              👋 Hi, I&apos;m <span className=" font-bold">kyzo</span>{' '}
+            </div>
+            <h3>ex-coo, founder, entrepreneur, builder, indie hacker</h3>
+            <Socials />
+          </div>
+
+          <Navigation />
+
+          {children}
+        </div>
+      </body>
       <Analytics />
     </html>
   )
