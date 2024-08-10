@@ -12,7 +12,7 @@ type expProps = {
   oneLiner?: string
   props?: string[]
   lessons?: string[]
-  status: 'failed' | 'quit' | 'building'
+  status: 'failed' | 'quit' | 'building' | 'acquired'
 }
 
 export const exp: expProps[] = [
@@ -28,7 +28,7 @@ export const exp: expProps[] = [
     stack: ['NextJS', 'TypeScript', 'Supabase', 'Vercel', 'Stripe', 'LangChain'],
     props: ['50 users in the first 48 hours', 'optimized LLM chains to deliver value on top of OpenAI'],
     lessons: ['Failed to turn users into paying customers'],
-    status: 'building',
+    status: 'acquired',
   },
   {
     id: uuidv4(),

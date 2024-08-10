@@ -28,7 +28,7 @@ export default function Home() {
                   variant={'outline'}
                   className={` font-normal 
                     ${e.status === 'failed' && 'border-red-300 bg-red-50 text-red-500'}
-                    ${e.status === 'quit' && 'border-green-300 bg-green-50 text-green-500'}
+                    ${(e.status === 'quit' || e.status === 'acquired') && 'border-green-300 bg-green-50 text-green-500'}
                     ${e.status === 'building' && 'border-blue-300 bg-blue-50 text-blue-500'}
 
                     `}>
