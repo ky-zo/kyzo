@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}
       </Script>
       <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>
-        <div className="flex min-h-[100dvh] w-full flex-col items-center justify-start gap-4 p-4 text-sm lowercase sm:p-10">
+        <div className="flex min-h-[100dvh] w-full flex-col items-center justify-start gap-6 p-4 text-sm lowercase sm:p-10">
           <div className="flex w-full max-w-md flex-col gap-8">
             <div className="text-2xl">
               👋 Hi, I&apos;m <span className="font-bold">kyzo</span>{' '}
