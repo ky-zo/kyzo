@@ -11,7 +11,7 @@ export default function BlogPage() {
   const allWritings = getMDXContent({ contentDir: 'content/writing' })
 
   return (
-    <section>
+    <section className="flex w-full max-w-md flex-col gap-4">
       {allWritings
         .sort((a, b) => {
           if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
@@ -22,10 +22,11 @@ export default function BlogPage() {
         .map((post) => (
           <Link
             key={post.slug}
-            className="mb-4 flex flex-col space-y-1"
+            className="group tracking-tight text-neutral-900"
             href={`/writing/${post.slug}`}>
-            <div className="flex w-full flex-col">
-              <p className="tracking-tight text-neutral-900 dark:text-neutral-100">{post.metadata.title}</p>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm transition-all duration-100 group-hover:font-medium">{post.metadata.title}</p>
+              <p className="text-xs italic text-neutral-500/50">{post.metadata.publishedAt}</p>
             </div>
           </Link>
         ))}
