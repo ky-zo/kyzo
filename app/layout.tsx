@@ -1,16 +1,14 @@
 import { GeistSans } from 'geist/font/sans'
+
 import './globals.css'
+
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react'
-import Link from 'next/link'
-
 import Script from 'next/script'
-import Socials from '@/components/Socials'
-import { PiArrowRight } from 'react-icons/pi'
-import Navigation from './Navigation'
+import { Analytics } from '@vercel/analytics/react'
 
-const inter = Inter({ subsets: ['latin'] })
+import Socials from '@/components/Socials'
+
+import Navigation from './Navigation'
 
 export const metadata: Metadata = {
   title: 'kyzo',
@@ -53,12 +51,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}
       </Script>
       <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>
-        <div className="flex min-h-[100dvh] w-full  flex-col items-center justify-start gap-10 p-4 text-sm lowercase sm:p-10">
-          <div className="flex w-full max-w-md flex-col gap-8 ">
+        <div className="flex min-h-[100dvh] w-full flex-col items-center justify-start gap-10 p-4 text-sm lowercase sm:p-10">
+          <div className="flex w-full max-w-md flex-col gap-8">
             <div className="text-2xl">
-              👋 Hi, I&apos;m <span className=" font-bold">kyzo</span>{' '}
+              👋 Hi, I&apos;m <span className="font-bold">kyzo</span>{' '}
             </div>
-            <h3>ex-coo, founder, entrepreneur, builder, indie hacker</h3>
+            <h3>founder</h3>
             <Socials />
           </div>
 
