@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'kyzo.io',
     images: [
       {
-        url: '/og/og.png',
+        url: '/og.png',
         width: 1200,
         height: 630,
       },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: 'Kyzo',
     description: 'kyzo.io',
     creator: '@ky__zo',
-    images: ['/og/og.png'],
+    images: ['/og.png'],
   },
 }
 
