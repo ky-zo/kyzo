@@ -40,19 +40,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-WG9PHW88" />
-      <Script id="google-analytics">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
- 
-          gtag('config', 'GTM-WG9PHW88');
-        `}
-      </Script>
       <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>
         <div className="flex min-h-[100dvh] w-full flex-col items-center justify-start gap-6 p-4 text-sm lowercase sm:p-10">
-          <div className="flex w-full max-w-md flex-col gap-8">
+          <div className="flex w-full max-w-md flex-col gap-4">
             <div className="text-2xl">
               👋 Hi, I&apos;m <span className="font-bold">kyzo</span>{' '}
             </div>
