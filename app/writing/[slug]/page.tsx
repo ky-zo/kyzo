@@ -10,6 +10,14 @@ interface PageProps {
   }>
 }
 
+export async function generateStaticParams() {
+  const posts = getMDXContent({ contentDir: 'content/writing' })
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
+}
+
 export default async function BlogPost({ params }: PageProps) {
   const slug = (await params).slug
   const allWritings = getMDXContent({ contentDir: 'content/writing' })
