@@ -19,6 +19,7 @@ export default function BlogPage() {
           }
           return 1
         })
+        .filter((post) => post.metadata.publishedAt)
         .map((post) => (
           <Link
             key={post.slug}

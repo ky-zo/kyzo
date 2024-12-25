@@ -13,9 +13,11 @@ interface PageProps {
 export async function generateStaticParams() {
   const posts = getMDXContent({ contentDir: 'content/writing' })
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
+  return posts
+    .filter((post) => post.metadata.publishedAt)
+    .map((post) => ({
+      slug: post.slug,
+    }))
 }
 
 export default async function BlogPost({ params }: PageProps) {
