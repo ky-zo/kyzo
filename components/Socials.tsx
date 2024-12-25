@@ -29,6 +29,7 @@ const Socials = () => {
       {socials.map((social) => {
         return (
           <a
+            target="_blank"
             key={social.id}
             href={social.link}
             className="flex h-5 w-5 items-center justify-center rounded-md bg-white hover:invert">
