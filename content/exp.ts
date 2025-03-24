@@ -31,7 +31,7 @@ export const exp: expProps[] = [
       name: 'fluar',
       href: 'https://fluar.com',
     },
-    oneLiner: 'AI-powered video editing platform',
+    oneLiner: 'AI-powered data enrichment',
     status: 'building',
   },
   {
