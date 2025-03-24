@@ -14,7 +14,26 @@ type expProps = {
 }
 
 export const exp: expProps[] = [
-  
+  {
+    id: uuidv4(),
+    dates: '03.2024',
+    company: {
+      name: 'Goose Game',
+      href: 'https://quack.kyzo.io',
+    },
+    oneLiner: '🪿 Game',
+    status: 'building',
+  },
+  {
+    id: uuidv4(),
+    dates: '02.2025',
+    company: {
+      name: 'fluar',
+      href: 'https://fluar.com',
+    },
+    oneLiner: 'AI-powered video editing platform',
+    status: 'building',
+  },
   {
     id: uuidv4(),
     dates: '01.2024',
@@ -44,7 +63,7 @@ export const exp: expProps[] = [
       href: 'https://finey.io',
     },
     oneLiner: 'classify, sort and categorize your invoices automatically',
-  
+
     status: 'failed',
   },
   {
@@ -54,7 +73,7 @@ export const exp: expProps[] = [
       name: 'flyfile',
       href: 'https://flyfile.io',
     },
-  
+
     oneLiner: 'sort out your email attachments automatically',
     status: 'failed',
   },
