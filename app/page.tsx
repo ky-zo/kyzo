@@ -28,7 +28,7 @@ export default function Home() {
                   className={cn('font-normal', {
                     'border-red-300 bg-red-50 text-red-500': e.status === 'failed',
                     'border-green-300 bg-green-50 text-green-500': e.status === 'acquired',
-                    'border-blue-300 bg-blue-50 text-blue-500': e.status === 'building',
+                    'border-blue-300 bg-blue-50 text-blue-500': e.status === 'active',
                     'border-gray-300 bg-gray-50 text-gray-500': e.status === 'quit',
                   })}>
                   {e.status}

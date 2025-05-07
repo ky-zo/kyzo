@@ -10,10 +10,20 @@ type expProps = {
   }
 
   oneLiner?: string
-  status: 'failed' | 'quit' | 'building' | 'acquired'
+  status: 'failed' | 'quit' | 'active' | 'acquired'
 }
 
 export const exp: expProps[] = [
+  {
+    id: uuidv4(),
+    dates: '03.2024',
+    company: {
+      name: 'Stravisuals',
+      href: 'https://stravisuals.com',
+    },
+    oneLiner: 'Visuals for Strava Activities',
+    status: 'active',
+  },
   {
     id: uuidv4(),
     dates: '03.2024',
@@ -22,7 +32,7 @@ export const exp: expProps[] = [
       href: 'https://quack.kyzo.io',
     },
     oneLiner: '🪿 Game',
-    status: 'building',
+    status: 'active',
   },
   {
     id: uuidv4(),
@@ -32,7 +42,7 @@ export const exp: expProps[] = [
       href: 'https://fluar.com',
     },
     oneLiner: 'AI-powered data enrichment',
-    status: 'building',
+    status: 'active',
   },
   {
     id: uuidv4(),
