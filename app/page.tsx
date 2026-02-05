@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
 	return (
-		<ul className="w-full max-w-md space-y-5">
+		<ul className="w-full max-w-md space-y-2">
 			{exp.map((e) => {
 				return (
 					<li

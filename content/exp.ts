@@ -16,6 +16,26 @@ type expProps = {
 export const exp: expProps[] = [
 	{
 		id: uuidv4(),
+		dates: "02.2026",
+		company: {
+			name: "Pretty Timezones",
+			href: "https://prettytimezones.com",
+		},
+		oneLiner: "macOS menu bar app for timezone comparison",
+		status: "active",
+	},
+	{
+		id: uuidv4(),
+		dates: "01.2026",
+		company: {
+			name: "OpenRec",
+			href: "https://openrec.com",
+		},
+		oneLiner: "open source screen recording",
+		status: "active",
+	},
+	{
+		id: uuidv4(),
 		dates: "03.2024",
 		company: {
 			name: "Stravisuals",
