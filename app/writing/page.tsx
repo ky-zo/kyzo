@@ -13,13 +13,13 @@ export default function BlogPage() {
   return (
     <section className="flex w-full max-w-md flex-col gap-4">
       {allWritings
+        .filter((post) => post.metadata.publishedAt)
         .sort((a, b) => {
           if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
             return -1
           }
           return 1
         })
-        .filter((post) => post.metadata.publishedAt)
         .map((post) => (
           <Link
             key={post.slug}
