@@ -30,7 +30,7 @@ export default async function BlogPost({ params }: PageProps) {
   }
 
   return (
-    <article className="prose-quoteless prose prose-sm prose-neutral prose-h1:text-lg">
+    <article className="prose-quoteless prose prose-sm prose-neutral prose-h1:text-base prose-h2:text-base prose-h3:text-base prose-h4:text-base">
       <CustomMDX source={post.content} />
     </article>
   )
