@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 
+import { AnimatedStatusBadge } from "@/components/animated-status-badge";
 import { Badge } from "@/components/ui/badge";
 import { exp } from "@/content/exp";
 import { cn } from "@/lib/utils";
@@ -20,7 +21,7 @@ export default function Home() {
 					<li
 						key={e.id}
 						className={cn(
-							"shadow-neumorphic flex min-h-[50px] w-full flex-col gap-2 rounded-2xl border-[0.5px] p-4",
+							"shadow-neumorphic flex min-h-[50px] w-full flex-col gap-1 rounded-2xl border-[0.5px] p-4",
 							{
 								"bg-gray-50": e.status === "quit" || e.status === "closed",
 							},
@@ -38,21 +39,25 @@ export default function Home() {
 										{e.company.name}
 									</a>
 								</div>
-								<Badge
-									variant={"outline"}
-									className={cn("font-normal", {
-										"border-red-300 bg-red-50 text-red-500":
-											e.status === "closed",
-										"border-green-300 bg-green-50 text-green-500":
-											e.status === "acquired",
-										"border-blue-300 bg-blue-50 text-blue-500":
-											e.status === "active",
-										"border-gray-300 bg-gray-50 text-gray-500":
-											e.status === "quit",
-									})}
-								>
-									{e.status}
-								</Badge>
+								{e.company.name === "fluar" ? (
+									<AnimatedStatusBadge from="active" to="acquired" delay={300} />
+								) : (
+									<Badge
+										variant={"outline"}
+										className={cn("font-normal", {
+											"border-red-300 bg-red-50 text-red-500":
+												e.status === "closed",
+											"border-green-300 bg-green-50 text-green-500":
+												e.status === "acquired",
+											"border-blue-300 bg-blue-50 text-blue-500":
+												e.status === "active",
+											"border-gray-300 bg-gray-50 text-gray-500":
+												e.status === "quit",
+										})}
+									>
+										{e.status}
+									</Badge>
+								)}
 							</div>
 						</div>
 						<div className="flex flex-col-reverse gap-2 sm:flex-row">
