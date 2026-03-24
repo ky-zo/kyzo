@@ -39,29 +39,38 @@ export default function Home() {
 										{e.company.name}
 									</a>
 								</div>
-								{e.company.name === "fluar" ? (
-									<AnimatedStatusBadge from="active" to="acquired" delay={300} />
-								) : (
-									<Badge
-										variant={"outline"}
-										className={cn("font-normal", {
-											"border-red-300 bg-red-50 text-red-500":
-												e.status === "closed",
-											"border-green-300 bg-green-50 text-green-500":
-												e.status === "acquired",
-											"border-blue-300 bg-blue-50 text-blue-500":
-												e.status === "active",
-											"border-gray-300 bg-gray-50 text-gray-500":
-												e.status === "quit",
-										})}
-									>
-										{e.status}
-									</Badge>
-								)}
+								<div className="flex items-center gap-1.5">
+									<span className="text-xs text-black/30">{e.year}</span>
+									{e.company.name === "fluar" ? (
+										<AnimatedStatusBadge from="active" to="acquired" delay={300} />
+									) : (
+										<Badge
+											variant={"outline"}
+											className={cn("font-normal", {
+												"border-red-300 bg-red-50 text-red-500":
+													e.status === "closed",
+												"border-green-300 bg-green-50 text-green-500":
+													e.status === "acquired",
+												"border-blue-300 bg-blue-50 text-blue-500":
+													e.status === "active",
+												"border-gray-300 bg-gray-50 text-gray-500":
+													e.status === "quit",
+											})}
+										>
+											{e.status}
+										</Badge>
+									)}
+								</div>
 							</div>
 						</div>
-						<div className="flex flex-col-reverse gap-2 sm:flex-row">
-							<span className="text-xs text-black/50">{e.oneLiner}</span>
+						<div className="flex items-center gap-1 text-xs text-black/50">
+							{e.status !== "closed" && (
+								<>
+									<a href={e.company.href} target="_blank" className="shrink-0 hover:underline">{e.company.href.replace(/^https?:\/\/(www\.)?/, "")}</a>
+									{e.oneLiner && <span>•</span>}
+								</>
+							)}
+							<span>{e.oneLiner}</span>
 						</div>
 					</li>
 				);

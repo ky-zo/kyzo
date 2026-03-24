@@ -11,6 +11,7 @@ type expProps = {
 
 	oneLiner?: string;
 	status: "closed" | "quit" | "active" | "acquired";
+	year: number;
 };
 
 export const exp: expProps[] = [
@@ -23,6 +24,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "macOS menu bar app for timezone comparison",
 		status: "active",
+		year: 2026,
 	},
 	{
 		id: uuidv4(),
@@ -33,6 +35,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "open source screen recording",
 		status: "active",
+		year: 2026,
 	},
 	{
 		id: uuidv4(),
@@ -43,6 +46,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "Visuals for Strava Activities",
 		status: "active",
+		year: 2025,
 	},
 	{
 		id: uuidv4(),
@@ -53,6 +57,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "🪿 Game",
 		status: "active",
+		year: 2025,
 	},
 	{
 		id: uuidv4(),
@@ -63,6 +68,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "AI-powered data enrichment",
 		status: "active",
+		year: 2025,
 	},
 	{
 		id: uuidv4(),
@@ -73,6 +79,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "generate AI videos from simple text prompts",
 		status: "acquired",
+		year: 2024,
 	},
 	{
 		id: uuidv4(),
@@ -83,6 +90,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "reach your personal goals with a little help from AI",
 		status: "closed",
+		year: 2023,
 	},
 
 	{
@@ -93,8 +101,8 @@ export const exp: expProps[] = [
 			href: "https://finey.io",
 		},
 		oneLiner: "classify, sort and categorize your invoices automatically",
-
 		status: "closed",
+		year: 2023,
 	},
 	{
 		id: uuidv4(),
@@ -106,6 +114,7 @@ export const exp: expProps[] = [
 
 		oneLiner: "sort out your email attachments automatically",
 		status: "closed",
+		year: 2023,
 	},
 	{
 		id: uuidv4(),
@@ -115,7 +124,8 @@ export const exp: expProps[] = [
 			name: "epinote",
 			href: "https://epinote.io",
 		},
-		oneLiner: "automated remote workforce management platform. raised $1.6m",
+		oneLiner: "automated remote workforce. raised $1.6m",
 		status: "quit",
+		year: 2022,
 	},
 ];
