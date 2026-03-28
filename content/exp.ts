@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
-
 type expProps = {
 	id: string;
 	dates: string;
@@ -16,7 +14,18 @@ type expProps = {
 
 export const exp: expProps[] = [
 	{
-		id: uuidv4(),
+		id: "pretty-sports",
+		dates: "03.2026",
+		company: {
+			name: "Pretty Sports",
+			href: "https://prettysports.app",
+		},
+		oneLiner: "iOS widgets with Strava/Garmin goals",
+		status: "active",
+		year: 2026,
+	},
+	{
+		id: "pretty-timezones",
 		dates: "02.2026",
 		company: {
 			name: "Pretty Timezones",
@@ -27,7 +36,7 @@ export const exp: expProps[] = [
 		year: 2026,
 	},
 	{
-		id: uuidv4(),
+		id: "openrec",
 		dates: "01.2026",
 		company: {
 			name: "OpenRec",
@@ -38,18 +47,18 @@ export const exp: expProps[] = [
 		year: 2026,
 	},
 	{
-		id: uuidv4(),
+		id: "stravisuals",
 		dates: "03.2024",
 		company: {
 			name: "Stravisuals",
 			href: "https://stravisuals.com",
 		},
 		oneLiner: "Visuals for Strava Activities",
-		status: "active",
+		status: "closed",
 		year: 2025,
 	},
 	{
-		id: uuidv4(),
+		id: "goose-game",
 		dates: "03.2024",
 		company: {
 			name: "Goose Game",
@@ -60,7 +69,7 @@ export const exp: expProps[] = [
 		year: 2025,
 	},
 	{
-		id: uuidv4(),
+		id: "fluar",
 		dates: "02.2025",
 		company: {
 			name: "fluar",
@@ -71,7 +80,7 @@ export const exp: expProps[] = [
 		year: 2025,
 	},
 	{
-		id: uuidv4(),
+		id: "copycopter",
 		dates: "01.2024",
 		company: {
 			name: "copycopter",
@@ -82,7 +91,7 @@ export const exp: expProps[] = [
 		year: 2024,
 	},
 	{
-		id: uuidv4(),
+		id: "yove",
 		dates: "08.2023",
 		company: {
 			name: "Yove",
@@ -92,9 +101,8 @@ export const exp: expProps[] = [
 		status: "closed",
 		year: 2023,
 	},
-
 	{
-		id: uuidv4(),
+		id: "finey",
 		dates: "06.2023",
 		company: {
 			name: "finey",
@@ -105,19 +113,18 @@ export const exp: expProps[] = [
 		year: 2023,
 	},
 	{
-		id: uuidv4(),
+		id: "flyfile",
 		dates: "06.2023",
 		company: {
 			name: "flyfile",
 			href: "https://flyfile.io",
 		},
-
 		oneLiner: "sort out your email attachments automatically",
 		status: "closed",
 		year: 2023,
 	},
 	{
-		id: uuidv4(),
+		id: "epinote",
 		dates: "07.2020-02.2023",
 		title: "COO & co-founder",
 		company: {
