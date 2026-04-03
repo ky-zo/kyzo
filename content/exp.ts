@@ -14,6 +14,17 @@ type expProps = {
 
 export const exp: expProps[] = [
 	{
+		id: "agentic-engineer",
+		dates: "04.2026",
+		company: {
+			name: "Agentic Engineer",
+			href: "https://agentic-engineer.ai",
+		},
+		oneLiner: "fractional AI consulting for engineering teams",
+		status: "active",
+		year: 2026,
+	},
+	{
 		id: "pretty-sports",
 		dates: "03.2026",
 		company: {
