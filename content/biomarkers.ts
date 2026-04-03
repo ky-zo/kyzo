@@ -15,18 +15,19 @@ export type Reading = {
 
 export const categories: Record<string, string> = {
   body: "body",
+  performance: "performance",
   haematology: "haematology",
   biochemistry: "biochemistry",
   immunology: "immunology",
   hormones: "hormones",
-  performance: "performance",
 };
 
 export const codes: Record<string, BiomarkerCode> = {
   // --- body ---
+  age: { name: "Age", category: "body", unit: "years" },
+  fitness_age: { name: "Fitness Age (Garmin)", category: "body", unit: "years" },
   height: { name: "Height", category: "body", unit: "cm" },
   weight: { name: "Weight", category: "body", unit: "kg" },
-  bmi: { name: "BMI", category: "body", unit: "kg/m\u00b2", reference: { low: 18.5, high: 24.9 }, threshold: { borderline: 8, abnormal: 20 } },
   body_fat_pct: { name: "Body Fat", category: "body", unit: "%", reference: { low: 8, high: 19 }, threshold: { borderline: 10, abnormal: 25 } },
   fat_mass: { name: "Fat Mass", category: "body", unit: "kg" },
 
@@ -83,7 +84,7 @@ export const codes: Record<string, BiomarkerCode> = {
   afp: { name: "AFP", category: "immunology", unit: "ng/mL", reference: { high: 8.3 }, threshold: { borderline: 15, abnormal: 50 } },
 
   // --- hormones ---
-  testosterone: { name: "Testosterone", category: "hormones", unit: "ng/mL", reference: { low: 3.0, high: 10.0 }, threshold: { borderline: 10, abnormal: 25 } },
+  testosterone: { name: "Testosterone", category: "hormones", unit: "ng/dL", reference: { low: 300, high: 1000 }, threshold: { borderline: 10, abnormal: 25 } },
   free_testosterone: { name: "Free Testosterone", category: "hormones", unit: "pg/mL", reference: { low: 47, high: 244 }, threshold: { borderline: 10, abnormal: 25 } },
   shbg: { name: "SHBG", category: "hormones", unit: "nmol/L", reference: { low: 10, high: 57 }, threshold: { borderline: 10, abnormal: 25 } },
   estradiol: { name: "Estradiol", category: "hormones", unit: "pg/mL", reference: { low: 10, high: 40 }, threshold: { borderline: 15, abnormal: 30 } },
@@ -106,10 +107,12 @@ export const codes: Record<string, BiomarkerCode> = {
 };
 
 /** Each marker has its own array of readings, independent of any checkup */
+export const BIRTH_DATE = new Date(1994, 0, 11);
+
 export const readings: Record<string, Reading[]> = {
+  fitness_age: [{ date: "2026-04-03", value: 27 }],
   height: [{ date: "2024-08-14", value: 179 }],
-  weight: [{ date: "2024-08-14", value: 68.5 }, { date: "2025-07-29", value: 68.5 }],
-  bmi: [{ date: "2024-08-14", value: 21.4 }, { date: "2025-07-29", value: 21.4 }],
+  weight: [{ date: "2024-08-14", value: 68.5 }, { date: "2025-07-29", value: 68.5 }, { date: "2026-04-03", value: 72, estimated: true }],
   body_fat_pct: [{ date: "2025-07-29", value: 12.1 }, { date: "2026-04-03", value: 14, estimated: true }],
   fat_mass: [{ date: "2025-07-29", value: 8.3 }],
   hb: [{ date: "2024-08-14", value: 16.3 }],
@@ -156,10 +159,10 @@ export const readings: Record<string, Reading[]> = {
   psa: [{ date: "2024-08-14", value: 0.148 }],
   cea: [{ date: "2024-08-14", value: 3.05 }],
   afp: [{ date: "2024-08-14", value: 0.45 }],
-  testosterone: [{ date: "2024-08-14", value: 8.80 }],
+  testosterone: [{ date: "2024-08-14", value: 880 }],
   rhr: [{ date: "2026-04-03", value: 57 }],
   hrv: [{ date: "2026-04-03", value: 41 }],
-  vo2max: [{ date: "2025-07-29", value: 60.2 }],
+  vo2max: [{ date: "2025-01-01", value: 48, estimated: true }, { date: "2025-07-29", value: 60.2 }, { date: "2026-04-03", value: 52, estimated: true }],
   pr_marathon: [{ date: "2025-12-07", value: "3:11:17" }],
   pr_half_marathon: [{ date: "2022-09-03", value: "1:32:03" }],
   pr_10k: [{ date: "2025-11-11", value: "39:29" }],

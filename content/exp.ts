@@ -87,7 +87,7 @@ export const exp: expProps[] = [
 			href: "https://fluar.com",
 		},
 		oneLiner: "AI-powered data enrichment",
-		status: "active",
+		status: "acquired",
 		year: 2025,
 	},
 	{

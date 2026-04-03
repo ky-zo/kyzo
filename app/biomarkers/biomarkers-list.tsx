@@ -1,7 +1,17 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { codes, readings, categories, type BiomarkerCode, type Reading } from "@/content/biomarkers";
+import { codes, readings, categories, BIRTH_DATE, type BiomarkerCode, type Reading } from "@/content/biomarkers";
+
+function getReadings(code: string): Reading[] {
+	if (code === "age") {
+		const now = new Date();
+		const ageMs = now.getTime() - BIRTH_DATE.getTime();
+		const age = Math.round((ageMs / (365.25 * 24 * 60 * 60 * 1000)) * 10) / 10;
+		return [{ date: now.toISOString().slice(0, 10), value: age }];
+	}
+	return readings[code] || [];
+}
 
 type Status = "optimal" | "borderline" | "abnormal";
 
@@ -43,47 +53,55 @@ const statusDot: Record<Status, string> = {
 };
 
 /** Position of value on the range bar as 0–1 */
-function getRangePosition(value: number, code: BiomarkerCode): number | null {
-	if (!code.reference) return null;
+function getBarExtents(code: BiomarkerCode) {
+	if (!code.reference || !code.threshold) return null;
 	const { low, high } = code.reference;
+	const { abnormal } = code.threshold;
+
+	// Calculate the bar min/max based on abnormal threshold so bar covers full range
+	const abnormalFrac = abnormal / 100;
 	if (low !== undefined && high !== undefined) {
-		const range = high - low;
-		const padding = range * 0.3;
-		const min = low - padding;
-		const max = high + padding;
-		return Math.max(0, Math.min(1, (value - min) / (max - min)));
+		const min = low * (1 - abnormalFrac * 1.2);
+		const max = high * (1 + abnormalFrac * 1.2);
+		return { min, max };
 	}
 	if (high !== undefined) {
-		const max = high * 1.4;
-		return Math.max(0, Math.min(1, value / max));
+		return { min: 0, max: high * (1 + abnormalFrac * 1.2) };
 	}
 	if (low !== undefined) {
-		const max = low * 2;
-		return Math.max(0, Math.min(1, value / max));
+		return { min: low * (1 - abnormalFrac * 1.2), max: low * 2 };
 	}
 	return null;
 }
 
-/** Green zone start/end as fractions of the bar */
-function getGreenZone(code: BiomarkerCode): { start: number; end: number } | null {
-	if (!code.reference) return null;
+function getRangePosition(value: number, code: BiomarkerCode): number | null {
+	const extents = getBarExtents(code);
+	if (!extents) return null;
+	return Math.max(0, Math.min(1, (value - extents.min) / (extents.max - extents.min)));
+}
+
+/** Zone boundaries as fractions of the bar, derived from actual thresholds */
+function getZones(code: BiomarkerCode): { greenStart: number; greenEnd: number; borderlineStart: number; borderlineEnd: number } | null {
+	if (!code.reference || !code.threshold) return null;
+	const extents = getBarExtents(code);
+	if (!extents) return null;
 	const { low, high } = code.reference;
-	if (low !== undefined && high !== undefined) {
-		const range = high - low;
-		const padding = range * 0.3;
-		const min = low - padding;
-		const max = high + padding;
-		return { start: (low - min) / (max - min), end: (high - min) / (max - min) };
-	}
-	if (high !== undefined) {
-		const max = high * 1.4;
-		return { start: 0, end: high / max };
-	}
-	if (low !== undefined) {
-		const max = low * 2;
-		return { start: low / max, end: 1 };
-	}
-	return null;
+	const { borderline, abnormal } = code.threshold;
+	const { min, max } = extents;
+	const range = max - min;
+
+	const toFrac = (v: number) => (v - min) / range;
+
+	const borderlineFrac = borderline / 100;
+	const abnormalFrac = abnormal / 100;
+
+	const greenStart = low !== undefined ? toFrac(low) : 0;
+	const greenEnd = high !== undefined ? toFrac(high) : 1;
+
+	const borderlineStart = low !== undefined ? toFrac(low * (1 - borderlineFrac)) : 0;
+	const borderlineEnd = high !== undefined ? toFrac(high * (1 + borderlineFrac)) : 1;
+
+	return { greenStart, greenEnd, borderlineStart, borderlineEnd };
 }
 
 function Sparkline({ data }: { data: Reading[] }) {
@@ -135,8 +153,8 @@ function Sparkline({ data }: { data: Reading[] }) {
 
 function RangeBar({ value, code }: { value: number; code: BiomarkerCode }) {
 	const pos = getRangePosition(value, code);
-	const zone = getGreenZone(code);
-	if (pos === null || zone === null) return null;
+	const zones = getZones(code);
+	if (pos === null || zones === null) return null;
 
 	return (
 		<div className="relative mt-2 h-2 w-full rounded-full bg-red-400">
@@ -144,16 +162,16 @@ function RangeBar({ value, code }: { value: number; code: BiomarkerCode }) {
 			<div
 				className="absolute inset-y-0 rounded-full bg-amber-400"
 				style={{
-					left: `${Math.max(0, zone.start - 0.08) * 100}%`,
-					right: `${Math.max(0, (1 - zone.end - 0.08)) * 100}%`,
+					left: `${zones.borderlineStart * 100}%`,
+					width: `${(zones.borderlineEnd - zones.borderlineStart) * 100}%`,
 				}}
 			/>
 			{/* green zone */}
 			<div
 				className="absolute inset-y-0 rounded-full bg-emerald-400"
 				style={{
-					left: `${zone.start * 100}%`,
-					width: `${(zone.end - zone.start) * 100}%`,
+					left: `${zones.greenStart * 100}%`,
+					width: `${(zones.greenEnd - zones.greenStart) * 100}%`,
 				}}
 			/>
 			{/* indicator */}
@@ -167,7 +185,7 @@ function RangeBar({ value, code }: { value: number; code: BiomarkerCode }) {
 
 function InfoPanel({ codeKey }: { codeKey: string }) {
 	const code = codes[codeKey];
-	const markerReadings = readings[codeKey] || [];
+	const markerReadings = getReadings(codeKey);
 	if (!code || !markerReadings.length) return null;
 
 	const latest = markerReadings[markerReadings.length - 1];
@@ -256,7 +274,7 @@ function CategorySection({
 			</h3>
 			<div className="flex flex-col">
 				{markerCodes.map((code) => {
-					const markerReadings = readings[code];
+					const markerReadings = getReadings(code);
 					if (!markerReadings?.length) return null;
 					const latest = markerReadings[markerReadings.length - 1];
 					return (
@@ -283,7 +301,7 @@ export default function BiomarkersList() {
 	const grouped = Object.keys(categories).reduce(
 		(acc, cat) => {
 			const markerCodes = Object.entries(codes)
-				.filter(([key, c]) => c.category === cat && readings[key]?.length)
+				.filter(([key, c]) => c.category === cat && getReadings(key).length)
 				.map(([key]) => key);
 			if (markerCodes.length > 0) acc[cat] = markerCodes;
 			return acc;
