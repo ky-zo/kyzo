@@ -2,6 +2,8 @@ export type BiomarkerCode = {
   name: string;
   category: string;
   unit: string | null;
+  /** Abbreviated unit for compact row display; falls back to `unit` */
+  shortUnit?: string;
   reference?: { low?: number; high?: number };
   /** % beyond range boundary before escalating status */
   threshold?: { borderline: number; abnormal: number };
@@ -20,6 +22,8 @@ export const categories: Record<string, string> = {
   biochemistry: "biochemistry",
   immunology: "immunology",
   hormones: "hormones",
+  posture: "posture",
+  circumferences: "circumferences",
 };
 
 export const codes: Record<string, BiomarkerCode> = {
@@ -29,7 +33,30 @@ export const codes: Record<string, BiomarkerCode> = {
   height: { name: "Height", category: "body", unit: "cm" },
   weight: { name: "Weight", category: "body", unit: "kg" },
   body_fat_pct: { name: "Body Fat", category: "body", unit: "%", reference: { low: 8, high: 19 }, threshold: { borderline: 10, abnormal: 25 } },
-  fat_mass: { name: "Fat Mass", category: "body", unit: "kg" },
+  fat_mass: { name: "Fat Mass", category: "body", unit: "kg", reference: { low: 8.4, high: 16.9 }, threshold: { borderline: 10, abnormal: 25 } },
+  smm: { name: "Skeletal Muscle Mass", category: "body", unit: "kg", reference: { low: 30.3, high: 37.6 }, threshold: { borderline: 10, abnormal: 25 } },
+  lean_body_mass: { name: "Lean Body Mass", category: "body", unit: "kg", reference: { low: 53.9, high: 65.9 }, threshold: { borderline: 10, abnormal: 25 } },
+  muscle_mass: { name: "Muscle Mass", category: "body", unit: "kg", reference: { low: 50.8, high: 62.2 }, threshold: { borderline: 10, abnormal: 25 } },
+  body_water: { name: "Body Water", category: "body", unit: "kg", reference: { low: 39.7, high: 48.5 }, threshold: { borderline: 10, abnormal: 25 } },
+  whr: { name: "Waist-Hip Ratio", category: "body", unit: null, reference: { low: 0.80, high: 0.90 }, threshold: { borderline: 10, abnormal: 25 } },
+  bmr: { name: "Basal Metabolic Rate", category: "body", unit: "kcal/d", reference: { low: 1497.7, high: 1830.5 }, threshold: { borderline: 10, abnormal: 25 } },
+  visceral_fat: { name: "Visceral Fat Level", category: "body", unit: null, reference: { low: 1.0, high: 10.0 }, threshold: { borderline: 10, abnormal: 25 } },
+
+  // --- circumferences ---
+  neck_circumference: { name: "Neck Circumference", category: "circumferences", unit: "cm" },
+  upper_arm_l: { name: "Upper Arm (L)", category: "circumferences", unit: "cm" },
+  upper_arm_r: { name: "Upper Arm (R)", category: "circumferences", unit: "cm" },
+  chest_circumference: { name: "Chest Circumference", category: "circumferences", unit: "cm" },
+  waist_high: { name: "High Waist", category: "circumferences", unit: "cm" },
+  waist_mid: { name: "Mid Waist", category: "circumferences", unit: "cm" },
+  waist_low: { name: "Low Waist", category: "circumferences", unit: "cm" },
+  hip_circumference: { name: "Hip Circumference", category: "circumferences", unit: "cm" },
+  thigh_l: { name: "Thigh (L)", category: "circumferences", unit: "cm" },
+  thigh_l_min: { name: "Min Thigh (L)", category: "circumferences", unit: "cm" },
+  thigh_r: { name: "Thigh (R)", category: "circumferences", unit: "cm" },
+  thigh_r_min: { name: "Min Thigh (R)", category: "circumferences", unit: "cm" },
+  calf_l: { name: "Calf (L)", category: "circumferences", unit: "cm" },
+  calf_r: { name: "Calf (R)", category: "circumferences", unit: "cm" },
 
   // --- haematology ---
   hb: { name: "Haemoglobin", category: "haematology", unit: "g/dL", reference: { low: 13.5, high: 17.5 }, threshold: { borderline: 7, abnormal: 15 } },
@@ -62,7 +89,7 @@ export const codes: Record<string, BiomarkerCode> = {
   triglycerides: { name: "Triglyceride", category: "biochemistry", unit: "mg/dL", reference: { high: 150 }, threshold: { borderline: 10, abnormal: 30 } },
   bun: { name: "BUN", category: "biochemistry", unit: "mg/dL", reference: { low: 7, high: 20 }, threshold: { borderline: 10, abnormal: 25 } },
   creatinine: { name: "Creatinine", category: "biochemistry", unit: "mg/dL", reference: { low: 0.7, high: 1.3 }, threshold: { borderline: 5, abnormal: 15 } },
-  egfr: { name: "eGFR", category: "biochemistry", unit: "mL/min/1.73m\u00b2", reference: { low: 60 }, threshold: { borderline: 10, abnormal: 25 } },
+  egfr: { name: "eGFR", category: "biochemistry", unit: "mL/min/1.73m\u00b2", shortUnit: "ml/min", reference: { low: 60 }, threshold: { borderline: 10, abnormal: 25 } },
   uric_acid: { name: "Uric Acid", category: "biochemistry", unit: "mg/dL", reference: { low: 3.5, high: 7.2 }, threshold: { borderline: 7, abnormal: 20 } },
   alt: { name: "ALT (SGPT)", category: "biochemistry", unit: "U/L", reference: { low: 7, high: 56 }, threshold: { borderline: 10, abnormal: 50 } },
   ast: { name: "AST (SGOT)", category: "biochemistry", unit: "U/L", reference: { low: 10, high: 40 }, threshold: { borderline: 10, abnormal: 50 } },
@@ -94,10 +121,21 @@ export const codes: Record<string, BiomarkerCode> = {
   free_t3: { name: "Free T3", category: "hormones", unit: "pg/mL", reference: { low: 2.0, high: 4.4 }, threshold: { borderline: 7, abnormal: 20 } },
   free_t4: { name: "Free T4", category: "hormones", unit: "ng/dL", reference: { low: 0.82, high: 1.77 }, threshold: { borderline: 7, abnormal: 20 } },
 
+  // Posture ranges are intentionally more lenient than a strict "ideal" neutral
+  // alignment so moderate deviations read as amber and the clearest outlier stays red.
+  forward_head: { name: "Forward Head Posture", category: "posture", unit: "cm", reference: { high: 4.0 }, threshold: { borderline: 15, abnormal: 120 } },
+  head_tilt: { name: "Head Tilt", category: "posture", unit: "°", reference: { low: -2.5, high: 2.5 }, threshold: { borderline: 3, abnormal: 15 } },
+  rounded_shoulder_l: { name: "Rounded Shoulder (L)", category: "posture", unit: "cm", reference: { high: 5.0 }, threshold: { borderline: 15, abnormal: 120 } },
+  rounded_shoulder_r: { name: "Rounded Shoulder (R)", category: "posture", unit: "cm", reference: { high: 5.0 }, threshold: { borderline: 15, abnormal: 120 } },
+  uneven_shoulders: { name: "Uneven Shoulders", category: "posture", unit: "°", reference: { low: -3.0, high: 3.0 }, threshold: { borderline: 10, abnormal: 50 } },
+  anterior_pelvic_shift: { name: "Anterior Pelvic Shift", category: "posture", unit: "cm", reference: { low: -4.0, high: 4.0 }, threshold: { borderline: 15, abnormal: 80 } },
+  knee_hyperext_l: { name: "Left Knee Angle", category: "posture", unit: "°", reference: { high: 180 }, threshold: { borderline: 1, abnormal: 3 } },
+  knee_hyperext_r: { name: "Right Knee Angle", category: "posture", unit: "°", reference: { high: 180 }, threshold: { borderline: 1, abnormal: 3 } },
+
   // --- performance ---
   rhr: { name: "Resting Heart Rate", category: "performance", unit: "bpm", reference: { low: 40, high: 70 }, threshold: { borderline: 10, abnormal: 25 } },
   hrv: { name: "HRV", category: "performance", unit: "ms", reference: { low: 30, high: 50 }, threshold: { borderline: 15, abnormal: 30 } },
-  vo2max: { name: "VO2 Max", category: "performance", unit: "mL/kg/min", reference: { low: 40, high: 60 }, threshold: { borderline: 10, abnormal: 25 } },
+  vo2max: { name: "VO2 Max", category: "performance", unit: "mL/kg/min", shortUnit: "ml/kg", reference: { low: 40, high: 60 }, threshold: { borderline: 10, abnormal: 25 } },
   pr_marathon: { name: "Marathon PR", category: "performance", unit: null },
   pr_half_marathon: { name: "Half Marathon PR", category: "performance", unit: null },
   pr_10k: { name: "10K PR", category: "performance", unit: null },
@@ -112,9 +150,30 @@ export const BIRTH_DATE = new Date(1994, 0, 11);
 export const readings: Record<string, Reading[]> = {
   fitness_age: [{ date: "2026-04-03", value: 27 }],
   height: [{ date: "2024-08-14", value: 179 }],
-  weight: [{ date: "2024-08-14", value: 68.5 }, { date: "2025-07-29", value: 68.5 }, { date: "2026-04-03", value: 72, estimated: true }],
-  body_fat_pct: [{ date: "2025-07-29", value: 12.1 }, { date: "2026-04-03", value: 14, estimated: true }],
-  fat_mass: [{ date: "2025-07-29", value: 8.3 }],
+  weight: [{ date: "2024-08-14", value: 68.5 }, { date: "2025-07-29", value: 68.5 }, { date: "2026-04-03", value: 72, estimated: true }, { date: "2026-04-08", value: 71.8 }],
+  body_fat_pct: [{ date: "2025-07-29", value: 12.1 }, { date: "2026-04-03", value: 14, estimated: true }, { date: "2026-04-08", value: 13.4 }],
+  fat_mass: [{ date: "2025-07-29", value: 8.3 }, { date: "2026-04-08", value: 9.7 }],
+  smm: [{ date: "2026-04-08", value: 35.7 }],
+  lean_body_mass: [{ date: "2026-04-08", value: 62.1 }],
+  muscle_mass: [{ date: "2026-04-08", value: 59.1 }],
+  body_water: [{ date: "2026-04-08", value: 45.4 }],
+  whr: [{ date: "2026-04-08", value: 0.85 }],
+  bmr: [{ date: "2026-04-08", value: 1724.7 }],
+  visceral_fat: [{ date: "2026-04-08", value: 3.0 }],
+  neck_circumference: [{ date: "2026-04-08", value: 35.3 }],
+  upper_arm_l: [{ date: "2026-04-08", value: 29.5 }],
+  upper_arm_r: [{ date: "2026-04-08", value: 29.5 }],
+  chest_circumference: [{ date: "2026-04-08", value: 98.0 }],
+  waist_high: [{ date: "2026-04-08", value: 79.2 }],
+  waist_mid: [{ date: "2026-04-08", value: 86.1 }],
+  waist_low: [{ date: "2026-04-08", value: 90.2 }],
+  hip_circumference: [{ date: "2026-04-08", value: 104.4 }],
+  thigh_l: [{ date: "2026-04-08", value: 72.4 }],
+  thigh_l_min: [{ date: "2026-04-08", value: 39.6 }],
+  thigh_r: [{ date: "2026-04-08", value: 71.4 }],
+  thigh_r_min: [{ date: "2026-04-08", value: 39.1 }],
+  calf_l: [{ date: "2026-04-08", value: 35.1 }],
+  calf_r: [{ date: "2026-04-08", value: 34.0 }],
   hb: [{ date: "2024-08-14", value: 16.3 }],
   hct: [{ date: "2024-08-14", value: 46.1 }],
   rbc: [{ date: "2024-08-14", value: 5.32 }],
@@ -160,6 +219,14 @@ export const readings: Record<string, Reading[]> = {
   cea: [{ date: "2024-08-14", value: 3.05 }],
   afp: [{ date: "2024-08-14", value: 0.45 }],
   testosterone: [{ date: "2024-08-14", value: 880 }],
+  forward_head: [{ date: "2026-04-08", value: 8.1 }],
+  head_tilt: [{ date: "2026-04-08", value: 2.6 }],
+  rounded_shoulder_l: [{ date: "2026-04-08", value: 9.9 }],
+  rounded_shoulder_r: [{ date: "2026-04-08", value: 7.9 }],
+  uneven_shoulders: [{ date: "2026-04-08", value: -4.3 }],
+  anterior_pelvic_shift: [{ date: "2026-04-08", value: 11.2 }],
+  knee_hyperext_l: [{ date: "2026-04-08", value: 184.3 }],
+  knee_hyperext_r: [{ date: "2026-04-08", value: 184.0 }],
   rhr: [{ date: "2026-04-03", value: 57 }],
   hrv: [{ date: "2026-04-03", value: 41 }],
   vo2max: [{ date: "2025-01-01", value: 48, estimated: true }, { date: "2025-07-29", value: 60.2 }, { date: "2026-04-03", value: 52, estimated: true }],

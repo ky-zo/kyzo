@@ -21,7 +21,7 @@ function getStatus(value: number | string, code: BiomarkerCode): Status | null {
 	const { borderline, abnormal } = code.threshold;
 
 	if (low !== undefined && value < low) {
-		const pctBelow = ((low - value) / low) * 100;
+		const pctBelow = ((low - value) / (Math.abs(low) || 1)) * 100;
 		if (pctBelow >= abnormal) return "abnormal";
 		if (pctBelow >= borderline) return "borderline";
 		return "optimal";
@@ -36,6 +36,34 @@ function getStatus(value: number | string, code: BiomarkerCode): Status | null {
 
 	return "optimal";
 }
+
+type Freshness = "fresh" | "stale" | "old";
+
+function getFreshness(dateStr: string): Freshness {
+	const now = new Date();
+	const date = new Date(dateStr);
+	const months = (now.getTime() - date.getTime()) / (30.44 * 24 * 60 * 60 * 1000);
+	if (months <= 3) return "fresh";
+	if (months <= 12) return "stale";
+	return "old";
+}
+
+function formatAge(dateStr: string): string {
+	const now = new Date();
+	const date = new Date(dateStr);
+	const days = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000));
+	if (days < 1) return "today";
+	if (days < 30) return `${days}d`;
+	const months = Math.floor(days / 30.44);
+	if (months < 24) return `${months}mo`;
+	return `${Math.floor(months / 12)}y`;
+}
+
+const freshnessText: Record<Freshness, string> = {
+	fresh: "text-black/20",
+	stale: "text-amber-600/40",
+	old: "text-amber-800/45",
+};
 
 function formatRef(code: BiomarkerCode) {
 	if (!code.reference) return null;
@@ -61,15 +89,15 @@ function getBarExtents(code: BiomarkerCode) {
 	// Calculate the bar min/max based on abnormal threshold so bar covers full range
 	const abnormalFrac = abnormal / 100;
 	if (low !== undefined && high !== undefined) {
-		const min = low * (1 - abnormalFrac * 1.2);
-		const max = high * (1 + abnormalFrac * 1.2);
+		const min = low - abnormalFrac * 1.2 * (Math.abs(low) || 1);
+		const max = high + abnormalFrac * 1.2 * (Math.abs(high) || 1);
 		return { min, max };
 	}
 	if (high !== undefined) {
-		return { min: 0, max: high * (1 + abnormalFrac * 1.2) };
+		return { min: 0, max: high + abnormalFrac * 1.2 * (Math.abs(high) || 1) };
 	}
 	if (low !== undefined) {
-		return { min: low * (1 - abnormalFrac * 1.2), max: low * 2 };
+		return { min: low - abnormalFrac * 1.2 * (Math.abs(low) || 1), max: low * 2 };
 	}
 	return null;
 }
@@ -98,8 +126,8 @@ function getZones(code: BiomarkerCode): { greenStart: number; greenEnd: number; 
 	const greenStart = low !== undefined ? toFrac(low) : 0;
 	const greenEnd = high !== undefined ? toFrac(high) : 1;
 
-	const borderlineStart = low !== undefined ? toFrac(low * (1 - borderlineFrac)) : 0;
-	const borderlineEnd = high !== undefined ? toFrac(high * (1 + borderlineFrac)) : 1;
+	const borderlineStart = low !== undefined ? toFrac(low - borderlineFrac * (Math.abs(low) || 1)) : 0;
+	const borderlineEnd = high !== undefined ? toFrac(high + borderlineFrac * (Math.abs(high) || 1)) : 1;
 
 	return { greenStart, greenEnd, borderlineStart, borderlineEnd };
 }
@@ -189,15 +217,22 @@ function InfoPanel({ codeKey }: { codeKey: string }) {
 	if (!code || !markerReadings.length) return null;
 
 	const latest = markerReadings[markerReadings.length - 1];
+	const freshness = getFreshness(latest.date);
 	const hasGraph = markerReadings.length > 1;
 	const hasRange = code.reference && typeof latest.value === "number";
 
 	return (
 		<div className="flex w-[180px] flex-col gap-2 border border-black p-3">
 			<div className="text-[11px] text-black">{code.name}</div>
+			{code.unit && (
+				<div className="text-[10px] text-black/30">{code.unit}</div>
+			)}
 			<div className="flex items-baseline justify-between">
-				<span className="text-[10px] text-black/50">last read</span>
-				<span className="text-[10px] tabular-nums text-black">{latest.date}</span>
+				<span className={`text-[10px] ${
+					freshness === "fresh" ? "text-emerald-600" :
+					freshness === "stale" ? "text-amber-600" : "text-amber-800"
+				}`}>{freshness}</span>
+				<span className="text-[10px] tabular-nums text-black/50">{latest.date}</span>
 			</div>
 			{hasGraph && <Sparkline data={markerReadings} />}
 			{hasRange && (
@@ -224,6 +259,8 @@ function MarkerRow({
 	if (!code) return null;
 	const ref = formatRef(code);
 	const status = getStatus(latest.value, code);
+	const freshness = getFreshness(latest.date);
+	const age = formatAge(latest.date);
 
 	return (
 		<div
@@ -241,15 +278,18 @@ function MarkerRow({
 			<span className="shrink-0 text-black/40">{code.name}</span>
 			<span className="min-w-0 flex-1 border-b border-dotted border-black/10" />
 			<span className="shrink-0 tabular-nums">{latest.estimated ? "~" : ""}{latest.value}</span>
-			<span className="w-[72px] shrink-0 text-right text-[11px] text-black/20">
-				{code.unit || ""}
+			<span className="w-[52px] shrink-0 text-right text-[11px] text-black/20">
+				{code.shortUnit || code.unit || ""}
 			</span>
 			{ref && (
-				<span className="w-[80px] shrink-0 whitespace-nowrap text-right text-[11px] tabular-nums text-black/15">
+				<span className="w-[60px] shrink-0 whitespace-nowrap text-right text-[11px] tabular-nums text-black/15">
 					{ref}
 				</span>
 			)}
-			{!ref && <span className="w-[80px] shrink-0" />}
+			{!ref && <span className="w-[60px] shrink-0" />}
+			<span className={`w-[44px] shrink-0 text-right text-[10px] tabular-nums ${freshnessText[freshness]}`}>
+				{codeKey !== "age" && codeKey !== "height" ? age : ""}
+			</span>
 		</div>
 	);
 }
