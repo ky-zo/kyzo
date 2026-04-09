@@ -113,7 +113,7 @@ export const codes: Record<string, BiomarkerCode> = {
 
   // --- hormones ---
   testosterone: { name: "Testosterone", category: "hormones", unit: "ng/dL", reference: { low: 300, high: 1000 }, threshold: { borderline: 10, abnormal: 25 } },
-  free_testosterone: { name: "Free Testosterone", category: "hormones", unit: "pg/mL", reference: { low: 47, high: 244 }, threshold: { borderline: 10, abnormal: 25 } },
+  free_testosterone: { name: "Free Testosterone", category: "hormones", unit: "pmol/L", reference: { low: 160, high: 777 }, threshold: { borderline: 10, abnormal: 25 } },
   shbg: { name: "SHBG", category: "hormones", unit: "nmol/L", reference: { low: 10, high: 57 }, threshold: { borderline: 10, abnormal: 25 } },
   estradiol: { name: "Estradiol", category: "hormones", unit: "pg/mL", reference: { low: 10, high: 40 }, threshold: { borderline: 15, abnormal: 30 } },
   lh: { name: "LH", category: "hormones", unit: "mIU/mL", reference: { low: 1.7, high: 8.6 }, threshold: { borderline: 10, abnormal: 25 } },
@@ -220,7 +220,7 @@ export const readings: Record<string, Reading[]> = {
   cea: [{ date: "2024-08-14", value: 3.05 }],
   afp: [{ date: "2024-08-14", value: 0.45 }],
   testosterone: [{ date: "2024-08-14", value: 880 }],
-  free_testosterone: [{ date: "2026-04-03", value: 77.9 }],
+  free_testosterone: [{ date: "2026-04-03", value: 270.31 }],
   shbg: [{ date: "2026-04-03", value: 41.7 }],
   estradiol: [{ date: "2026-04-03", value: 10 }],
   lh: [{ date: "2026-04-03", value: 3.16 }],
