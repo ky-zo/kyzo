@@ -23,15 +23,13 @@ function getStatus(value: number | string, code: BiomarkerCode): Status | null {
 	if (low !== undefined && value < low) {
 		const pctBelow = ((low - value) / (Math.abs(low) || 1)) * 100;
 		if (pctBelow >= abnormal) return "abnormal";
-		if (pctBelow >= borderline) return "borderline";
-		return "optimal";
+		return "borderline";
 	}
 
 	if (high !== undefined && value > high) {
 		const pctAbove = ((value - high) / high) * 100;
 		if (pctAbove >= abnormal) return "abnormal";
-		if (pctAbove >= borderline) return "borderline";
-		return "optimal";
+		return "borderline";
 	}
 
 	return "optimal";

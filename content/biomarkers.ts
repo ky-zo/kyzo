@@ -60,8 +60,8 @@ export const codes: Record<string, BiomarkerCode> = {
 
   // --- haematology ---
   hb: { name: "Haemoglobin", category: "haematology", unit: "g/dL", reference: { low: 13.5, high: 17.5 }, threshold: { borderline: 7, abnormal: 15 } },
-  hct: { name: "Haematocrit", category: "haematology", unit: "%", reference: { low: 38.3, high: 48.6 }, threshold: { borderline: 7, abnormal: 15 } },
-  rbc: { name: "Red Blood Cell", category: "haematology", unit: "x10\u2076/mm\u00b3", reference: { low: 4.5, high: 5.5 }, threshold: { borderline: 7, abnormal: 15 } },
+  hct: { name: "Haematocrit", category: "haematology", unit: "%", reference: { low: 40, high: 52 }, threshold: { borderline: 7, abnormal: 15 } },
+  rbc: { name: "Red Blood Cell", category: "haematology", unit: "x10\u2076/mm\u00b3", reference: { low: 4.4, high: 5.9 }, threshold: { borderline: 7, abnormal: 15 } },
   rdw: { name: "RDW", category: "haematology", unit: "%", reference: { low: 11.5, high: 14.5 }, threshold: { borderline: 10, abnormal: 20 } },
   mcv: { name: "MCV", category: "haematology", unit: "fL", reference: { low: 80, high: 100 }, threshold: { borderline: 5, abnormal: 15 } },
   mch: { name: "MCH", category: "haematology", unit: "pg", reference: { low: 27, high: 33 }, threshold: { borderline: 7, abnormal: 15 } },

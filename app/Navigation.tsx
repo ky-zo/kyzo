@@ -25,6 +25,14 @@ const Navigation = () => {
         }`}>
         writing
       </Link>
+      <div className="border-grey-500 flex-1 border-b" />
+      <Link
+        href={'/biomarkers'}
+        className={`whitespace-nowrap transition-all duration-75 ${
+          pathname === '/biomarkers' ? 'font-medium text-black' : 'hover:underline'
+        }`}>
+        biomarkers
+      </Link>
     </div>
   )
 }
