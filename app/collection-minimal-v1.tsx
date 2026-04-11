@@ -27,6 +27,11 @@ export default function CollectionMinimalV1() {
 							{e.title ? `${e.title} @ ` : ""}{e.company.name}
 						</a>
 						<span className="min-w-0 flex-1 border-b border-dotted border-black/10" />
+						{e.label && (
+							<span className="shrink-0 text-[11px] text-black/25">
+								{e.label}
+							</span>
+						)}
 						<span className="shrink-0 tabular-nums text-black/25">{e.year}</span>
 						<span className={cn("shrink-0 text-[11px]", statusColor[e.status])}>
 							{e.status}

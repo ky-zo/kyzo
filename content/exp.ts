@@ -8,6 +8,7 @@ type expProps = {
 	};
 
 	oneLiner?: string;
+	label?: string;
 	status: "closed" | "quit" | "active" | "acquired";
 	year: number;
 };
@@ -21,6 +22,7 @@ export const exp: expProps[] = [
 			href: "https://agentic-engineer.ai",
 		},
 		oneLiner: "fractional AI consulting for engineering teams",
+		label: "consulting",
 		status: "active",
 		year: 2026,
 	},
@@ -32,6 +34,7 @@ export const exp: expProps[] = [
 			href: "https://prettysports.app",
 		},
 		oneLiner: "iOS widgets with Strava/Garmin goals",
+		label: "iOS app",
 		status: "active",
 		year: 2026,
 	},
@@ -43,6 +46,7 @@ export const exp: expProps[] = [
 			href: "https://prettytimezones.com",
 		},
 		oneLiner: "macOS menu bar app for timezone comparison",
+		label: "macOS app",
 		status: "active",
 		year: 2026,
 	},
@@ -54,6 +58,7 @@ export const exp: expProps[] = [
 			href: "https://openrec.com",
 		},
 		oneLiner: "open source screen recording",
+		label: "macOS app",
 		status: "active",
 		year: 2026,
 	},
@@ -65,6 +70,7 @@ export const exp: expProps[] = [
 			href: "https://stravisuals.com",
 		},
 		oneLiner: "Visuals for Strava Activities",
+		label: "web app",
 		status: "closed",
 		year: 2025,
 	},
@@ -76,6 +82,7 @@ export const exp: expProps[] = [
 			href: "https://quack.kyzo.io",
 		},
 		oneLiner: "🪿 Game",
+		label: "game",
 		status: "active",
 		year: 2025,
 	},
@@ -87,6 +94,7 @@ export const exp: expProps[] = [
 			href: "https://fluar.com",
 		},
 		oneLiner: "AI-powered data enrichment",
+		label: "SaaS",
 		status: "acquired",
 		year: 2025,
 	},
@@ -98,6 +106,7 @@ export const exp: expProps[] = [
 			href: "https://copycopter.ai",
 		},
 		oneLiner: "generate AI videos from simple text prompts",
+		label: "SaaS",
 		status: "acquired",
 		year: 2024,
 	},
@@ -109,6 +118,7 @@ export const exp: expProps[] = [
 			href: "https://www.hiyove.com",
 		},
 		oneLiner: "reach your personal goals with a little help from AI",
+		label: "SaaS",
 		status: "closed",
 		year: 2023,
 	},
@@ -120,6 +130,7 @@ export const exp: expProps[] = [
 			href: "https://finey.io",
 		},
 		oneLiner: "classify, sort and categorize your invoices automatically",
+		label: "SaaS",
 		status: "closed",
 		year: 2023,
 	},
@@ -131,6 +142,7 @@ export const exp: expProps[] = [
 			href: "https://flyfile.io",
 		},
 		oneLiner: "sort out your email attachments automatically",
+		label: "SaaS",
 		status: "closed",
 		year: 2023,
 	},
@@ -143,6 +155,7 @@ export const exp: expProps[] = [
 			href: "https://epinote.io",
 		},
 		oneLiner: "automated remote workforce. raised $1.6m",
+		label: "SaaS",
 		status: "quit",
 		year: 2022,
 	},
