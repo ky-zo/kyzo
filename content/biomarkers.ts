@@ -83,6 +83,7 @@ export const codes: Record<string, BiomarkerCode> = {
 
   // --- biochemistry ---
   glucose_fasting: { name: "Glucose (Fasting)", category: "biochemistry", unit: "mg/dL", reference: { low: 70, high: 100 }, threshold: { borderline: 3, abnormal: 10 } },
+  fasting_insulin: { name: "Fasting Insulin", category: "biochemistry", unit: "pmol/L", reference: { low: 36.2, high: 144.8 }, threshold: { borderline: 10, abnormal: 25 } },
   hba1c: { name: "Haemoglobin A1C", category: "biochemistry", unit: "%", reference: { high: 5.7 }, threshold: { borderline: 3, abnormal: 8 } },
   cholesterol_total: { name: "Cholesterol (Total)", category: "biochemistry", unit: "mg/dL", reference: { high: 200 }, threshold: { borderline: 5, abnormal: 20 } },
   hdl: { name: "HDL Cholesterol", category: "biochemistry", unit: "mg/dL", reference: { low: 40 }, threshold: { borderline: 10, abnormal: 25 } },
@@ -104,6 +105,7 @@ export const codes: Record<string, BiomarkerCode> = {
   ag_ratio: { name: "A/G Ratio", category: "biochemistry", unit: null, reference: { low: 1.1, high: 2.5 }, threshold: { borderline: 10, abnormal: 25 } },
 
   ferritin: { name: "Ferritin", category: "biochemistry", unit: "ng/mL", reference: { low: 30, high: 400 }, threshold: { borderline: 10, abnormal: 25 } },
+  vitamin_d: { name: "Vitamin D (25-OH)", category: "biochemistry", unit: "nmol/L", reference: { low: 75, high: 250 }, threshold: { borderline: 15, abnormal: 30 } },
 
   // --- immunology ---
   tsh: { name: "TSH", category: "immunology", unit: "mU/L", reference: { low: 0.350, high: 4.940 }, threshold: { borderline: 5, abnormal: 20 } },
@@ -121,6 +123,7 @@ export const codes: Record<string, BiomarkerCode> = {
   prolactin: { name: "Prolactin", category: "hormones", unit: "mU/L", reference: { low: 73.4, high: 411 }, threshold: { borderline: 10, abnormal: 30 } },
   free_t3: { name: "Free T3", category: "hormones", unit: "pmol/L", reference: { low: 2.63, high: 5.7 }, threshold: { borderline: 7, abnormal: 20 } },
   free_t4: { name: "Free T4", category: "hormones", unit: "pmol/L", reference: { low: 9.01, high: 19.0 }, threshold: { borderline: 7, abnormal: 20 } },
+  cortisol_morning: { name: "Cortisol (Morning)", category: "hormones", unit: "nmol/L", reference: { low: 101.2, high: 535.7 }, threshold: { borderline: 10, abnormal: 25 } },
 
   // Posture ranges are intentionally more lenient than a strict "ideal" neutral
   // alignment so moderate deviations read as amber and the clearest outlier stays red.
@@ -195,12 +198,13 @@ export const readings: Record<string, Reading[]> = {
   basophils: [{ date: "2024-08-14", value: 28 }, { date: "2026-04-03", value: 40 }],
   platelets: [{ date: "2024-08-14", value: 230 }, { date: "2026-04-03", value: 247 }],
   mpv: [{ date: "2024-08-14", value: 10 }],
-  glucose_fasting: [{ date: "2024-08-14", value: 99 }],
+  glucose_fasting: [{ date: "2024-08-14", value: 99 }, { date: "2026-04-14", value: 110 }],
+  fasting_insulin: [{ date: "2026-04-14", value: 49.2 }],
   hba1c: [{ date: "2024-08-14", value: 4.9 }, { date: "2026-04-03", value: 5.3 }],
-  cholesterol_total: [{ date: "2024-08-14", value: 212 }],
-  hdl: [{ date: "2024-08-14", value: 59 }],
-  ldl: [{ date: "2024-08-14", value: 135 }],
-  triglycerides: [{ date: "2024-08-14", value: 47 }],
+  cholesterol_total: [{ date: "2024-08-14", value: 212 }, { date: "2026-04-14", value: 209 }],
+  hdl: [{ date: "2024-08-14", value: 59 }, { date: "2026-04-14", value: 66 }],
+  ldl: [{ date: "2024-08-14", value: 135 }, { date: "2026-04-14", value: 113 }],
+  triglycerides: [{ date: "2024-08-14", value: 47 }, { date: "2026-04-14", value: 78 }],
   bun: [{ date: "2024-08-14", value: 14.4 }],
   creatinine: [{ date: "2024-08-14", value: 1.0 }],
   egfr: [{ date: "2024-08-14", value: 100.6 }],
@@ -219,16 +223,18 @@ export const readings: Record<string, Reading[]> = {
   psa: [{ date: "2024-08-14", value: 0.148 }],
   cea: [{ date: "2024-08-14", value: 3.05 }],
   afp: [{ date: "2024-08-14", value: 0.45 }],
-  testosterone: [{ date: "2024-08-14", value: 880 }],
+  testosterone: [{ date: "2024-08-14", value: 880 }, { date: "2026-04-14", value: 796 }],
   free_testosterone: [{ date: "2026-04-03", value: 270.31 }],
   shbg: [{ date: "2026-04-03", value: 41.7 }],
   estradiol: [{ date: "2026-04-03", value: 36 }],
   lh: [{ date: "2026-04-03", value: 3.16 }],
   fsh: [{ date: "2026-04-03", value: 5.63 }],
-  prolactin: [{ date: "2026-04-03", value: 432.69 }],
+  prolactin: [{ date: "2026-04-03", value: 432.69 }, { date: "2026-04-14", value: 214.54 }],
   free_t3: [{ date: "2026-04-03", value: 4.24 }],
   free_t4: [{ date: "2026-04-03", value: 14.29 }],
+  cortisol_morning: [{ date: "2026-04-14", value: 433.16 }],
   ferritin: [{ date: "2026-04-03", value: 155.3 }],
+  vitamin_d: [{ date: "2026-04-14", value: 124.8 }],
   esr: [{ date: "2026-04-03", value: 6 }],
   forward_head: [{ date: "2026-04-08", value: 8.1 }],
   head_tilt: [{ date: "2026-04-08", value: 2.6 }],
