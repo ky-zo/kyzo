@@ -106,6 +106,7 @@ export const codes: Record<string, BiomarkerCode> = {
 
   ferritin: { name: "Ferritin", category: "biochemistry", unit: "ng/mL", reference: { low: 30, high: 400 }, threshold: { borderline: 10, abnormal: 25 } },
   vitamin_d: { name: "Vitamin D (25-OH)", category: "biochemistry", unit: "nmol/L", reference: { low: 75, high: 250 }, threshold: { borderline: 15, abnormal: 30 } },
+  zinc: { name: "Zinc (Plasma)", category: "biochemistry", unit: "\u00b5mol/L", reference: { low: 9.2, high: 19.9 }, threshold: { borderline: 10, abnormal: 25 } },
 
   // --- immunology ---
   tsh: { name: "TSH", category: "immunology", unit: "mU/L", reference: { low: 0.350, high: 4.940 }, threshold: { borderline: 5, abnormal: 20 } },
@@ -116,6 +117,7 @@ export const codes: Record<string, BiomarkerCode> = {
   // --- hormones ---
   testosterone: { name: "Testosterone", category: "hormones", unit: "ng/dL", reference: { low: 300, high: 1000 }, threshold: { borderline: 10, abnormal: 25 } },
   free_testosterone: { name: "Free Testosterone", category: "hormones", unit: "pmol/L", reference: { low: 160, high: 777 }, threshold: { borderline: 10, abnormal: 25 } },
+  dht: { name: "DHT", category: "hormones", unit: "nmol/L", reference: { low: 0.41, high: 2.21 }, threshold: { borderline: 10, abnormal: 25 } },
   shbg: { name: "SHBG", category: "hormones", unit: "nmol/L", reference: { low: 10, high: 57 }, threshold: { borderline: 10, abnormal: 25 } },
   estradiol: { name: "Estradiol", category: "hormones", unit: "pmol/L", reference: { low: 40, high: 161 }, threshold: { borderline: 15, abnormal: 30 } },
   lh: { name: "LH", category: "hormones", unit: "IU/L", reference: { low: 0.57, high: 12.07 }, threshold: { borderline: 10, abnormal: 25 } },
@@ -235,6 +237,8 @@ export const readings: Record<string, Reading[]> = {
   cortisol_morning: [{ date: "2026-04-14", value: 433.16 }],
   ferritin: [{ date: "2026-04-03", value: 155.3 }],
   vitamin_d: [{ date: "2026-04-14", value: 124.8 }],
+  zinc: [{ date: "2026-04-14", value: 17.44 }],
+  dht: [{ date: "2026-04-14", value: 1.01 }],
   esr: [{ date: "2026-04-03", value: 6 }],
   forward_head: [{ date: "2026-04-08", value: 8.1 }],
   head_tilt: [{ date: "2026-04-08", value: 2.6 }],
