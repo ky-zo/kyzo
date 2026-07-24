@@ -1,6 +1,7 @@
 import { AwsClient } from "aws4fetch";
 
 import { parseSession, serializeSession, type GarminSession } from "./client";
+import type { GarminActivity } from "./activities";
 import type { GarminDay, Vo2MaxPoint } from "./metrics";
 
 /**
@@ -19,6 +20,7 @@ import type { GarminDay, Vo2MaxPoint } from "./metrics";
 const SESSION_KEY = "garmin/session.json";
 const HISTORY_KEY = "garmin/daily.json";
 const VO2MAX_KEY = "garmin/vo2max.json";
+const ACTIVITIES_KEY = "garmin/activities.json";
 
 type S3Config = {
   client: AwsClient;
@@ -130,6 +132,14 @@ export async function readVo2MaxSeries(options?: ReadOptions): Promise<Vo2MaxPoi
 
 export async function writeVo2MaxSeries(points: Vo2MaxPoint[]): Promise<void> {
   await writeJson(VO2MAX_KEY, points);
+}
+
+export async function readActivities(options?: ReadOptions): Promise<GarminActivity[]> {
+  return (await readJson<GarminActivity[]>(ACTIVITIES_KEY, options)) ?? [];
+}
+
+export async function writeActivities(activities: GarminActivity[]): Promise<void> {
+  await writeJson(ACTIVITIES_KEY, activities);
 }
 
 /** Merges a freshly pulled VO2max series over the stored one, oldest first. */

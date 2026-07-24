@@ -1,6 +1,18 @@
 import { GarminClient } from "../lib/garmin/client";
+import { fetchActivities, mergeActivities } from "../lib/garmin/activities";
 import { fetchGarminDay, fetchVo2MaxSeries } from "../lib/garmin/metrics";
-import { mergeDays, mergeVo2Max, readHistory, readSession, readVo2MaxSeries, writeHistory, writeSession, writeVo2MaxSeries } from "../lib/garmin/store";
+import {
+  mergeDays,
+  mergeVo2Max,
+  readActivities,
+  readHistory,
+  readSession,
+  readVo2MaxSeries,
+  writeActivities,
+  writeHistory,
+  writeSession,
+  writeVo2MaxSeries,
+} from "../lib/garmin/store";
 
 /**
  * Backfills historical days into the stored history.
@@ -46,6 +58,10 @@ async function main() {
   const series = await fetchVo2MaxSeries(client, seriesStart, dates[dates.length - 1]);
   if (series.length) await writeVo2MaxSeries(mergeVo2Max(await readVo2MaxSeries(), series));
   console.log(`VO2max series: ${series.length} monthly points.`);
+
+  const activities = await fetchActivities(client, 200);
+  if (activities.length) await writeActivities(mergeActivities(await readActivities(), activities));
+  console.log(`Activities: ${activities.length} pulled.`);
   if (client.refreshed) await writeSession(client.getSession());
 
   const withSleep = results.filter((day) => day.sleep).length;

@@ -1,8 +1,20 @@
 import { NextResponse } from "next/server";
 
 import { GarminClient } from "@/lib/garmin/client";
+import { fetchActivities, mergeActivities } from "@/lib/garmin/activities";
 import { fetchGarminDay, fetchVo2MaxSeries } from "@/lib/garmin/metrics";
-import { mergeDays, mergeVo2Max, readHistory, readSession, readVo2MaxSeries, writeHistory, writeSession, writeVo2MaxSeries } from "@/lib/garmin/store";
+import {
+  mergeDays,
+  mergeVo2Max,
+  readActivities,
+  readHistory,
+  readSession,
+  readVo2MaxSeries,
+  writeActivities,
+  writeHistory,
+  writeSession,
+  writeVo2MaxSeries,
+} from "@/lib/garmin/store";
 
 /**
  * Daily Garmin sync, triggered by the cron in vercel.json.
@@ -63,6 +75,9 @@ export async function GET(request: Request) {
     const yearAgo = new Date(Date.now() - 365 * 86_400_000).toISOString().slice(0, 10);
     const series = await fetchVo2MaxSeries(client, yearAgo, dates[dates.length - 1]);
     if (series.length) await writeVo2MaxSeries(mergeVo2Max(await readVo2MaxSeries(), series));
+
+    const activities = await fetchActivities(client);
+    if (activities.length) await writeActivities(mergeActivities(await readActivities(), activities));
 
     // Persist after the pull so a rotated access token survives to the next run.
     if (client.refreshed) await writeSession(client.getSession());

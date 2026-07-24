@@ -31,7 +31,7 @@ const Navigation = () => {
         className={`whitespace-nowrap transition-all duration-75 ${
           pathname === '/biomarkers' ? 'font-medium text-black' : 'hover:underline'
         }`}>
-        biomarkers
+        health data
       </Link>
     </div>
   )

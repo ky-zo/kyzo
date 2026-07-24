@@ -2,12 +2,14 @@ import { Metadata } from "next";
 
 import { readings } from "@/content/biomarkers";
 import { deriveBiomarkerReadings, mergeReadings } from "@/lib/garmin/biomarkers";
-import { readHistory, readVo2MaxSeries } from "@/lib/garmin/store";
+import { weeklyVolume } from "@/lib/garmin/activities";
+import { readActivities, readHistory, readVo2MaxSeries } from "@/lib/garmin/store";
 
 import BiomarkersList from "./biomarkers-list";
+import TrainingCharts from "./training-charts";
 
 export const metadata: Metadata = {
-	title: "biomarkers - kyzo",
+	title: "health data - kyzo",
 	description: "open-source bloodwork and health biomarkers",
 	alternates: {
 		canonical: "https://kyzo.io/biomarkers",
@@ -37,10 +39,23 @@ async function getLiveReadings() {
 	}
 }
 
+/** Training volume is decorative next to the markers — absent beats broken. */
+async function getWeeklyVolume() {
+	try {
+		return weeklyVolume(await readActivities({ revalidate }));
+	} catch (error) {
+		console.error("Garmin activities unavailable:", error);
+		return [];
+	}
+}
+
 export default async function BiomarkersPage() {
+	const [liveReadings, weeks] = await Promise.all([getLiveReadings(), getWeeklyVolume()]);
+
 	return (
 		<div className="flex w-full max-w-md flex-col pb-10">
-			<BiomarkersList readings={await getLiveReadings()} />
+			<BiomarkersList readings={liveReadings} />
+			<TrainingCharts weeks={weeks} />
 		</div>
 	);
 }
