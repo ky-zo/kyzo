@@ -15,6 +15,17 @@ type expProps = {
 
 export const exp: expProps[] = [
 	{
+		id: "kumo",
+		dates: "07.2026",
+		company: {
+			name: "kumo",
+			href: "https://kumo.so",
+		},
+		oneLiner: "cloud agents",
+		status: "active",
+		year: 2026,
+	},
+	{
 		id: "agentic-engineer",
 		dates: "04.2026",
 		company: {
