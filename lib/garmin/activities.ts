@@ -77,17 +77,28 @@ function weekStart(date: Date): string {
 }
 
 /**
- * Training volume for the last `weeks` weeks, oldest first.
+ * Training volume for the last `weeks` completed weeks, oldest first.
+ *
+ * The in-progress week is excluded by default: mid-week totals aren't
+ * comparable to finished ones, so including it would mean plotting a point
+ * that always looks like a shortfall.
  *
  * Weeks with no activity are emitted as zeroes rather than skipped — a blank
  * week is a real signal, and dropping it would silently compress the axis.
  */
-export function weeklyVolume(activities: GarminActivity[], weeks = 6, now = new Date()): WeeklyVolume[] {
+export function weeklyVolume(
+  activities: GarminActivity[],
+  weeks = 6,
+  now = new Date(),
+  { includeCurrent = false }: { includeCurrent?: boolean } = {},
+): WeeklyVolume[] {
   const currentWeek = weekStart(now);
+  // Anchor on last week unless the unfinished one is explicitly wanted.
+  const anchor = includeCurrent ? now : new Date(now.getTime() - 7 * 86_400_000);
 
   const buckets = new Map<string, WeeklyVolume>();
   for (let index = weeks - 1; index >= 0; index--) {
-    const start = weekStart(new Date(now.getTime() - index * 7 * 86_400_000));
+    const start = weekStart(new Date(anchor.getTime() - index * 7 * 86_400_000));
     buckets.set(start, { weekStart: start, gymSessions: 0, runKm: 0, partial: start === currentWeek });
   }
 

@@ -5,11 +5,11 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
  *
  * Drawn as a line so the shape of the trend reads first — bars invited
  * comparing individual weeks, which isn't the question. The goal is the only
- * other reference on the chart, and colour marks which weeks cleared it.
+ * other reference on the chart, labelled on the line itself so the header can
+ * carry what actually happened: the six-week average.
  *
- * The in-progress week is drawn hollow on a dashed segment: mid-week it will
- * almost always sit under target, and plotting it like a finished week would
- * read as a miss.
+ * Only completed weeks are plotted. Should a partial week ever be passed in,
+ * it trails off dashed into a hollow point rather than reading as a drop.
  */
 
 const GOALS = {
@@ -20,11 +20,6 @@ const GOALS = {
 const WIDTH = 400;
 const HEIGHT = 64;
 const PAD_Y = 8;
-
-function formatWeek(weekStart: string): string {
-	const [, month, day] = weekStart.split("-");
-	return `${Number(day)}.${Number(month)}`;
-}
 
 function Chart({
 	label,
@@ -46,14 +41,13 @@ function Chart({
 	const x = (index: number) => (index / Math.max(values.length - 1, 1)) * WIDTH;
 	const y = (value: number) => PAD_Y + (1 - value / ceiling) * (HEIGHT - PAD_Y * 2);
 
+	const average = values.reduce((total, value) => total + value, 0) / (values.length || 1);
+
 	const points = values.map((value, index) => `${x(index)},${y(value)}`);
 	const lastComplete = weeks.findIndex((week) => week.partial);
 	// Split the line so the unfinished week trails off dashed.
 	const solid = lastComplete === -1 ? points : points.slice(0, lastComplete);
 	const dashed = lastComplete === -1 ? [] : points.slice(Math.max(lastComplete - 1, 0));
-
-	const hit = values.filter((value, index) => value >= goal && !weeks[index].partial).length;
-	const scored = weeks.filter((week) => !week.partial).length;
 
 	return (
 		<div className="mt-5">
@@ -61,18 +55,15 @@ function Chart({
 				<span className="text-black/40">{label}</span>
 				<span className="min-w-0 flex-1 border-b border-dotted border-black/10" />
 				<span className="shrink-0 tabular-nums text-black/50">
-					{format(goal)} {unit}
-				</span>
-				<span className="w-[60px] shrink-0 text-right text-[11px] tabular-nums text-black/15">
-					{hit}/{scored} hit
+					{format(average)} {unit}
 				</span>
 			</div>
 
 			<svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="mt-2 w-full overflow-visible">
-				{/* goal */}
+				{/* goal, labelled on the line so it reads as the target rather than a result */}
 				<line
 					x1="0"
-					x2={WIDTH}
+					x2={WIDTH - 22}
 					y1={y(goal)}
 					y2={y(goal)}
 					stroke="currentColor"
@@ -80,6 +71,16 @@ function Chart({
 					strokeDasharray="3 3"
 					className="text-black/25"
 				/>
+				<text
+					x={WIDTH}
+					y={y(goal) + 3}
+					textAnchor="end"
+					fontSize="10"
+					fill="currentColor"
+					className="tabular-nums text-black/30"
+				>
+					{format(goal)}
+				</text>
 
 				{solid.length > 1 && (
 					<polyline
@@ -128,7 +129,6 @@ function Chart({
 						<div className={`text-[10px] tabular-nums ${weeks[index].partial ? "text-black/25" : "text-black/45"}`}>
 							{format(value)}
 						</div>
-						<div className="text-[9px] tabular-nums text-black/15">{formatWeek(weeks[index].weekStart)}</div>
 					</div>
 				))}
 			</div>
@@ -163,7 +163,7 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				format={compact}
 			/>
 
-			<div className="mt-3 text-[10px] text-black/20">last 6 weeks · current week in progress</div>
+			<div className="mt-3 text-[10px] text-black/20">last 6 completed weeks</div>
 		</section>
 	);
 }
