@@ -40,7 +40,10 @@ function Chart({
 }) {
 	// Headroom so a week that beats the goal doesn't touch the top edge.
 	const ceiling = Math.max(goal, ...values) * 1.25 || 1;
-	const x = (index: number) => (index / Math.max(values.length - 1, 1)) * WIDTH;
+	// Points sit at the centre of equal columns, matching the label row below.
+	// Spacing them edge-to-edge instead would put every dot out of step with
+	// the number under it.
+	const x = (index: number) => ((index + 0.5) / values.length) * WIDTH;
 	const y = (value: number) => PAD_Y + (1 - value / ceiling) * (HEIGHT - PAD_Y * 2);
 
 	// Average over finished weeks only — a half-finished week would drag it down.
@@ -129,7 +132,7 @@ function Chart({
 
 			<div className="mt-1 flex">
 				{values.map((value, index) => (
-					<div key={weeks[index].weekStart} className="flex-1 text-center first:text-left last:text-right">
+					<div key={weeks[index].weekStart} className="flex-1 text-center">
 						<div className={`text-[10px] tabular-nums ${weeks[index].partial ? "text-black/25" : "text-black/45"}`}>
 							{format(value)}
 						</div>
