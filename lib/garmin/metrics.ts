@@ -75,6 +75,16 @@ export type GarminDay = {
     muscleMassKg: number | null;
     visceralFat: number | null;
   } | null;
+  /**
+   * Garmin's own fitness-age service. Unlike the VO2max payload — where the
+   * fitnessAge field is always null — this one answers per date, so it
+   * backfills into a real trend.
+   */
+  fitness: {
+    age: number | null;
+    achievableAge: number | null;
+    chronologicalAge: number | null;
+  } | null;
   /** Endpoints that errored on this run, so a silent gap is never mistaken for "no data". */
   errors: string[];
 };
@@ -110,16 +120,17 @@ export async function fetchGarminDay(client: GarminClient, date: string): Promis
     }
   }
 
-  const [hrv, sleep, daily, readiness, training, body] = await Promise.all([
+  const [hrv, sleep, daily, readiness, training, body, fitness] = await Promise.all([
     section("hrv", () => fetchHrv(client, date)),
     section("sleep", () => fetchSleep(client, date)),
     section("daily", () => fetchDailySummary(client, date)),
     section("readiness", () => fetchReadiness(client, date)),
     section("training", () => fetchTraining(client, date)),
     section("body", () => fetchBody(client, date)),
+    section("fitness", () => fetchFitnessAge(client, date)),
   ]);
 
-  return { date, syncedAt: new Date().toISOString(), hrv, sleep, daily, readiness, training, body, errors };
+  return { date, syncedAt: new Date().toISOString(), hrv, sleep, daily, readiness, training, body, fitness, errors };
 }
 
 async function fetchHrv(client: GarminClient, date: string): Promise<GarminDay["hrv"]> {
@@ -248,6 +259,20 @@ async function fetchBody(client: GarminClient, date: string): Promise<GarminDay[
     bodyWaterPct: num(average.bodyWater),
     muscleMassKg: gramsToKg(average.muscleMass),
     visceralFat: num(average.visceralFat),
+  };
+}
+
+async function fetchFitnessAge(client: GarminClient, date: string): Promise<GarminDay["fitness"]> {
+  const data = await client.get<Record<string, unknown>>(`/fitnessage-service/fitnessage/${date}`);
+  if (!data) return null;
+
+  const age = num(data.fitnessAge);
+  if (age === null) return null;
+
+  return {
+    age,
+    achievableAge: num(data.achievableFitnessAge),
+    chronologicalAge: num(data.chronologicalAge),
   };
 }
 

@@ -95,10 +95,13 @@ export function deriveBiomarkerReadings(days: GarminDay[], vo2maxSeries: Vo2MaxP
     hrv: weeklyMedian(sorted, (day) => day.hrv?.lastNightAvg, 0),
     rhr: weeklyMedian(sorted, (day) => day.daily?.restingHeartRate ?? day.sleep?.restingHeartRate, 0),
 
-    // Slow-moving estimates, from the endpoint that reports real history —
-    // the per-day one repeats today's value for every date queried.
+    // VO2max comes from the endpoint that reports real history — the per-day
+    // one repeats today's value for every date queried.
     vo2max: fromSeries(vo2maxSeries, (point) => point.vo2max),
-    fitness_age: fromSeries(vo2maxSeries, (point) => point.fitnessAge, 0),
+
+    // Fitness age does answer per date, and drifts continuously because it's
+    // computed from rolling averages, so it gets the same weekly smoothing.
+    fitness_age: weeklyMedian(sorted, (day) => day.fitness?.age),
 
     // Scale measurements — already discrete events.
     weight: perMeasurement(sorted, (day) => day.body?.weightKg),
