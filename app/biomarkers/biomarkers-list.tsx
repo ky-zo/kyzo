@@ -1,16 +1,25 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { codes, readings, categories, BIRTH_DATE, type BiomarkerCode, type Reading } from "@/content/biomarkers";
 
-function getReadings(code: string): Reading[] {
+type ReadingSet = Record<string, Reading[]>;
+
+/**
+ * Readings come from the server so the page can blend hand-entered results
+ * with whatever the Garmin sync has pulled. Falls back to the static set when
+ * rendered without a provider.
+ */
+const ReadingsContext = createContext<ReadingSet>(readings);
+
+function getReadings(code: string, all: ReadingSet): Reading[] {
 	if (code === "age") {
 		const now = new Date();
 		const ageMs = now.getTime() - BIRTH_DATE.getTime();
 		const age = Math.round((ageMs / (365.25 * 24 * 60 * 60 * 1000)) * 10) / 10;
 		return [{ date: now.toISOString().slice(0, 10), value: age }];
 	}
-	return readings[code] || [];
+	return all[code] || [];
 }
 
 type Status = "optimal" | "borderline" | "abnormal";
@@ -210,8 +219,9 @@ function RangeBar({ value, code }: { value: number; code: BiomarkerCode }) {
 }
 
 function InfoPanel({ codeKey }: { codeKey: string }) {
+	const allReadings = useContext(ReadingsContext);
 	const code = codes[codeKey];
-	const markerReadings = getReadings(codeKey);
+	const markerReadings = getReadings(codeKey, allReadings);
 	if (!code || !markerReadings.length) return null;
 
 	const latest = markerReadings[markerReadings.length - 1];
@@ -305,6 +315,8 @@ function CategorySection({
 	onHover: (code: string, el: HTMLDivElement) => void;
 	onLeave: () => void;
 }) {
+	const allReadings = useContext(ReadingsContext);
+
 	return (
 		<section>
 			<h3 className="mb-2 mt-6 text-[10px] uppercase tracking-[0.2em] text-black/25">
@@ -312,7 +324,7 @@ function CategorySection({
 			</h3>
 			<div className="flex flex-col">
 				{markerCodes.map((code) => {
-					const markerReadings = getReadings(code);
+					const markerReadings = getReadings(code, allReadings);
 					if (!markerReadings?.length) return null;
 					const latest = markerReadings[markerReadings.length - 1];
 					return (
@@ -331,7 +343,8 @@ function CategorySection({
 	);
 }
 
-export default function BiomarkersList() {
+export default function BiomarkersList({ readings: provided }: { readings?: ReadingSet }) {
+	const allReadings = provided ?? readings;
 	const [activeCode, setActiveCode] = useState<string | null>(null);
 	const [panelY, setPanelY] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -339,7 +352,7 @@ export default function BiomarkersList() {
 	const grouped = Object.keys(categories).reduce(
 		(acc, cat) => {
 			const markerCodes = Object.entries(codes)
-				.filter(([key, c]) => c.category === cat && getReadings(key).length)
+				.filter(([key, c]) => c.category === cat && getReadings(key, allReadings).length)
 				.map(([key]) => key);
 			if (markerCodes.length > 0) acc[cat] = markerCodes;
 			return acc;
@@ -357,6 +370,7 @@ export default function BiomarkersList() {
 	}
 
 	return (
+		<ReadingsContext.Provider value={allReadings}>
 		<div className="relative" ref={containerRef}>
 			<div className="flex w-full flex-col">
 				{Object.entries(grouped).map(([category, markerCodes]) => (
@@ -381,5 +395,6 @@ export default function BiomarkersList() {
 				</div>
 			)}
 		</div>
+		</ReadingsContext.Provider>
 	);
 }

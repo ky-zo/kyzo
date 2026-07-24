@@ -1,7 +1,7 @@
 import { AwsClient } from "aws4fetch";
 
 import { parseSession, serializeSession, type GarminSession } from "./client";
-import type { GarminDay } from "./metrics";
+import type { GarminDay, Vo2MaxPoint } from "./metrics";
 
 /**
  * S3-compatible object storage for the Garmin session and daily history.
@@ -18,6 +18,7 @@ import type { GarminDay } from "./metrics";
 
 const SESSION_KEY = "garmin/session.json";
 const HISTORY_KEY = "garmin/daily.json";
+const VO2MAX_KEY = "garmin/vo2max.json";
 
 type S3Config = {
   client: AwsClient;
@@ -60,10 +61,23 @@ function s3(): S3Config {
   return cached;
 }
 
-async function readJson<T>(key: string): Promise<T | null> {
+/**
+ * `revalidate` in seconds lets a page cache the read; omit it for the
+ * read-modify-write in the cron, which can't tolerate a stale copy.
+ */
+type ReadOptions = { revalidate?: number };
+
+async function readJson<T>(key: string, options: ReadOptions = {}): Promise<T | null> {
   const { client, base } = s3();
-  // cache: no-store — the cron does a read-modify-write and can't tolerate a stale copy.
-  const response = await client.fetch(`${base}/${key}`, { cache: "no-store" });
+
+  // A no-store read opts the calling route out of static rendering entirely,
+  // so pages pass a revalidate window instead and stay on ISR.
+  const init: RequestInit =
+    options.revalidate === undefined
+      ? { cache: "no-store" }
+      : ({ next: { revalidate: options.revalidate } } as RequestInit);
+
+  const response = await client.fetch(`${base}/${key}`, init);
 
   if (response.status === 404) return null;
   if (!response.ok) {
@@ -102,12 +116,27 @@ export async function writeSession(session: GarminSession): Promise<void> {
   await writeJson(SESSION_KEY, JSON.parse(serializeSession(session)));
 }
 
-export async function readHistory(): Promise<GarminDay[]> {
-  return (await readJson<GarminDay[]>(HISTORY_KEY)) ?? [];
+export async function readHistory(options?: ReadOptions): Promise<GarminDay[]> {
+  return (await readJson<GarminDay[]>(HISTORY_KEY, options)) ?? [];
 }
 
 export async function writeHistory(days: GarminDay[]): Promise<void> {
   await writeJson(HISTORY_KEY, days);
+}
+
+export async function readVo2MaxSeries(options?: ReadOptions): Promise<Vo2MaxPoint[]> {
+  return (await readJson<Vo2MaxPoint[]>(VO2MAX_KEY, options)) ?? [];
+}
+
+export async function writeVo2MaxSeries(points: Vo2MaxPoint[]): Promise<void> {
+  await writeJson(VO2MAX_KEY, points);
+}
+
+/** Merges a freshly pulled VO2max series over the stored one, oldest first. */
+export function mergeVo2Max(existing: Vo2MaxPoint[], incoming: Vo2MaxPoint[]): Vo2MaxPoint[] {
+  const byDate = new Map(existing.map((point) => [point.date, point]));
+  for (const point of incoming) byDate.set(point.date, point);
+  return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
 }
 
 /** Merges freshly pulled days over the stored history, newest last. */

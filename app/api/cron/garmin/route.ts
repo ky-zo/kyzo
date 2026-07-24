@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { GarminClient } from "@/lib/garmin/client";
-import { fetchGarminDay } from "@/lib/garmin/metrics";
-import { mergeDays, readHistory, readSession, writeHistory, writeSession } from "@/lib/garmin/store";
+import { fetchGarminDay, fetchVo2MaxSeries } from "@/lib/garmin/metrics";
+import { mergeDays, mergeVo2Max, readHistory, readSession, readVo2MaxSeries, writeHistory, writeSession, writeVo2MaxSeries } from "@/lib/garmin/store";
 
 /**
  * Daily Garmin sync, triggered by the cron in vercel.json.
@@ -57,6 +57,12 @@ export async function GET(request: Request) {
     }
 
     await writeHistory(mergeDays(await readHistory(), days));
+
+    // VO2max only moves after a qualifying activity, and its own endpoint
+    // carries the history, so refresh the trailing year alongside the days.
+    const yearAgo = new Date(Date.now() - 365 * 86_400_000).toISOString().slice(0, 10);
+    const series = await fetchVo2MaxSeries(client, yearAgo, dates[dates.length - 1]);
+    if (series.length) await writeVo2MaxSeries(mergeVo2Max(await readVo2MaxSeries(), series));
 
     // Persist after the pull so a rotated access token survives to the next run.
     if (client.refreshed) await writeSession(client.getSession());

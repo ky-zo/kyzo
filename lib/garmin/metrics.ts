@@ -61,6 +61,12 @@ export type GarminDay = {
     fitnessAge: number | null;
     acuteLoad: number | null;
     status: string | null;
+    /**
+     * When Garmin actually computed the VO2max — it returns the *latest*
+     * value for any date you ask about, so without this a backfill would
+     * date today's number to whenever the query window started.
+     */
+    measuredOn: string | null;
   } | null;
   body: {
     weightKg: number | null;
@@ -71,6 +77,13 @@ export type GarminDay = {
   } | null;
   /** Endpoints that errored on this run, so a silent gap is never mistaken for "no data". */
   errors: string[];
+};
+
+/** A dated VO2max measurement, from the endpoint that reports real history. */
+export type Vo2MaxPoint = {
+  date: string;
+  vo2max: number | null;
+  fitnessAge: number | null;
 };
 
 const num = (value: unknown): number | null => (typeof value === "number" && Number.isFinite(value) ? value : null);
@@ -216,6 +229,7 @@ async function fetchTraining(client: GarminClient, date: string): Promise<Garmin
     fitnessAge: num(generic.fitnessAge),
     acuteLoad: num(acute.dailyTrainingLoadAcute),
     status: str(device.trainingStatusFeedbackPhrase),
+    measuredOn: str(generic.calendarDate),
   };
 }
 
@@ -235,4 +249,32 @@ async function fetchBody(client: GarminClient, date: string): Promise<GarminDay[
     muscleMassKg: gramsToKg(average.muscleMass),
     visceralFat: num(average.visceralFat),
   };
+}
+
+/**
+ * VO2max history, which the per-day endpoint cannot provide.
+ *
+ * `trainingstatus/latest` answers with today's number no matter which date is
+ * queried, so a backfill through it yields a flat line. This endpoint returns
+ * one real measurement per month over the requested window, which is what an
+ * actual trend needs.
+ */
+export async function fetchVo2MaxSeries(client: GarminClient, start: string, end: string): Promise<Vo2MaxPoint[]> {
+  const data = await client.get<Record<string, unknown>[]>(`/metrics-service/metrics/maxmet/monthly/${start}/${end}`);
+  if (!Array.isArray(data)) return [];
+
+  const points: Vo2MaxPoint[] = [];
+  for (const entry of data) {
+    const generic = (entry.generic ?? {}) as Record<string, unknown>;
+    const date = str(generic.calendarDate);
+    if (!date) continue;
+
+    points.push({
+      date,
+      vo2max: num(generic.vo2MaxPreciseValue) ?? num(generic.vo2MaxValue),
+      fitnessAge: num(generic.fitnessAge),
+    });
+  }
+
+  return points.sort((a, b) => a.date.localeCompare(b.date));
 }
