@@ -3,16 +3,23 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
 /**
  * Weekly training volume against a target.
  *
- * Deliberately plain: the value of these charts is whether the bar clears the
- * goal line, so the goal is the only reference drawn and colour carries the
- * verdict. The in-progress week is dimmed — it will almost always sit under
- * target, and rendering it identically would read as a miss.
+ * Drawn as a line so the shape of the trend reads first — bars invited
+ * comparing individual weeks, which isn't the question. The goal is the only
+ * other reference on the chart, and colour marks which weeks cleared it.
+ *
+ * The in-progress week is drawn hollow on a dashed segment: mid-week it will
+ * almost always sit under target, and plotting it like a finished week would
+ * read as a miss.
  */
 
 const GOALS = {
 	gym: 2.5,
 	run: 40,
 };
+
+const WIDTH = 400;
+const HEIGHT = 64;
+const PAD_Y = 8;
 
 function formatWeek(weekStart: string): string {
 	const [, month, day] = weekStart.split("-");
@@ -34,10 +41,16 @@ function Chart({
 	values: number[];
 	format: (value: number) => string;
 }) {
-	// Headroom so a bar that beats the goal doesn't touch the top edge.
+	// Headroom so a week that beats the goal doesn't touch the top edge.
 	const ceiling = Math.max(goal, ...values) * 1.25 || 1;
-	const goalFrac = goal / ceiling;
-	const height = 56;
+	const x = (index: number) => (index / Math.max(values.length - 1, 1)) * WIDTH;
+	const y = (value: number) => PAD_Y + (1 - value / ceiling) * (HEIGHT - PAD_Y * 2);
+
+	const points = values.map((value, index) => `${x(index)},${y(value)}`);
+	const lastComplete = weeks.findIndex((week) => week.partial);
+	// Split the line so the unfinished week trails off dashed.
+	const solid = lastComplete === -1 ? points : points.slice(0, lastComplete);
+	const dashed = lastComplete === -1 ? [] : points.slice(Math.max(lastComplete - 1, 0));
 
 	const hit = values.filter((value, index) => value >= goal && !weeks[index].partial).length;
 	const scored = weeks.filter((week) => !week.partial).length;
@@ -55,37 +68,63 @@ function Chart({
 				</span>
 			</div>
 
-			<div className="relative mt-2" style={{ height }}>
-				{/* goal line */}
-				<div
-					className="absolute inset-x-0 border-t border-dashed border-black/25"
-					style={{ bottom: `${goalFrac * 100}%` }}
+			<svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="mt-2 w-full overflow-visible">
+				{/* goal */}
+				<line
+					x1="0"
+					x2={WIDTH}
+					y1={y(goal)}
+					y2={y(goal)}
+					stroke="currentColor"
+					strokeWidth="1"
+					strokeDasharray="3 3"
+					className="text-black/25"
 				/>
-				<div className="flex h-full items-end gap-1.5">
-					{values.map((value, index) => {
-						const week = weeks[index];
-						const met = value >= goal;
-						return (
-							<div key={week.weekStart} className="flex flex-1 items-end" style={{ height }}>
-								<div
-									className={`w-full rounded-sm ${
-										week.partial
-											? "bg-black/10"
-											: met
-												? "bg-emerald-400/70"
-												: "bg-black/20"
-									}`}
-									style={{ height: `${Math.max((value / ceiling) * 100, value > 0 ? 2 : 0)}%` }}
-								/>
-							</div>
-						);
-					})}
-				</div>
-			</div>
 
-			<div className="mt-1 flex gap-1.5">
+				{solid.length > 1 && (
+					<polyline
+						points={solid.join(" ")}
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						className="text-black/35"
+					/>
+				)}
+				{dashed.length > 1 && (
+					<polyline
+						points={dashed.join(" ")}
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeDasharray="3 3"
+						strokeLinecap="round"
+						className="text-black/20"
+					/>
+				)}
+
+				{values.map((value, index) => {
+					const week = weeks[index];
+					const met = value >= goal;
+					return (
+						<circle
+							key={week.weekStart}
+							cx={x(index)}
+							cy={y(value)}
+							r="2.5"
+							strokeWidth="1.5"
+							{...(week.partial
+								? { fill: "white", stroke: "currentColor", className: "text-black/25" }
+								: { className: met ? "fill-emerald-400" : "fill-black/30" })}
+						/>
+					);
+				})}
+			</svg>
+
+			<div className="mt-1 flex">
 				{values.map((value, index) => (
-					<div key={weeks[index].weekStart} className="flex-1 text-center">
+					<div key={weeks[index].weekStart} className="flex-1 text-center first:text-left last:text-right">
 						<div className={`text-[10px] tabular-nums ${weeks[index].partial ? "text-black/25" : "text-black/45"}`}>
 							{format(value)}
 						</div>
@@ -96,6 +135,8 @@ function Chart({
 		</div>
 	);
 }
+
+const compact = (value: number) => (Number.isInteger(value) ? String(value) : value.toFixed(1));
 
 export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 	if (!weeks.length) return null;
@@ -110,7 +151,7 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				goal={GOALS.gym}
 				weeks={weeks}
 				values={weeks.map((week) => week.gymSessions)}
-				format={(value) => (Number.isInteger(value) ? String(value) : value.toFixed(1))}
+				format={compact}
 			/>
 
 			<Chart
@@ -119,7 +160,7 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				goal={GOALS.run}
 				weeks={weeks}
 				values={weeks.map((week) => week.runKm)}
-				format={(value) => (Number.isInteger(value) ? String(value) : value.toFixed(1))}
+				format={compact}
 			/>
 
 			<div className="mt-3 text-[10px] text-black/20">last 6 weeks · current week in progress</div>
