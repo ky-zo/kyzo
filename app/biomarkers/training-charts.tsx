@@ -8,8 +8,10 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
  * other reference on the chart, labelled on the line itself so the header can
  * carry what actually happened: the six-week average.
  *
- * Only completed weeks are plotted. Should a partial week ever be passed in,
- * it trails off dashed into a hollow point rather than reading as a drop.
+ * The week in progress is plotted last, trailing off dashed into a hollow
+ * point — mid-week it sits below a finished week by construction, so drawing
+ * it identically would read as a collapse rather than an incomplete week. It
+ * is also left out of the average for the same reason.
  */
 
 const GOALS = {
@@ -41,7 +43,9 @@ function Chart({
 	const x = (index: number) => (index / Math.max(values.length - 1, 1)) * WIDTH;
 	const y = (value: number) => PAD_Y + (1 - value / ceiling) * (HEIGHT - PAD_Y * 2);
 
-	const average = values.reduce((total, value) => total + value, 0) / (values.length || 1);
+	// Average over finished weeks only — a half-finished week would drag it down.
+	const complete = values.filter((_, index) => !weeks[index].partial);
+	const average = complete.reduce((total, value) => total + value, 0) / (complete.length || 1);
 
 	const points = values.map((value, index) => `${x(index)},${y(value)}`);
 	const lastComplete = weeks.findIndex((week) => week.partial);
@@ -163,7 +167,7 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				format={compact}
 			/>
 
-			<div className="mt-3 text-[10px] text-black/20">last 6 completed weeks</div>
+			<div className="mt-3 text-[10px] text-black/20">last 6 weeks · current week in progress</div>
 		</section>
 	);
 }
