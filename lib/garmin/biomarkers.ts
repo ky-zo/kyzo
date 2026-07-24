@@ -115,11 +115,32 @@ export function deriveBiomarkerReadings(days: GarminDay[], vo2maxSeries: Vo2MaxP
 }
 
 /**
+ * How long a directly measured reading outranks the wearable's estimate.
+ *
+ * A lab VO2max is a real measurement — gas exchange under load. Garmin's is a
+ * model fitted to heart rate and pace, and it drifts with heat, altitude and
+ * how recently you ran hard. For a few months after a lab test the measured
+ * number is simply the better answer, so estimates are suppressed until it
+ * goes stale and the wearable's continuous tracking becomes the better guide.
+ *
+ * Codes absent from this map let manual and derived readings coexist by date.
+ */
+const AUTHORITY_DAYS: Record<string, number> = {
+  vo2max: 90,
+};
+
+const DAY_MS = 86_400_000;
+
+/**
  * Overlays derived readings on the hand-entered ones.
  *
  * Same-date collisions resolve to the manual reading: a lab panel or a DEXA
  * scan is a better measurement than a wrist optical sensor, and those are the
  * dates where both exist.
+ *
+ * Readings marked `estimated` don't claim authority — those are eyeballed or
+ * copied from the watch in the first place, so they shouldn't suppress the
+ * live data they came from.
  */
 export function mergeReadings(
   manual: Record<string, Reading[]>,
@@ -128,9 +149,25 @@ export function mergeReadings(
   const merged: Record<string, Reading[]> = { ...manual };
 
   for (const [code, values] of Object.entries(derived)) {
+    const manualReadings = manual[code] ?? [];
+    const window = AUTHORITY_DAYS[code] ?? 0;
+
+    const measuredAt = window
+      ? manualReadings.filter((reading) => !reading.estimated).map((reading) => Date.parse(`${reading.date}T00:00:00Z`))
+      : [];
+
+    /** True while a directly measured reading still outranks the estimate. */
+    const superseded = (date: string) => {
+      const at = Date.parse(`${date}T00:00:00Z`);
+      return measuredAt.some((measured) => at > measured && at - measured <= window * DAY_MS);
+    };
+
     const byDate = new Map<string, Reading>();
-    for (const reading of values) byDate.set(reading.date, reading);
-    for (const reading of manual[code] ?? []) byDate.set(reading.date, reading);
+    for (const reading of values) {
+      if (superseded(reading.date)) continue;
+      byDate.set(reading.date, reading);
+    }
+    for (const reading of manualReadings) byDate.set(reading.date, reading);
 
     merged[code] = Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
   }

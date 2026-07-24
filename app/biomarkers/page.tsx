@@ -55,8 +55,7 @@ export default async function BiomarkersPage() {
 
 	return (
 		<div className="flex w-full max-w-md flex-col pb-10">
-			<BiomarkersList readings={liveReadings} />
-			<TrainingCharts weeks={weeks} />
+			<BiomarkersList readings={liveReadings} afterPerformance={<TrainingCharts weeks={weeks} />} />
 		</div>
 	);
 }

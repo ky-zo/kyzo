@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, Fragment, useContext, useRef, useState, type ReactNode } from "react";
 import { codes, readings, categories, BIRTH_DATE, type BiomarkerCode, type Reading } from "@/content/biomarkers";
 
 type ReadingSet = Record<string, Reading[]>;
@@ -343,7 +343,14 @@ function CategorySection({
 	);
 }
 
-export default function BiomarkersList({ readings: provided }: { readings?: ReadingSet }) {
+export default function BiomarkersList({
+	readings: provided,
+	afterPerformance,
+}: {
+	readings?: ReadingSet;
+	/** Rendered between the performance markers and the sections below them. */
+	afterPerformance?: ReactNode;
+}) {
 	const allReadings = provided ?? readings;
 	const [activeCode, setActiveCode] = useState<string | null>(null);
 	const [panelY, setPanelY] = useState(0);
@@ -374,15 +381,19 @@ export default function BiomarkersList({ readings: provided }: { readings?: Read
 		<div className="relative" ref={containerRef}>
 			<div className="flex w-full flex-col">
 				{Object.entries(grouped).map(([category, markerCodes]) => (
-					<CategorySection
-						key={category}
-						category={category}
-						markerCodes={markerCodes}
-						activeCode={activeCode}
-						onHover={handleHover}
-						onLeave={() => setActiveCode(null)}
-					/>
+					<Fragment key={category}>
+						<CategorySection
+							category={category}
+							markerCodes={markerCodes}
+							activeCode={activeCode}
+							onHover={handleHover}
+							onLeave={() => setActiveCode(null)}
+						/>
+						{category === "performance" && afterPerformance}
+					</Fragment>
 				))}
+				{/* Performance can be empty if no markers have readings; don't lose the slot. */}
+				{!grouped.performance && afterPerformance}
 			</div>
 
 			{/* floating info panel — aligned with hovered row */}
