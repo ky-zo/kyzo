@@ -352,7 +352,7 @@ export default function BiomarkersList({ readings: provided }: { readings?: Read
 	const grouped = Object.keys(categories).reduce(
 		(acc, cat) => {
 			const markerCodes = Object.entries(codes)
-				.filter(([key, c]) => c.category === cat && getReadings(key, allReadings).length)
+				.filter(([key, c]) => c.category === cat && !c.hidden && getReadings(key, allReadings).length)
 				.map(([key]) => key);
 			if (markerCodes.length > 0) acc[cat] = markerCodes;
 			return acc;

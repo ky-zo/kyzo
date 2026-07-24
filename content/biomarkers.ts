@@ -7,6 +7,8 @@ export type BiomarkerCode = {
   reference?: { low?: number; high?: number };
   /** % beyond range boundary before escalating status */
   threshold?: { borderline: number; abnormal: number };
+  /** Kept as data, omitted from the rendered list */
+  hidden?: boolean;
 };
 
 export type Reading = {
@@ -30,7 +32,7 @@ export const codes: Record<string, BiomarkerCode> = {
   // --- body ---
   age: { name: "Age", category: "body", unit: "years" },
   fitness_age: { name: "Fitness Age (Garmin)", category: "body", unit: "years" },
-  height: { name: "Height", category: "body", unit: "cm" },
+  height: { name: "Height", category: "body", unit: "cm", hidden: true },
   weight: { name: "Weight", category: "body", unit: "kg" },
   body_fat_pct: { name: "Body Fat", category: "body", unit: "%", reference: { low: 8, high: 19 }, threshold: { borderline: 10, abnormal: 25 } },
   fat_mass: { name: "Fat Mass", category: "body", unit: "kg", reference: { low: 8.4, high: 16.9 }, threshold: { borderline: 10, abnormal: 25 } },
