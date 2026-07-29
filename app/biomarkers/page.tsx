@@ -42,8 +42,8 @@ async function getLiveReadings() {
 /** Training volume is decorative next to the markers — absent beats broken. */
 async function getWeeklyVolume() {
 	try {
-		// Six completed weeks plus the one in progress, which trails off dashed.
-		return weeklyVolume(await readActivities({ revalidate }), 7, new Date(), { includeCurrent: true });
+		// Completed weeks only — a week still in progress always reads as a shortfall.
+		return weeklyVolume(await readActivities({ revalidate }), 6);
 	} catch (error) {
 		console.error("Garmin activities unavailable:", error);
 		return [];
