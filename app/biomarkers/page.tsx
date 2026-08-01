@@ -16,8 +16,14 @@ export const metadata: Metadata = {
 	},
 };
 
-/** The Garmin sync runs once a day, so re-reading more often than that is waste. */
-export const revalidate = 86400;
+/**
+ * The Garmin pull runs once a day; the page re-reads storage hourly.
+ *
+ * A day-long page cache would sit on top of a day-long sync, so the week in
+ * progress could be two days behind a workout. Storage reads are cheap — the
+ * cron is what's rate-limited, not this.
+ */
+export const revalidate = 3600;
 
 /**
  * Blends the hand-entered readings with whatever Garmin has synced.
