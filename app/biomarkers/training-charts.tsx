@@ -8,9 +8,11 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
  * other reference on the chart, labelled on the line itself so the header can
  * carry what actually happened: the six-week average.
  *
- * Only finished weeks are plotted. Mid-week a running total sits below a
- * finished week by construction, so a point for the week in progress would
- * read as a collapse rather than an incomplete week.
+ * The week in progress is plotted too, but drawn as unfinished — dashed
+ * approach, hollow dot, dimmed number. Mid-week a running total sits below a
+ * finished week by construction, so without that distinction the last point
+ * would read as a collapse rather than an incomplete week. It is left out of
+ * the average for the same reason.
  */
 
 const GOALS = {
@@ -45,9 +47,16 @@ function Chart({
 	const x = (index: number) => ((index + 0.5) / values.length) * WIDTH;
 	const y = (value: number) => PAD_Y + (1 - value / ceiling) * (HEIGHT - PAD_Y * 2);
 
-	const average = values.reduce((total, value) => total + value, 0) / (values.length || 1);
+	// The unfinished week would drag the average down for no reason.
+	const finished = values.filter((_, index) => !weeks[index].partial);
+	const average = finished.reduce((total, value) => total + value, 0) / (finished.length || 1);
 
 	const points = values.map((value, index) => `${x(index)},${y(value)}`);
+	// The final segment is split off when it leads into a partial week, so it can
+	// be dashed while the rest of the line stays solid.
+	const trailingPartial = weeks[weeks.length - 1]?.partial && points.length > 1;
+	const solid = trailingPartial ? points.slice(0, -1) : points;
+	const pending = trailingPartial ? points.slice(-2) : [];
 
 	return (
 		<div className="mt-5">
@@ -82,9 +91,9 @@ function Chart({
 					{format(goal)}
 				</text>
 
-				{points.length > 1 && (
+				{solid.length > 1 && (
 					<polyline
-						points={points.join(" ")}
+						points={solid.join(" ")}
 						fill="none"
 						stroke="currentColor"
 						strokeWidth="1.5"
@@ -94,22 +103,50 @@ function Chart({
 					/>
 				)}
 
-				{values.map((value, index) => (
-					<circle
-						key={weeks[index].weekStart}
-						cx={x(index)}
-						cy={y(value)}
-						r="2.5"
+				{pending.length > 1 && (
+					<polyline
+						points={pending.join(" ")}
+						fill="none"
+						stroke="currentColor"
 						strokeWidth="1.5"
-						className={value >= goal ? "fill-emerald-400" : "fill-black/30"}
+						strokeDasharray="2 3"
+						strokeLinecap="round"
+						className="text-black/20"
 					/>
-				))}
+				)}
+
+				{values.map((value, index) =>
+					weeks[index].partial ? (
+						<circle
+							key={weeks[index].weekStart}
+							cx={x(index)}
+							cy={y(value)}
+							r="2.5"
+							strokeWidth="1.5"
+							stroke="currentColor"
+							className="fill-white text-black/25"
+						/>
+					) : (
+						<circle
+							key={weeks[index].weekStart}
+							cx={x(index)}
+							cy={y(value)}
+							r="2.5"
+							strokeWidth="1.5"
+							className={value >= goal ? "fill-emerald-400" : "fill-black/30"}
+						/>
+					),
+				)}
 			</svg>
 
 			<div className="mt-1 flex">
 				{values.map((value, index) => (
 					<div key={weeks[index].weekStart} className="flex-1 text-center">
-						<div className="text-[10px] tabular-nums text-black/45">{format(value)}</div>
+						<div
+							className={`text-[10px] tabular-nums ${weeks[index].partial ? "text-black/25" : "text-black/45"}`}
+						>
+							{format(value)}
+						</div>
 					</div>
 				))}
 			</div>
@@ -144,7 +181,11 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				format={compact}
 			/>
 
-			<div className="mt-3 text-[10px] text-black/20">last 6 completed weeks</div>
+			<div className="mt-3 text-[10px] text-black/20">
+				{weeks[weeks.length - 1]?.partial
+					? "last 6 weeks — this week still in progress, average over completed weeks"
+					: "last 6 completed weeks"}
+			</div>
 		</section>
 	);
 }

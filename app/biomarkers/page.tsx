@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 	},
 };
 
-/** The Garmin sync runs daily; hourly revalidation keeps R2 reads negligible. */
-export const revalidate = 3600;
+/** The Garmin sync runs once a day, so re-reading more often than that is waste. */
+export const revalidate = 86400;
 
 /**
  * Blends the hand-entered readings with whatever Garmin has synced.
@@ -42,8 +42,9 @@ async function getLiveReadings() {
 /** Training volume is decorative next to the markers — absent beats broken. */
 async function getWeeklyVolume() {
 	try {
-		// Completed weeks only — a week still in progress always reads as a shortfall.
-		return weeklyVolume(await readActivities({ revalidate }), 6);
+		// The week in progress is included but marked partial, so the chart can
+		// draw it as unfinished rather than as a collapse.
+		return weeklyVolume(await readActivities({ revalidate }), 6, new Date(), { includeCurrent: true });
 	} catch (error) {
 		console.error("Garmin activities unavailable:", error);
 		return [];
