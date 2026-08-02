@@ -17,7 +17,7 @@ import {
 } from "@/lib/garmin/store";
 
 /**
- * Daily Garmin sync, triggered by the cron in vercel.json.
+ * Hourly Garmin sync, triggered by the cron in vercel.json.
  *
  * Re-pulls the last few days rather than just yesterday: the watch syncs late,
  * sleep gets re-scored, and a weight-in lands whenever it lands. Re-fetching is

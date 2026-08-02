@@ -17,11 +17,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * The Garmin pull runs once a day; the page re-reads storage hourly.
- *
- * A day-long page cache would sit on top of a day-long sync, so the week in
- * progress could be two days behind a workout. Storage reads are cheap — the
- * cron is what's rate-limited, not this.
+ * The Garmin sync and this page both run on the hour, so a workout surfaces
+ * within roughly two hours of the watch uploading it. Storage reads are cheap;
+ * matching the cron's cadence costs nothing and keeps the two in step.
  */
 export const revalidate = 3600;
 
