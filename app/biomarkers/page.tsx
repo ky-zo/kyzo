@@ -46,9 +46,14 @@ async function getLiveReadings() {
 /** Training volume is decorative next to the markers — absent beats broken. */
 async function getWeeklyVolume() {
 	try {
+		// "Today" follows the athlete's timezone, same as the cron. Activity dates
+		// are already watch-local, so anchoring the weeks on UTC would flip to an
+		// empty new week on Sunday evening in San Francisco.
+		const timeZone = process.env.GARMIN_TIMEZONE || "UTC";
+		const today = new Intl.DateTimeFormat("en-CA", { timeZone }).format(new Date());
 		// The week in progress is included but marked partial, so the chart can
 		// draw it as unfinished rather than as a collapse.
-		return weeklyVolume(await readActivities({ revalidate }), 6, new Date(), { includeCurrent: true });
+		return weeklyVolume(await readActivities({ revalidate }), 6, new Date(`${today}T00:00:00Z`), { includeCurrent: true });
 	} catch (error) {
 		console.error("Garmin activities unavailable:", error);
 		return [];
