@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function RandomPage() {
   return (
-    <main className="w-full max-w-[752px]">
+    <main className="w-full max-w-md">
       <iframe
-        className="block h-[650px] w-full border-0 sm:h-[680px]"
-        src="/follower-counter/index.html?v=simplified-2026-08-15"
+        className="block h-[590px] w-full border-0"
+        src="/follower-counter/index.html?v=compact-2026-08-15"
         title="kyzo follower growth"
       />
     </main>
