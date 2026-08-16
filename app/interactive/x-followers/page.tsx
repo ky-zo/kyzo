@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'graphs | kyzo',
   description: 'kyzo follower growth over time',
   alternates: {
-    canonical: 'https://kyzo.io/random/x-followers',
+    canonical: 'https://kyzo.io/interactive/x-followers',
   },
 }
 

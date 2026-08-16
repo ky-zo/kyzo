@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'weight converter | kyzo',
   description: 'a quick kilograms and pounds converter',
   alternates: {
-    canonical: 'https://kyzo.io/random/weight-converter',
+    canonical: 'https://kyzo.io/interactive/weight-converter',
   },
 }
 

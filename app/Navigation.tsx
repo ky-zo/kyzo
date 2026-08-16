@@ -35,9 +35,9 @@ const Navigation = () => {
       </Link>
       <div className="border-grey-500 flex-1 border-b" />
       <Link
-        href={'/random'}
+        href={'/interactive'}
         className={`whitespace-nowrap transition-all duration-75 ${
-          pathname.startsWith('/random') ? 'font-medium text-black' : 'hover:underline'
+          pathname.startsWith('/interactive') ? 'font-medium text-black' : 'hover:underline'
         }`}>
         interactive
       </Link>

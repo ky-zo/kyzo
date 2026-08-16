@@ -9,7 +9,7 @@ import {
   stepVisualIndex,
   valueToVisualIndex,
   visualIndexToStopIndex,
-} from '../app/random/weight-converter/conversion'
+} from '../app/interactive/weight-converter/conversion'
 
 test('uses the requested native stops for pounds and kilograms', () => {
   assert.deepEqual(POUND_VALUES.slice(0, 5), [1, 2, 3, 4, 5])
