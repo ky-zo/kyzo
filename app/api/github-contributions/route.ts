@@ -9,7 +9,7 @@ export async function GET() {
     const contributions = await fetchPublicGitHubContributions()
     return NextResponse.json(contributions, {
       headers: {
-        'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        'Cache-Control': 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
       },
     })
   } catch (error) {

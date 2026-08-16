@@ -17,14 +17,14 @@ export default function RandomPage() {
           <Link
             href="/random/x-followers"
             className="normal-case text-black/70 hover:underline">
-            X followers graph
+            graphs
           </Link>
         </li>
         <li>
           <Link
             href="/random/weight-converter"
             className="normal-case text-black/70 hover:underline">
-            Weight converter
+            weight converter
           </Link>
         </li>
         <li>
@@ -33,7 +33,7 @@ export default function RandomPage() {
             target="_blank"
             rel="noreferrer"
             className="normal-case text-black/70 hover:underline">
-            Goose Game
+            goose game
           </a>
         </li>
       </ul>

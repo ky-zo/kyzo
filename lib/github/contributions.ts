@@ -70,7 +70,7 @@ async function fetchContributionYear(year: number) {
       'Accept-Language': 'en-US,en;q=0.9',
       'User-Agent': 'kyzo.io public contribution chart',
     },
-    next: { revalidate: 86_400 },
+    next: { revalidate: 600 },
   })
 
   if (!response.ok) {
