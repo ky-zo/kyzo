@@ -19,7 +19,12 @@ type FunLinkProps = {
 
 function FunLink({ href, emoji, external, children }: FunLinkProps) {
   const className =
-    'group inline-block underline decoration-black/30 underline-offset-2 transition-all duration-200 hover:-rotate-2 hover:text-black hover:decoration-black hover:decoration-wavy'
+    'group underline decoration-black/30 underline-offset-2 transition-colors duration-200 hover:text-black hover:decoration-black hover:decoration-wavy'
+  const label = (
+    <span className="inline-block transition-transform duration-200 group-hover:-rotate-2">
+      {children}
+    </span>
+  )
   const pop = (
     <span
       aria-hidden
@@ -30,14 +35,14 @@ function FunLink({ href, emoji, external, children }: FunLinkProps) {
   if (external) {
     return (
       <a href={href} target="_blank" rel="noreferrer" className={className}>
-        {children}
+        {label}
         {pop}
       </a>
     )
   }
   return (
     <Link href={href} className={className}>
-      {children}
+      {label}
       {pop}
     </Link>
   )
