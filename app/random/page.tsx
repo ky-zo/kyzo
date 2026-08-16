@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'interactive — kyzo',
+  title: 'interactive | kyzo',
   description: 'small things and experiments by kyzo',
   alternates: {
     canonical: 'https://kyzo.io/random',
@@ -26,6 +26,15 @@ export default function RandomPage() {
             className="normal-case text-black/70 hover:underline">
             Weight converter
           </Link>
+        </li>
+        <li>
+          <a
+            href="https://quack.kyzo.io"
+            target="_blank"
+            rel="noreferrer"
+            className="normal-case text-black/70 hover:underline">
+            Goose Game
+          </a>
         </li>
       </ul>
     </main>

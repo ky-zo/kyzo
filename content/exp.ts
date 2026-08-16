@@ -86,18 +86,6 @@ export const exp: expProps[] = [
 		year: 2025,
 	},
 	{
-		id: "goose-game",
-		dates: "03.2024",
-		company: {
-			name: "Goose Game",
-			href: "https://quack.kyzo.io",
-		},
-		oneLiner: "🪿 Game",
-		label: "game",
-		status: "active",
-		year: 2025,
-	},
-	{
 		id: "fluar",
 		dates: "02.2025",
 		company: {

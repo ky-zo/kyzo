@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f8fa" />
-  <title>kyzo — follower growth</title>
+  <title>kyzo | follower growth</title>
   <style>
     @font-face {
       font-family: "GeistSans";
@@ -239,42 +239,70 @@
       background: transparent;
     }
 
-    .chart-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 28px;
-      padding: 14px 0 2px;
-    }
+    .chart-head { padding: 12px 0 2px; }
 
-    .metric-label {
+    .series-controls {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .value-row {
-      display: flex;
-      align-items: baseline;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 4px;
     }
 
-    .value {
-      font-size: 18px;
+    .series-toggle {
+      position: relative;
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px 6px 7px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 140ms var(--ease-out), color 140ms var(--ease-out), opacity 140ms var(--ease-out), transform 120ms var(--ease-out);
+    }
+
+    .series-toggle:active { transform: scale(0.97); }
+    .series-toggle:not(:has(input:checked)) { opacity: 0.48; }
+    .series-toggle:has(input:disabled) { cursor: not-allowed; opacity: 0.4; }
+    .series-toggle:has(input:focus-visible) { box-shadow: var(--focus); }
+
+    .series-toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .series-check {
+      display: grid;
+      width: 20px;
+      height: 20px;
+      place-items: center;
+      border: 1px solid color-mix(in oklch, var(--series-color) 45%, var(--rule));
+      border-radius: 7px;
+      background: color-mix(in oklch, var(--series-color) 9%, var(--surface));
+      color: transparent;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
+      line-height: 1;
+      transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out), transform 140ms var(--ease-out);
     }
 
-    .delta {
-      color: var(--green);
-      font-size: 14px;
-      font-weight: 500;
+    .series-toggle:has(input:checked) .series-check {
+      background: var(--series-color);
+      color: var(--surface);
+      transform: rotate(-3deg);
     }
+
+    .series-toggle.followers { --series-color: var(--blue); }
+    .series-toggle.github { --series-color: var(--green); }
+    .series-name { font-size: 12px; }
+    .series-value { color: var(--ink); font-size: 12px; font-weight: 600; }
 
     .period-block { display: none; }
     .period-label { color: var(--ink); font-size: 12px; font-weight: 500; }
@@ -290,22 +318,15 @@
     #chart .grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
     #chart .plot-boundary { stroke: var(--rule); stroke-width: 1; }
     #chart .base { stroke: var(--rule-strong); stroke-width: 1; }
-    #chart .observed-area { fill: url(#observedFill); }
-    #chart .observed-line { fill: none; stroke: var(--blue); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    #chart .followers-line,
+    #chart .github-line { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    #chart .followers-line { stroke: var(--blue); }
+    #chart .github-line { stroke: var(--green); }
     #chart .point-layer { transition: opacity 120ms var(--ease-out); }
     #chart .focus-line { stroke: color-mix(in oklch, var(--ink) 18%, transparent); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; }
-    #chart .focus { fill: var(--surface); stroke: var(--ink); stroke-width: 2; opacity: 0; }
-
-    .github-card { margin-top: 18px; }
-    .github-card .plot { height: 224px; }
-    #githubChart { display: block; width: 100%; height: 100%; overflow: visible; }
-    #githubChart text { font-family: inherit; fill: var(--quiet); font-size: 26px; font-weight: 300; }
-    #githubChart .grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
-    #githubChart .plot-boundary { stroke: var(--rule); stroke-width: 1; }
-    #githubChart .base { stroke: var(--rule-strong); stroke-width: 1; }
-    #githubChart .contribution-bar { fill: var(--green); }
-    #githubChart .focus-line { stroke: color-mix(in oklch, var(--ink) 18%, transparent); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; }
-    #githubChart .focus { fill: var(--surface); stroke: var(--green-dark); stroke-width: 2; opacity: 0; }
+    #chart .focus { fill: var(--surface); stroke-width: 2; opacity: 0; }
+    #chart .focus.followers { stroke: var(--blue-dark); }
+    #chart .focus.github { stroke: var(--green-dark); }
     .github-error { display: none; margin-top: 4px; color: var(--muted); font-size: 12px; }
     .github-error.visible { display: block; }
 
@@ -329,17 +350,19 @@
 
     .tooltip.visible { opacity: 1; transform: translate(-50%, calc(-100% - 11px)) scale(1); }
     .tooltip-date { color: var(--muted); font-size: 12px; }
-    .tooltip-entry { margin-top: 4px; }
+    .tooltip-entry { display: flex; align-items: center; gap: 7px; margin-top: 5px; }
+    .tooltip-series-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--series-color); }
+    .tooltip-entry.followers { --series-color: var(--blue); }
+    .tooltip-entry.github { --series-color: var(--green); }
+    .tooltip-series { min-width: 78px; color: var(--muted); font-size: 12px; }
     .tooltip-value { color: var(--ink); font-size: 14px; font-weight: 500; }
 
     @media (max-width: 680px) {
       body { padding: 4px 0 16px; }
       .range-panel { margin-bottom: 14px; }
       .range { min-height: 40px; padding: 8px 0 0; font-size: 12px; }
-      .chart-head { padding: 14px 0 2px; gap: 16px; }
-      .value { font-size: 18px; }
+      .chart-head { padding: 12px 0 2px; }
       .plot { height: 280px; margin: 6px 0 0; }
-      .github-card .plot { height: 224px; }
     }
 
     @media (max-width: 480px) {
@@ -402,37 +425,26 @@
 
     <section class="chart-card" aria-labelledby="metricTitle">
       <header class="chart-head">
-        <div>
-          <div class="metric-label" id="metricTitle">Followers</div>
-          <div class="value-row"><span class="value" id="currentValue">16,435</span><span class="delta" id="growthValue">+16.4K</span></div>
+        <div class="series-controls" id="metricTitle" role="group" aria-label="Visible chart lines">
+          <label class="series-toggle followers">
+            <input id="followersToggle" type="checkbox" checked />
+            <span class="series-check" aria-hidden="true">✓</span>
+            <span class="series-name">followers</span>
+            <strong class="series-value" id="currentValue">16,435</strong>
+          </label>
+          <label class="series-toggle github">
+            <input id="githubToggle" type="checkbox" checked disabled />
+            <span class="series-check" aria-hidden="true">✓</span>
+            <span class="series-name">GitHub</span>
+            <strong class="series-value" id="githubValue">loading</strong>
+          </label>
         </div>
-        <div class="period-block">
-          <div class="period-label" id="periodLabel">Apr 1, 2023 — Aug 15, 2026</div>
-        </div>
+        <div class="github-error" id="githubError">GitHub activity is temporarily unavailable</div>
       </header>
 
       <div class="plot">
         <svg id="chart" role="img" aria-label="Follower history for the selected time range"></svg>
         <div class="tooltip" id="tooltip" role="status" aria-live="polite">
-          <div class="tooltip-date"></div>
-          <div class="tooltip-entries"></div>
-        </div>
-      </div>
-
-    </section>
-
-    <section class="chart-card github-card" aria-labelledby="githubMetricTitle">
-      <header class="chart-head">
-        <div>
-          <div class="metric-label" id="githubMetricTitle">GitHub contributions</div>
-          <div class="value-row"><span class="value" id="githubValue">—</span></div>
-          <div class="github-error" id="githubError">GitHub activity is temporarily unavailable</div>
-        </div>
-      </header>
-
-      <div class="plot" id="githubPlot">
-        <svg id="githubChart" role="img" aria-label="GitHub contribution activity for the selected time range"></svg>
-        <div class="tooltip" id="githubTooltip" role="status" aria-live="polite">
           <div class="tooltip-date"></div>
           <div class="tooltip-entries"></div>
         </div>
@@ -559,24 +571,20 @@
 
     const svg = document.querySelector('#chart');
     const tooltip = document.querySelector('#tooltip');
-    const periodLabel = document.querySelector('#periodLabel');
-    const growthValue = document.querySelector('#growthValue');
     const rangeSlider = document.querySelector('#rangeSlider');
     const rangeControl = document.querySelector('#rangeControl');
     const sliderTrack = document.querySelector('#sliderTrack');
     const sliderProgress = document.querySelector('#sliderProgress');
     const sliderStops = [...document.querySelectorAll('.slider-stop')];
     const rangeValue = document.querySelector('#rangeValue');
-    const githubSvg = document.querySelector('#githubChart');
-    const githubPlot = document.querySelector('#githubPlot');
-    const githubTooltip = document.querySelector('#githubTooltip');
     const githubValue = document.querySelector('#githubValue');
     const githubError = document.querySelector('#githubError');
+    const followersToggle = document.querySelector('#followersToggle');
+    const githubToggle = document.querySelector('#githubToggle');
     const fmt = new Intl.NumberFormat('en-US');
     let GITHUB = [];
     let githubState = 'loading';
     let activePeriod = 2;
-    let hits = [];
     let chartFrame = 0;
     let progressMotion = null;
     let displayedDomain = null;
@@ -627,7 +635,6 @@
       }
       return result;
     }
-    const areaPath=(points,bottom)=>`${geometryPath(points)} L${points.at(-1).x.toFixed(1)},${bottom} L${points[0].x.toFixed(1)},${bottom} Z`;
     const easeInOutQuart=value=>value<.5?8*value**4:1-(-2*value+2)**4/2;
 
     function updateSliderPosition(index, animate=true, duration=SLIDER_CLICK_DURATION) {
@@ -647,9 +654,29 @@
       sliderStops.forEach((stop,stopIndex)=>stop.classList.toggle('active',stopIndex<=index));
     }
 
+    function githubFrom(cutoff,displayEnd) {
+      if(githubState!=='ready'||!GITHUB.length) return [];
+      const cutoffTime=cutoff instanceof Date?cutoff.getTime():cutoff;
+      const endTime=displayEnd instanceof Date?displayEnd.getTime():displayEnd;
+      return GITHUB.filter(point=>point.date.getTime()>=cutoffTime&&point.date.getTime()<=endTime);
+    }
+
+    function valueAt(points,time) {
+      if(!points.length) return null;
+      if(time<=points[0].date.getTime()) return points[0].value;
+      if(time>=points.at(-1).date.getTime()) return points.at(-1).value;
+      const upperIndex=points.findIndex(point=>point.date.getTime()>=time);
+      const previous=points[upperIndex-1];
+      const next=points[upperIndex];
+      const span=next.date.getTime()-previous.date.getTime();
+      const progress=span?(time-previous.date.getTime())/span:0;
+      return previous.value+(next.value-previous.value)*progress;
+    }
+
     function render(index=activePeriod, animateSlider=true, animateGraph=true, sliderDuration=SLIDER_CLICK_DURATION) {
       activePeriod=index;
       tooltip.classList.remove('visible');
+      githubError.classList.toggle('visible',githubState==='error');
       const period=PERIODS[index];
       const displayEnd=CANONICAL.at(-1).date;
       const cutoff=new Date(displayEnd);
@@ -658,11 +685,18 @@
       if(period.years) cutoff.setFullYear(cutoff.getFullYear()-period.years);
       if(period.all) cutoff.setTime(HISTORY_START.getTime());
 
-      const canonicalRaw=historyFrom(cutoff);
+      const followersRaw=historyFrom(cutoff);
+      const githubRaw=githubFrom(cutoff,displayEnd);
+      const showFollowers=followersToggle.checked;
+      const showGithub=githubToggle.checked&&githubState==='ready';
+      const visibleValues=[];
+      if(showFollowers) visibleValues.push(...followersRaw.map(point=>point.value));
+      if(showGithub) visibleValues.push(...githubRaw.map(point=>point.value));
+      if(!visibleValues.length) visibleValues.push(...followersRaw.map(point=>point.value),...githubRaw.map(point=>point.value));
+
       const W=1040,H=380,m={t:21,r:62,b:47,l:2};
       const iw=W-m.l-m.r,ih=H-m.t-m.b;
-      const values=canonicalRaw.map(p=>p.value);
-      const min=Math.min(...values),max=Math.max(...values);
+      const min=Math.min(...visibleValues),max=Math.max(...visibleValues);
       const movement=Math.max(1,max-min);
       const tightRange=Boolean(period.days||period.months||period.years===2);
       let step,yMin,yMax,tickStart;
@@ -681,23 +715,23 @@
         tickStart=yMin;
       }
       if(yMax<=yMin) yMax=yMin+step;
+
       const targetDomain={cutoff:cutoff.getTime(),yMin,yMax};
       const fromDomain=displayedDomain?{...displayedDomain}:{...targetDomain};
-      const projectHistory=domain=>{
-        return historyFrom(domain.cutoff).map(point=>({
-          ...point,
-          x:m.l+(point.date.getTime()-domain.cutoff)/Math.max(1,displayEnd.getTime()-domain.cutoff)*iw,
-          y:m.t+(1-(point.value-domain.yMin)/(domain.yMax-domain.yMin))*ih
-        }));
-      };
+      const project=(points,domain)=>points.map(point=>({
+        ...point,
+        x:m.l+(point.date.getTime()-domain.cutoff)/Math.max(1,displayEnd.getTime()-domain.cutoff)*iw,
+        y:m.t+(1-(point.value-domain.yMin)/(domain.yMax-domain.yMin))*ih
+      }));
+      const projectFollowers=domain=>project(historyFrom(domain.cutoff),domain);
+      const projectGithub=domain=>project(githubFrom(domain.cutoff,displayEnd),domain);
       const targetX=date=>m.l+(date.getTime()-targetDomain.cutoff)/Math.max(1,displayEnd.getTime()-targetDomain.cutoff)*iw;
       const targetY=value=>m.t+(1-(value-targetDomain.yMin)/(targetDomain.yMax-targetDomain.yMin))*ih;
-      const canonicalHits=canonicalRaw.map(point=>({...point,x:targetX(point.date),y:targetY(point.value)}));
-      hits=canonicalHits;
-      const initialGeometry=projectHistory(fromDomain);
       const shouldZoom=hasRendered&&animateGraph&&!reduceMotion;
-      const canonicalPath=initialGeometry.length>1?`<path id="linePath" class="observed-line" d="${geometryPath(initialGeometry)}"/>`:'';
-      const canonicalArea=initialGeometry.length>1?`<path id="areaPath" class="observed-area" d="${areaPath(initialGeometry,m.t+ih)}"/>`:'';
+      const initialFollowers=showFollowers?projectFollowers(fromDomain):[];
+      const initialGithub=showGithub?projectGithub(fromDomain):[];
+      const followersPath=initialFollowers.length>1?`<path id="followersPath" class="followers-line" d="${geometryPath(initialFollowers)}"/>`:'';
+      const githubPath=initialGithub.length>1?`<path id="githubPath" class="github-line" d="${geometryPath(initialGithub)}"/>`:'';
 
       const ticks=[];
       for(let value=tickStart;value<=yMax+step*.001;value+=step) ticks.push(Number(value.toPrecision(12)));
@@ -716,29 +750,23 @@
         const grid=Math.abs(y-m.t)>.5?`<line class="grid" x1="${m.l}" x2="${m.l+iw}" y1="${y}" y2="${y}"/>`:'';
         return `${grid}<text x="${m.l+iw+11}" y="${y+9}">${compact(value)}</text>`;
       }).join('');
+      const seriesNames=[showFollowers?'followers':'',showGithub?'GitHub contributions':''].filter(Boolean);
 
       svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-      svg.setAttribute('aria-label',`${period.label} follower history ending ${short(displayEnd)}`);
+      svg.setAttribute('aria-label',`${period.label} chart showing ${seriesNames.join(' and ')||'no selected metrics'}`);
       svg.innerHTML=`
-        <defs>
-          <linearGradient id="observedFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1597f4" stop-opacity=".105"/><stop offset="1" stop-color="#1597f4" stop-opacity=".006"/></linearGradient>
-          <clipPath id="plotClip"><rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/></clipPath>
-        </defs>
+        <defs><clipPath id="plotClip"><rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/></clipPath></defs>
         <line id="topBoundary" class="plot-boundary" x1="${m.l}" x2="${m.l+iw}" y1="${m.t}" y2="${m.t}"/>
         ${tickMarkup}
-        <g class="series" clip-path="url(#plotClip)">${canonicalArea}${canonicalPath}<g id="pointLayer" class="point-layer" style="opacity:${shouldZoom?0:1}"></g></g>
+        <g class="series" clip-path="url(#plotClip)">${followersPath}${githubPath}</g>
         <line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${m.t+ih}" y2="${m.t+ih}"/>
         ${labels.map(label=>`<circle cx="${label.x}" cy="${m.t+ih+9}" r="3.3" fill="var(--rule-strong)"/><text x="${label.x}" y="${m.t+ih+33}" text-anchor="middle">${labelText(label.date)}</text>`).join('')}
         <line id="focusLine" class="focus-line" y1="${m.t}" y2="${m.t+ih}"/>
-        <circle id="focusDot" class="focus" r="4.8"/>
+        <circle id="followersFocusDot" class="focus followers" r="4.8"/>
+        <circle id="githubFocusDot" class="focus github" r="4.8"/>
         <rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>
       `;
 
-      const first=canonicalRaw[0];
-      const growth=CURRENT-first.value;
-      growthValue.textContent=`${growth>=0?'+':'−'}${Math.abs(growth)>=1000?(Math.abs(growth)/1000).toFixed(1)+'K':fmt.format(Math.abs(growth))}`;
-      growthValue.style.color=growth>=0?'var(--green)':'var(--danger)';
-      periodLabel.textContent=`${short(cutoff)} — ${short(displayEnd)}`;
       rangeValue.textContent=period.label;
       rangeSlider.value=index;
       updateSliderPosition(index,animateSlider,sliderDuration);
@@ -749,17 +777,17 @@
       });
 
       const focusLine=document.querySelector('#focusLine');
-      const focusDot=document.querySelector('#focusDot');
+      const followersFocusDot=document.querySelector('#followersFocusDot');
+      const githubFocusDot=document.querySelector('#githubFocusDot');
       const hit=document.querySelector('#hit');
-      const line=document.querySelector('#linePath');
-      const area=document.querySelector('#areaPath');
-      const pointLayer=document.querySelector('#pointLayer');
+      const followersLine=document.querySelector('#followersPath');
+      const githubLine=document.querySelector('#githubPath');
       if(chartFrame) cancelAnimationFrame(chartFrame);
 
-      if(shouldZoom&&line&&area) {
+      if(shouldZoom&&(followersLine||githubLine)) {
         hit.style.pointerEvents='none';
         const started=performance.now();
-        const duration=260;
+        const duration=240;
         const frame=now=>{
           const progress=Math.min(1,(now-started)/duration);
           const eased=easeInOutQuart(progress);
@@ -768,138 +796,73 @@
             yMin:fromDomain.yMin+(targetDomain.yMin-fromDomain.yMin)*eased,
             yMax:fromDomain.yMax+(targetDomain.yMax-fromDomain.yMax)*eased
           };
-          const frameGeometry=projectHistory(displayedDomain);
-          line.setAttribute('d',geometryPath(frameGeometry));
-          area.setAttribute('d',areaPath(frameGeometry,m.t+ih));
+          if(followersLine) followersLine.setAttribute('d',geometryPath(projectFollowers(displayedDomain)));
+          if(githubLine) githubLine.setAttribute('d',geometryPath(projectGithub(displayedDomain)));
           if(progress<1) {
             chartFrame=requestAnimationFrame(frame);
             return;
           }
           chartFrame=0;
           displayedDomain={...targetDomain};
-          if(pointLayer) pointLayer.style.opacity='1';
           hit.style.pointerEvents='auto';
         };
         chartFrame=requestAnimationFrame(frame);
       } else {
         displayedDomain={...targetDomain};
-        if(!hasRendered&&!reduceMotion&&line&&area) {
-          const length=line.getTotalLength();
-          line.animate([
-            {strokeDasharray:length,strokeDashoffset:length},
-            {strokeDasharray:length,strokeDashoffset:0}
-          ],{duration:420,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
-          area.animate([{opacity:0},{opacity:1}],{duration:320,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+        if(!hasRendered&&!reduceMotion) {
+          [followersLine,githubLine].filter(Boolean).forEach((line,lineIndex)=>{
+            const length=line.getTotalLength();
+            line.animate([
+              {strokeDasharray:length,strokeDashoffset:length},
+              {strokeDasharray:length,strokeDashoffset:0}
+            ],{duration:420+lineIndex*60,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+          });
         }
       }
       hasRendered=true;
+
+      const hoverPoints=[...(showFollowers?followersRaw:[]),...(showGithub?githubRaw:[])];
+      if(!hoverPoints.length) return;
       hit.addEventListener('pointermove',event=>{
         const rect=svg.getBoundingClientRect();
         const mx=(event.clientX-rect.left)/rect.width*W;
-        const point=hits.reduce((best,candidate)=>Math.abs(candidate.x-mx)<Math.abs(best.x-mx)?candidate:best,hits[0]);
-        focusLine.setAttribute('x1',point.x); focusLine.setAttribute('x2',point.x); focusLine.style.opacity=1;
-        focusDot.setAttribute('cx',point.x); focusDot.setAttribute('cy',point.y); focusDot.style.opacity=1;
+        const hoverTime=targetDomain.cutoff+(mx-m.l)/iw*(displayEnd.getTime()-targetDomain.cutoff);
+        const point=hoverPoints.reduce((best,candidate)=>Math.abs(candidate.date.getTime()-hoverTime)<Math.abs(best.date.getTime()-hoverTime)?candidate:best,hoverPoints[0]);
+        const pointTime=point.date.getTime();
+        const pointX=targetX(point.date);
+        const entries=[];
+        const pointYs=[];
+        focusLine.setAttribute('x1',pointX); focusLine.setAttribute('x2',pointX); focusLine.style.opacity=1;
+
+        if(showFollowers) {
+          const value=Math.round(valueAt(followersRaw,pointTime));
+          const pointY=targetY(value);
+          followersFocusDot.setAttribute('cx',pointX); followersFocusDot.setAttribute('cy',pointY); followersFocusDot.style.opacity=1;
+          pointYs.push(pointY);
+          entries.push(`<div class="tooltip-entry followers"><span class="tooltip-series-dot"></span><span class="tooltip-series">followers</span><span class="tooltip-value">${fmt.format(value)}</span></div>`);
+        }
+        if(showGithub) {
+          const value=Math.round(valueAt(githubRaw,pointTime));
+          const pointY=targetY(value);
+          githubFocusDot.setAttribute('cx',pointX); githubFocusDot.setAttribute('cy',pointY); githubFocusDot.style.opacity=1;
+          pointYs.push(pointY);
+          entries.push(`<div class="tooltip-entry github"><span class="tooltip-series-dot"></span><span class="tooltip-series">GitHub</span><span class="tooltip-value">${fmt.format(value)}</span></div>`);
+        }
+
         tooltip.querySelector('.tooltip-date').textContent=short(point.date);
-        tooltip.querySelector('.tooltip-entries').innerHTML=`<div class="tooltip-entry"><span class="tooltip-value">${fmt.format(point.value)}</span></div>`;
+        tooltip.querySelector('.tooltip-entries').innerHTML=entries.join('');
         const plotWidth=tooltip.parentElement?.clientWidth||rect.width;
         const tooltipHalf=(tooltip.offsetWidth||168)/2;
         const horizontalInset=Math.min(48,(tooltipHalf+4)/Math.max(1,plotWidth)*100);
-        tooltip.style.left=`${Math.min(100-horizontalInset,Math.max(horizontalInset,point.x/W*100))}%`;
-        tooltip.style.top=`${Math.min(94,Math.max(16,point.y/H*100))}%`;
+        tooltip.style.left=`${Math.min(100-horizontalInset,Math.max(horizontalInset,pointX/W*100))}%`;
+        tooltip.style.top=`${Math.min(94,Math.max(16,Math.min(...pointYs)/H*100))}%`;
         tooltip.classList.add('visible');
       });
       hit.addEventListener('pointerleave',()=>{
-        focusLine.style.opacity=0; focusDot.style.opacity=0; tooltip.classList.remove('visible');
-      });
-      renderGithub(period,cutoff,displayEnd,animateGraph);
-    }
-
-    function renderGithub(period,cutoff,displayEnd,animateGraph=true) {
-      githubTooltip.classList.remove('visible');
-      githubError.classList.toggle('visible',githubState==='error');
-
-      if(githubState!=='ready') {
-        githubValue.textContent='—';
-        githubSvg.innerHTML='';
-        return;
-      }
-
-      const visible=GITHUB.filter(point=>point.date>=cutoff&&point.date<=displayEnd);
-      const total=visible.reduce((sum,point)=>sum+point.contributions,0);
-      githubValue.textContent=fmt.format(total);
-
-      const W=1040,H=280,m={t:18,r:62,b:45,l:2};
-      const iw=W-m.l-m.r,ih=H-m.t-m.b;
-      const maximum=Math.max(1,...visible.map(point=>point.contributions));
-      const step=Math.max(1,niceStepDown(maximum/3));
-      const yMax=Math.max(step,Math.ceil(maximum/step)*step);
-      const x=date=>m.l+(date-cutoff)/Math.max(1,displayEnd-cutoff)*iw;
-      const y=value=>m.t+(1-value/yMax)*ih;
-      const slot=iw/Math.max(1,visible.length);
-      const barWidth=Math.max(.8,Math.min(9,slot*.72));
-      const points=visible.map(point=>({...point,x:x(point.date),y:y(point.contributions)}));
-      const ticks=[];
-      for(let value=0;value<=yMax;value+=step) ticks.push(value);
-      const labelCount=period.days?Math.min(period.days,7):(period.months&&period.months<=3)?6:7;
-      const labels=Array.from({length:labelCount},(_,index)=>{
-        const date=new Date(cutoff.getTime()+(displayEnd-cutoff)*index/(labelCount-1));
-        return {date,x:m.l+iw*index/(labelCount-1)};
-      });
-      const labelText=date=>period.days||(period.months&&period.months<=3)
-        ? date.toLocaleDateString('en-US',{month:'short',day:'numeric'})
-        : period.months
-          ? date.toLocaleDateString('en-US',{month:'short'})
-          : date.toLocaleDateString('en-US',{month:'short',year:'2-digit'}).replace(' ',' ’');
-      const tickMarkup=ticks.map(value=>{
-        const tickY=y(value);
-        const grid=value===0?'':`<line class="grid" x1="${m.l}" x2="${m.l+iw}" y1="${tickY}" y2="${tickY}"/>`;
-        return `${grid}<text x="${m.l+iw+11}" y="${tickY+9}">${compact(value)}</text>`;
-      }).join('');
-      const bars=points.filter(point=>point.contributions>0).map(point=>{
-        const height=Math.max(1,m.t+ih-point.y);
-        return `<rect class="contribution-bar" x="${(point.x-barWidth/2).toFixed(2)}" y="${(m.t+ih-height).toFixed(2)}" width="${barWidth.toFixed(2)}" height="${height.toFixed(2)}" rx="${Math.min(1.5,barWidth/2).toFixed(2)}"/>`;
-      }).join('');
-
-      githubSvg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-      githubSvg.setAttribute('aria-label',`${period.label} GitHub contribution activity ending ${short(displayEnd)}: ${fmt.format(total)} contributions`);
-      githubSvg.innerHTML=`
-        <line class="plot-boundary" x1="${m.l}" x2="${m.l+iw}" y1="${m.t}" y2="${m.t}"/>
-        ${tickMarkup}
-        <g id="githubBars">${bars}</g>
-        <line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${m.t+ih}" y2="${m.t+ih}"/>
-        ${labels.map(label=>`<circle cx="${label.x}" cy="${m.t+ih+9}" r="3.3" fill="var(--rule-strong)"/><text x="${label.x}" y="${m.t+ih+33}" text-anchor="middle">${labelText(label.date)}</text>`).join('')}
-        <line id="githubFocusLine" class="focus-line" y1="${m.t}" y2="${m.t+ih}"/>
-        <circle id="githubFocusDot" class="focus" r="4.8"/>
-        <rect id="githubHit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>
-      `;
-
-      const barsGroup=document.querySelector('#githubBars');
-      if(hasRendered&&animateGraph&&!reduceMotion&&barsGroup) {
-        barsGroup.animate([{opacity:.35},{opacity:1}],{duration:180,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
-      }
-
-      const focusLine=document.querySelector('#githubFocusLine');
-      const focusDot=document.querySelector('#githubFocusDot');
-      const hit=document.querySelector('#githubHit');
-      if(!hit||!points.length) return;
-      hit.addEventListener('pointermove',event=>{
-        const rect=githubSvg.getBoundingClientRect();
-        const mx=(event.clientX-rect.left)/rect.width*W;
-        const point=points.reduce((best,candidate)=>Math.abs(candidate.x-mx)<Math.abs(best.x-mx)?candidate:best,points[0]);
-        focusLine.setAttribute('x1',point.x); focusLine.setAttribute('x2',point.x); focusLine.style.opacity=1;
-        focusDot.setAttribute('cx',point.x); focusDot.setAttribute('cy',point.y); focusDot.style.opacity=1;
-        githubTooltip.querySelector('.tooltip-date').textContent=short(point.date);
-        const noun=point.contributions===1?'contribution':'contributions';
-        githubTooltip.querySelector('.tooltip-entries').innerHTML=`<div class="tooltip-entry"><span class="tooltip-value">${fmt.format(point.contributions)} ${noun}</span></div>`;
-        const plotWidth=githubPlot.clientWidth||rect.width;
-        const tooltipHalf=(githubTooltip.offsetWidth||168)/2;
-        const horizontalInset=Math.min(48,(tooltipHalf+4)/Math.max(1,plotWidth)*100);
-        githubTooltip.style.left=`${Math.min(100-horizontalInset,Math.max(horizontalInset,point.x/W*100))}%`;
-        githubTooltip.style.top=`${Math.min(94,Math.max(16,point.y/H*100))}%`;
-        githubTooltip.classList.add('visible');
-      });
-      hit.addEventListener('pointerleave',()=>{
-        focusLine.style.opacity=0; focusDot.style.opacity=0; githubTooltip.classList.remove('visible');
+        focusLine.style.opacity=0;
+        followersFocusDot.style.opacity=0;
+        githubFocusDot.style.opacity=0;
+        tooltip.classList.remove('visible');
       });
     }
 
@@ -930,6 +893,12 @@
       sliderPointerMoved ? SLIDER_DRAG_DURATION : SLIDER_CLICK_DURATION
     ));
     document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
+    [followersToggle,githubToggle].forEach(toggle=>{
+      let keyboardToggle=false;
+      toggle.addEventListener('keydown',()=>{keyboardToggle=true;});
+      toggle.addEventListener('pointerdown',()=>{keyboardToggle=false;});
+      toggle.addEventListener('change',()=>render(activePeriod,false,!keyboardToggle));
+    });
     addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
 
     async function loadLiveHistory() {
@@ -954,11 +923,17 @@
       if(!response.ok) throw new Error(`GitHub contributions returned HTTP ${response.status}`);
       const history=await response.json();
       if(!Array.isArray(history.points)) throw new Error('GitHub contribution response was invalid');
+      let runningTotal=0;
       GITHUB=history.points.map(point=>({
         date:new Date(`${point.date}T12:00:00`),
         contributions:Number(point.contributions)
-      })).filter(point=>Number.isFinite(point.contributions)).sort((a,b)=>a.date-b.date);
+      })).filter(point=>Number.isFinite(point.contributions)).sort((a,b)=>a.date-b.date).map(point=>({
+        ...point,
+        value:runningTotal+=point.contributions
+      }));
       githubState='ready';
+      githubValue.textContent=fmt.format(runningTotal);
+      githubToggle.disabled=false;
     }
 
     render();
@@ -966,9 +941,12 @@
       .then(()=>render(activePeriod,false,false))
       .catch(error=>console.error('Using embedded follower history',error));
     loadGitHubContributions()
-      .then(()=>render(activePeriod,false,false))
+      .then(()=>render(activePeriod,false,true))
       .catch(error=>{
         githubState='error';
+        githubValue.textContent='unavailable';
+        githubToggle.checked=false;
+        githubToggle.disabled=true;
         render(activePeriod,false,false);
         console.error('GitHub activity unavailable',error);
       });

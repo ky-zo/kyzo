@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import WeightConverter from './weight-converter'
 
 export const metadata: Metadata = {
-  title: 'Weight converter — kyzo',
+  title: 'Weight converter | kyzo',
   description: 'A quick kilograms and pounds converter',
   alternates: {
     canonical: 'https://kyzo.io/random/weight-converter',

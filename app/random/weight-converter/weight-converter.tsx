@@ -142,7 +142,7 @@ export default function WeightConverter() {
     <div className={styles.converter}>
       <header className={styles.header}>
         <h1>weight converter</h1>
-        <p>slide either unit — the other follows</p>
+        <p>slide either unit, the other follows</p>
       </header>
 
       <div className={styles.sliders}>
