@@ -33,6 +33,14 @@ const Navigation = () => {
         }`}>
         health data
       </Link>
+      <div className="border-grey-500 flex-1 border-b" />
+      <Link
+        href={'/random'}
+        className={`whitespace-nowrap transition-all duration-75 ${
+          pathname === '/random' ? 'font-medium text-black' : 'hover:underline'
+        }`}>
+        random
+      </Link>
     </div>
   )
 }
