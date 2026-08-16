@@ -143,8 +143,12 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
   const minIndex = Math.round(min / step)
   const maxIndex = Math.round(max / step)
   const valueIndex = clamp(value / step, minIndex, maxIndex)
+  // the wheel rests on the stop nearest the value; when the value sits between
+  // stops (converted from the other unit), that stop's label shows the exact value
+  const restIndex = Math.round(valueIndex)
+  const offGrid = Math.abs(value / step - restIndex) > 1e-6
 
-  const [position, setPosition] = useState(valueIndex)
+  const [position, setPosition] = useState(restIndex)
   const [dragging, setDragging] = useState(false)
   const wheelRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ startY: number; startPosition: number; position: number; lastStop: number; moved: boolean } | null>(null)
@@ -153,8 +157,8 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
 
   // follow the value when it changes elsewhere (other spinner, sliders)
   useEffect(() => {
-    if (!drag.current) setPosition(valueIndex)
-  }, [valueIndex])
+    if (!drag.current) setPosition(restIndex)
+  }, [restIndex])
 
   function selectStop(index: number) {
     const { valueIndex, minIndex, maxIndex, step, onChange } = latest.current
@@ -165,7 +169,12 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
   }
 
   function applySteps(count: number) {
-    selectStop(Math.round(latest.current.position) + count)
+    // step from the exact value, not the rest stop, so every stop next to an
+    // off-grid value stays reachable (29.76 steps up to 30, not 31)
+    const { valueIndex } = latest.current
+    const base = count > 0 ? Math.floor(valueIndex + 1e-6) : Math.ceil(valueIndex - 1e-6)
+
+    selectStop(base + count)
   }
 
   const applyStepsRef = useRef(applySteps)
@@ -199,6 +208,7 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
   for (let index = Math.max(minIndex, centerIndex - VISIBLE_NEIGHBORS); index <= Math.min(maxIndex, centerIndex + VISIBLE_NEIGHBORS); index++) {
     const distance = index - position
     const magnitude = Math.abs(distance)
+    const showsExactValue = index === restIndex && offGrid && !dragging
 
     items.push(
       <span
@@ -211,7 +221,7 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
           opacity: Math.max(0, 1 - 0.32 * magnitude),
           filter: `blur(${Math.min(5, magnitude * 1.6)}px)`,
         }}>
-        {formatValue(index * step)}
+        {showsExactValue ? formatValue(value) : formatValue(index * step)}
       </span>,
     )
   }
