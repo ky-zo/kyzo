@@ -13,6 +13,11 @@ const nextConfig = {
         destination: '/interactive/:path*',
         permanent: true,
       },
+      {
+        source: '/interactive/x-followers',
+        destination: '/interactive/graphs',
+        permanent: true,
+      },
     ]
   },
 }

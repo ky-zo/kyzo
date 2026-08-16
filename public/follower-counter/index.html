@@ -30,6 +30,8 @@
       --purple-dark: oklch(0.48 0.19 292);
       --green: oklch(0.61 0.155 151);
       --green-dark: oklch(0.49 0.135 151);
+      --orange: oklch(0.68 0.175 55);
+      --orange-dark: oklch(0.55 0.16 55);
       --danger: oklch(0.61 0.205 27);
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -301,6 +303,7 @@
 
     .series-toggle.followers { --series-color: var(--blue); }
     .series-toggle.github { --series-color: var(--green); }
+    .series-toggle.strava { --series-color: var(--orange); }
     .series-name { font-size: 12px; }
     .series-value { color: var(--ink); font-size: 12px; font-weight: 600; }
 
@@ -320,14 +323,17 @@
     #chart .base { stroke: var(--rule-strong); stroke-width: 1; }
     #chart .series-area { stroke: none; fill-opacity: 0.4; pointer-events: none; }
     #chart .followers-line,
-    #chart .github-line { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    #chart .github-line,
+    #chart .strava-line { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
     #chart .followers-line { stroke: var(--blue); }
     #chart .github-line { stroke: var(--green); }
+    #chart .strava-line { stroke: var(--orange); }
     #chart .point-layer { transition: opacity 120ms var(--ease-out); }
     #chart .focus-line { stroke: color-mix(in oklch, var(--ink) 18%, transparent); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; }
     #chart .focus { fill: var(--surface); stroke-width: 2; opacity: 0; }
     #chart .focus.followers { stroke: var(--blue-dark); }
     #chart .focus.github { stroke: var(--green-dark); }
+    #chart .focus.strava { stroke: var(--orange-dark); }
     .github-error { display: none; margin-top: 4px; color: var(--muted); font-size: 12px; }
     .github-error.visible { display: block; }
 
@@ -355,6 +361,7 @@
     .tooltip-series-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--series-color); }
     .tooltip-entry.followers { --series-color: var(--blue); }
     .tooltip-entry.github { --series-color: var(--green); }
+    .tooltip-entry.strava { --series-color: var(--orange); }
     .tooltip-series { min-width: 78px; color: var(--muted); font-size: 12px; }
     .tooltip-value { color: var(--ink); font-size: 14px; font-weight: 500; }
 
@@ -437,8 +444,15 @@
             <span class="series-name">github</span>
             <strong class="series-value" id="githubValue">loading</strong>
           </label>
+          <label class="series-toggle strava">
+            <input id="stravaToggle" type="checkbox" checked disabled />
+            <span class="series-check" aria-hidden="true">✓</span>
+            <span class="series-name">strava</span>
+            <strong class="series-value" id="stravaValue">loading</strong>
+          </label>
         </div>
         <div class="github-error" id="githubError">GitHub activity is temporarily unavailable</div>
+        <div class="github-error" id="stravaError">Strava activity is temporarily unavailable</div>
       </header>
 
       <div class="plot">
@@ -578,11 +592,16 @@
     const rangeValue = document.querySelector('#rangeValue');
     const githubValue = document.querySelector('#githubValue');
     const githubError = document.querySelector('#githubError');
+    const stravaValue = document.querySelector('#stravaValue');
+    const stravaError = document.querySelector('#stravaError');
     const followersToggle = document.querySelector('#followersToggle');
     const githubToggle = document.querySelector('#githubToggle');
+    const stravaToggle = document.querySelector('#stravaToggle');
     const fmt = new Intl.NumberFormat('en-US');
     let GITHUB = [];
     let githubState = 'loading';
+    let STRAVA = [];
+    let stravaState = 'loading';
     let activePeriod = 2;
     let chartFrame = 0;
     let progressMotion = null;
@@ -666,6 +685,13 @@
       return GITHUB.filter(point=>point.date.getTime()>=cutoffTime&&point.date.getTime()<=endTime);
     }
 
+    function stravaFrom(cutoff,displayEnd) {
+      if(stravaState!=='ready'||!STRAVA.length) return [];
+      const cutoffTime=cutoff instanceof Date?cutoff.getTime():cutoff;
+      const endTime=displayEnd instanceof Date?displayEnd.getTime():displayEnd;
+      return STRAVA.filter(point=>point.date.getTime()>=cutoffTime&&point.date.getTime()<=endTime);
+    }
+
     function valueAt(points,time) {
       if(!points.length) return null;
       if(time<=points[0].date.getTime()) return points[0].value;
@@ -682,6 +708,7 @@
       activePeriod=index;
       tooltip.classList.remove('visible');
       githubError.classList.toggle('visible',githubState==='error');
+      stravaError.classList.toggle('visible',stravaState==='error');
       const period=PERIODS[index];
       const displayEnd=CANONICAL.at(-1).date;
       const cutoff=new Date(displayEnd);
@@ -692,12 +719,15 @@
 
       const followersRaw=historyFrom(cutoff);
       const githubRaw=githubFrom(cutoff,displayEnd);
+      const stravaRaw=stravaFrom(cutoff,displayEnd);
       const showFollowers=followersToggle.checked;
       const showGithub=githubToggle.checked&&githubState==='ready';
+      const showStrava=stravaToggle.checked&&stravaState==='ready';
       const visibleValues=[];
       if(showFollowers) visibleValues.push(...followersRaw.map(point=>point.value));
       if(showGithub) visibleValues.push(...githubRaw.map(point=>point.value));
-      if(!visibleValues.length) visibleValues.push(...followersRaw.map(point=>point.value),...githubRaw.map(point=>point.value));
+      if(showStrava) visibleValues.push(...stravaRaw.map(point=>point.value));
+      if(!visibleValues.length) visibleValues.push(...followersRaw.map(point=>point.value),...githubRaw.map(point=>point.value),...stravaRaw.map(point=>point.value));
 
       const W=1040,H=380,m={t:21,r:62,b:47,l:2};
       const iw=W-m.l-m.r,ih=H-m.t-m.b;
@@ -730,15 +760,19 @@
       }));
       const projectFollowers=domain=>project(historyFrom(domain.cutoff),domain);
       const projectGithub=domain=>project(githubFrom(domain.cutoff,displayEnd),domain);
+      const projectStrava=domain=>project(stravaFrom(domain.cutoff,displayEnd),domain);
       const targetX=date=>m.l+(date.getTime()-targetDomain.cutoff)/Math.max(1,displayEnd.getTime()-targetDomain.cutoff)*iw;
       const targetY=value=>m.t+(1-(value-targetDomain.yMin)/(targetDomain.yMax-targetDomain.yMin))*ih;
       const shouldZoom=hasRendered&&animateGraph&&!reduceMotion;
       const initialFollowers=showFollowers?projectFollowers(fromDomain):[];
       const initialGithub=showGithub?projectGithub(fromDomain):[];
+      const initialStrava=showStrava?projectStrava(fromDomain):[];
       const followersArea=initialFollowers.length>1?`<path id="followersArea" class="series-area" fill="url(#followersGradient)" d="${areaPath(initialFollowers,m.t+ih)}"/>`:'';
       const githubArea=initialGithub.length>1?`<path id="githubArea" class="series-area" fill="url(#githubGradient)" d="${areaPath(initialGithub,m.t+ih)}"/>`:'';
+      const stravaArea=initialStrava.length>1?`<path id="stravaArea" class="series-area" fill="url(#stravaGradient)" d="${areaPath(initialStrava,m.t+ih)}"/>`:'';
       const followersPath=initialFollowers.length>1?`<path id="followersPath" class="followers-line" d="${geometryPath(initialFollowers)}"/>`:'';
       const githubPath=initialGithub.length>1?`<path id="githubPath" class="github-line" d="${geometryPath(initialGithub)}"/>`:'';
+      const stravaPath=initialStrava.length>1?`<path id="stravaPath" class="strava-line" d="${geometryPath(initialStrava)}"/>`:'';
 
       const ticks=[];
       for(let value=tickStart;value<=yMax+step*.001;value+=step) ticks.push(Number(value.toPrecision(12)));
@@ -757,7 +791,7 @@
         const grid=Math.abs(y-m.t)>.5?`<line class="grid" x1="${m.l}" x2="${m.l+iw}" y1="${y}" y2="${y}"/>`:'';
         return `${grid}<text x="${m.l+iw+11}" y="${y+9}">${compact(value)}</text>`;
       }).join('');
-      const seriesNames=[showFollowers?'followers':'',showGithub?'github contributions':''].filter(Boolean);
+      const seriesNames=[showFollowers?'followers':'',showGithub?'github contributions':'',showStrava?'strava effort':''].filter(Boolean);
 
       svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
       svg.setAttribute('aria-label',`${period.label} chart showing ${seriesNames.join(' and ')||'no selected metrics'}`);
@@ -772,15 +806,20 @@
             <stop offset="5%" stop-color="var(--green)" stop-opacity="0.8"/>
             <stop offset="95%" stop-color="var(--green)" stop-opacity="0.1"/>
           </linearGradient>
+          <linearGradient id="stravaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stop-color="var(--orange)" stop-opacity="0.8"/>
+            <stop offset="95%" stop-color="var(--orange)" stop-opacity="0.1"/>
+          </linearGradient>
         </defs>
         <line id="topBoundary" class="plot-boundary" x1="${m.l}" x2="${m.l+iw}" y1="${m.t}" y2="${m.t}"/>
         ${tickMarkup}
-        <g class="series" clip-path="url(#plotClip)">${followersArea}${githubArea}${followersPath}${githubPath}</g>
+        <g class="series" clip-path="url(#plotClip)">${followersArea}${githubArea}${stravaArea}${followersPath}${githubPath}${stravaPath}</g>
         <line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${m.t+ih}" y2="${m.t+ih}"/>
         ${labels.map(label=>`<circle cx="${label.x}" cy="${m.t+ih+9}" r="3.3" fill="var(--rule-strong)"/><text x="${label.x}" y="${m.t+ih+33}" text-anchor="middle">${labelText(label.date)}</text>`).join('')}
         <line id="focusLine" class="focus-line" y1="${m.t}" y2="${m.t+ih}"/>
         <circle id="followersFocusDot" class="focus followers" r="4.8"/>
         <circle id="githubFocusDot" class="focus github" r="4.8"/>
+        <circle id="stravaFocusDot" class="focus strava" r="4.8"/>
         <rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>
       `;
 
@@ -796,14 +835,17 @@
       const focusLine=document.querySelector('#focusLine');
       const followersFocusDot=document.querySelector('#followersFocusDot');
       const githubFocusDot=document.querySelector('#githubFocusDot');
+      const stravaFocusDot=document.querySelector('#stravaFocusDot');
       const hit=document.querySelector('#hit');
       const followersLine=document.querySelector('#followersPath');
       const githubLine=document.querySelector('#githubPath');
+      const stravaLine=document.querySelector('#stravaPath');
       const followersAreaElement=document.querySelector('#followersArea');
       const githubAreaElement=document.querySelector('#githubArea');
+      const stravaAreaElement=document.querySelector('#stravaArea');
       if(chartFrame) cancelAnimationFrame(chartFrame);
 
-      if(shouldZoom&&(followersLine||githubLine)) {
+      if(shouldZoom&&(followersLine||githubLine||stravaLine)) {
         hit.style.pointerEvents='none';
         const started=performance.now();
         const duration=240;
@@ -817,10 +859,13 @@
           };
           const animatedFollowers=projectFollowers(displayedDomain);
           const animatedGithub=projectGithub(displayedDomain);
+          const animatedStrava=projectStrava(displayedDomain);
           if(followersLine) followersLine.setAttribute('d',geometryPath(animatedFollowers));
           if(githubLine) githubLine.setAttribute('d',geometryPath(animatedGithub));
+          if(stravaLine) stravaLine.setAttribute('d',geometryPath(animatedStrava));
           if(followersAreaElement) followersAreaElement.setAttribute('d',areaPath(animatedFollowers,m.t+ih));
           if(githubAreaElement) githubAreaElement.setAttribute('d',areaPath(animatedGithub,m.t+ih));
+          if(stravaAreaElement) stravaAreaElement.setAttribute('d',areaPath(animatedStrava,m.t+ih));
           if(progress<1) {
             chartFrame=requestAnimationFrame(frame);
             return;
@@ -833,21 +878,21 @@
       } else {
         displayedDomain={...targetDomain};
         if(!hasRendered&&!reduceMotion) {
-          [followersLine,githubLine].filter(Boolean).forEach((line,lineIndex)=>{
+          [followersLine,githubLine,stravaLine].filter(Boolean).forEach((line,lineIndex)=>{
             const length=line.getTotalLength();
             line.animate([
               {strokeDasharray:length,strokeDashoffset:length},
               {strokeDasharray:length,strokeDashoffset:0}
             ],{duration:420+lineIndex*60,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
           });
-          [followersAreaElement,githubAreaElement].filter(Boolean).forEach(area=>{
+          [followersAreaElement,githubAreaElement,stravaAreaElement].filter(Boolean).forEach(area=>{
             area.animate([{opacity:0},{opacity:1}],{duration:420,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
           });
         }
       }
       hasRendered=true;
 
-      const hoverPoints=[...(showFollowers?followersRaw:[]),...(showGithub?githubRaw:[])];
+      const hoverPoints=[...(showFollowers?followersRaw:[]),...(showGithub?githubRaw:[]),...(showStrava?stravaRaw:[])];
       if(!hoverPoints.length) return;
       hit.addEventListener('pointermove',event=>{
         const rect=svg.getBoundingClientRect();
@@ -874,6 +919,13 @@
           pointYs.push(pointY);
           entries.push(`<div class="tooltip-entry github"><span class="tooltip-series-dot"></span><span class="tooltip-series">github</span><span class="tooltip-value">${fmt.format(value)}</span></div>`);
         }
+        if(showStrava) {
+          const value=Math.round(valueAt(stravaRaw,pointTime));
+          const pointY=targetY(value);
+          stravaFocusDot.setAttribute('cx',pointX); stravaFocusDot.setAttribute('cy',pointY); stravaFocusDot.style.opacity=1;
+          pointYs.push(pointY);
+          entries.push(`<div class="tooltip-entry strava"><span class="tooltip-series-dot"></span><span class="tooltip-series">strava</span><span class="tooltip-value">${fmt.format(value)}</span></div>`);
+        }
 
         tooltip.querySelector('.tooltip-date').textContent=short(point.date);
         tooltip.querySelector('.tooltip-entries').innerHTML=entries.join('');
@@ -888,6 +940,7 @@
         focusLine.style.opacity=0;
         followersFocusDot.style.opacity=0;
         githubFocusDot.style.opacity=0;
+        stravaFocusDot.style.opacity=0;
         tooltip.classList.remove('visible');
       });
     }
@@ -919,7 +972,7 @@
       sliderPointerMoved ? SLIDER_DRAG_DURATION : SLIDER_CLICK_DURATION
     ));
     document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
-    [followersToggle,githubToggle].forEach(toggle=>{
+    [followersToggle,githubToggle,stravaToggle].forEach(toggle=>{
       let keyboardToggle=false;
       toggle.addEventListener('keydown',()=>{keyboardToggle=true;});
       toggle.addEventListener('pointerdown',()=>{keyboardToggle=false;});
@@ -962,6 +1015,24 @@
       githubToggle.disabled=false;
     }
 
+    async function loadStravaEffort() {
+      const response=await fetch('/api/strava-effort');
+      if(!response.ok) throw new Error(`Strava effort returned HTTP ${response.status}`);
+      const history=await response.json();
+      if(!Array.isArray(history.points)) throw new Error('Strava effort response was invalid');
+      let runningTotal=0;
+      STRAVA=history.points.map(point=>({
+        date:new Date(`${point.date}T12:00:00`),
+        effort:Number(point.effort)
+      })).filter(point=>Number.isFinite(point.effort)).sort((a,b)=>a.date-b.date).map(point=>({
+        ...point,
+        value:runningTotal+=point.effort
+      }));
+      stravaState='ready';
+      stravaValue.textContent=fmt.format(Math.round(runningTotal));
+      stravaToggle.disabled=false;
+    }
+
     render();
     loadLiveHistory()
       .then(()=>render(activePeriod,false,false))
@@ -975,6 +1046,16 @@
         githubToggle.disabled=true;
         render(activePeriod,false,false);
         console.error('GitHub activity unavailable',error);
+      });
+    loadStravaEffort()
+      .then(()=>render(activePeriod,false,true))
+      .catch(error=>{
+        stravaState='error';
+        stravaValue.textContent='unavailable';
+        stravaToggle.checked=false;
+        stravaToggle.disabled=true;
+        render(activePeriod,false,false);
+        console.error('Strava activity unavailable',error);
       });
   </script>
 </body>

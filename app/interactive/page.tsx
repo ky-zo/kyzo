@@ -89,7 +89,7 @@ export default function InteractivePage() {
         </li>
         <li className="relative transition-transform duration-200 hover:translate-x-1">
           my{' '}
-          <FunLink href="/interactive/x-followers" emoji="🚢">
+          <FunLink href="/interactive/graphs" emoji="🚢">
             yap to ship ratio
           </FunLink>
         </li>
