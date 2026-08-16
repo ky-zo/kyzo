@@ -2,12 +2,8 @@
 
 import { useRef, useState, type CSSProperties } from 'react'
 
+import { KILOGRAM_VALUES, kilogramsToPounds, POUND_VALUES, poundsToKilograms, stepVisualIndex, valueToVisualIndex, visualIndexToStopIndex } from './conversion'
 import styles from './weight-converter.module.css'
-
-const POUND_VALUES = [1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100]
-
-const POUNDS_PER_KILOGRAM = 2.2046226218
-const KILOGRAM_VALUES = POUND_VALUES.map((pounds) => pounds / POUNDS_PER_KILOGRAM)
 
 type Unit = 'lb' | 'kg'
 
@@ -15,7 +11,6 @@ type SliderProps = {
   label: string
   unit: Unit
   values: readonly number[]
-  selectedIndex: number
   visualIndex: number
   direct: boolean
   displayValue: number
@@ -31,7 +26,7 @@ function formatValue(value: number) {
   })
 }
 
-function UnitSlider({ label, unit, values, selectedIndex, visualIndex, direct, displayValue, onSelect }: SliderProps) {
+function UnitSlider({ label, unit, values, visualIndex, direct, displayValue, onSelect }: SliderProps) {
   const keyboardInput = useRef(false)
   const progress = visualIndex / (values.length - 1)
   const style = {
@@ -84,17 +79,30 @@ function UnitSlider({ label, unit, values, selectedIndex, visualIndex, direct, d
           type="range"
           min={0}
           max={values.length - 1}
-          step={1}
-          value={selectedIndex}
+          step="any"
+          value={visualIndex}
           aria-label={`${label}: ${formatValue(displayValue)} ${unit}`}
           aria-valuetext={`${formatValue(displayValue)} ${unit}`}
-          onKeyDown={() => {
+          onKeyDown={(event) => {
             keyboardInput.current = true
+
+            if (event.key === 'Home' || event.key === 'End') {
+              event.preventDefault()
+              onSelect(event.key === 'Home' ? 0 : values.length - 1, false)
+              return
+            }
+
+            const direction = event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowDown' ? -1 : null
+
+            if (direction) {
+              event.preventDefault()
+              onSelect(stepVisualIndex(visualIndex, direction, values.length), false)
+            }
           }}
           onPointerDown={() => {
             keyboardInput.current = false
           }}
-          onChange={(event) => onSelect(Number(event.currentTarget.value), !keyboardInput.current)}
+          onChange={(event) => onSelect(visualIndexToStopIndex(Number(event.currentTarget.value), values), !keyboardInput.current)}
         />
       </div>
 
@@ -115,20 +123,19 @@ function UnitSlider({ label, unit, values, selectedIndex, visualIndex, direct, d
 export default function WeightConverter() {
   const [sourceUnit, setSourceUnit] = useState<Unit>('lb')
   const [animateLinkedSlider, setAnimateLinkedSlider] = useState(true)
-  const [selectedIndex, setSelectedIndex] = useState(7)
-  const pounds = POUND_VALUES[selectedIndex]
-  const kilograms = KILOGRAM_VALUES[selectedIndex]
+  const [pounds, setPounds] = useState(20)
+  const kilograms = poundsToKilograms(pounds)
 
   function selectPounds(index: number, animate: boolean) {
     setSourceUnit('lb')
     setAnimateLinkedSlider(animate)
-    setSelectedIndex(index)
+    setPounds(POUND_VALUES[index])
   }
 
   function selectKilograms(index: number, animate: boolean) {
     setSourceUnit('kg')
     setAnimateLinkedSlider(animate)
-    setSelectedIndex(index)
+    setPounds(kilogramsToPounds(KILOGRAM_VALUES[index]))
   }
 
   return (
@@ -143,8 +150,7 @@ export default function WeightConverter() {
           label="pounds"
           unit="lb"
           values={POUND_VALUES}
-          selectedIndex={selectedIndex}
-          visualIndex={selectedIndex}
+          visualIndex={valueToVisualIndex(pounds, POUND_VALUES)}
           direct={sourceUnit === 'lb' || !animateLinkedSlider}
           displayValue={pounds}
           onSelect={selectPounds}
@@ -154,8 +160,7 @@ export default function WeightConverter() {
           label="kilograms"
           unit="kg"
           values={KILOGRAM_VALUES}
-          selectedIndex={selectedIndex}
-          visualIndex={selectedIndex}
+          visualIndex={valueToVisualIndex(kilograms, KILOGRAM_VALUES)}
           direct={sourceUnit === 'kg' || !animateLinkedSlider}
           displayValue={kilograms}
           onSelect={selectKilograms}
