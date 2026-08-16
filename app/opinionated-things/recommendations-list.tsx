@@ -42,7 +42,7 @@ export default function RecommendationsList() {
 													href={item.url}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="break-all text-[11px] normal-case text-black/30 underline decoration-black/15 underline-offset-2 hover:text-black/60 hover:decoration-black/40"
+													className="break-all text-[11px] normal-case text-black/30 underline underline-offset-2 hover:text-black/60"
 												>
 													{item.url}
 													<span aria-hidden className="ml-0.5 inline-block">↗</span>
