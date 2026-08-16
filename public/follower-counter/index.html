@@ -530,6 +530,8 @@
     let displayedDomain = null;
     let hasRendered = false;
     let sliderPointerActive = false;
+    let sliderPointerMoved = false;
+    let sliderPointerStartX = 0;
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const short = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
@@ -587,11 +589,10 @@
       const currentClip=getComputedStyle(sliderFill).clipPath;
       thumbMotion?.cancel();
       fillMotion?.cancel();
-      rangeControl.dataset.dragging=String(!animate);
       sliderFill.style.clipPath=targetClip;
       sliderThumb.style.transform=targetTransform;
       if(shouldAnimate) {
-        const timing={duration:170,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
+        const timing={duration:140,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
         thumbMotion=sliderThumb.animate([{transform:currentTransform},{transform:targetTransform}],timing);
         fillMotion=sliderFill.animate([{clipPath:currentClip},{clipPath:targetClip}],timing);
       }
@@ -764,10 +765,27 @@
       });
     }
 
-    rangeSlider.addEventListener('pointerdown',()=>{sliderPointerActive=true;rangeControl.dataset.dragging='true';});
-    rangeSlider.addEventListener('pointerup',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';updateSliderPosition(activePeriod,true);});
-    rangeSlider.addEventListener('pointercancel',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';});
-    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),true,sliderPointerActive));
+    rangeSlider.addEventListener('pointerdown',event=>{
+      sliderPointerActive=true;
+      sliderPointerMoved=false;
+      sliderPointerStartX=event.clientX;
+      rangeControl.dataset.dragging='true';
+    });
+    rangeSlider.addEventListener('pointermove',event=>{
+      if(sliderPointerActive&&Math.abs(event.clientX-sliderPointerStartX)>2) sliderPointerMoved=true;
+    });
+    rangeSlider.addEventListener('pointerup',()=>{
+      sliderPointerActive=false;
+      sliderPointerMoved=false;
+      rangeControl.dataset.dragging='false';
+    });
+    rangeSlider.addEventListener('pointercancel',()=>{
+      sliderPointerActive=false;
+      sliderPointerMoved=false;
+      rangeControl.dataset.dragging='false';
+      updateSliderPosition(activePeriod,false);
+    });
+    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),!sliderPointerMoved,sliderPointerActive));
     document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
     addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
 
