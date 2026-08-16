@@ -13,7 +13,7 @@ export default function RandomPage() {
     <main className="w-full max-w-[752px]">
       <iframe
         className="block h-[650px] w-full border-0 sm:h-[680px]"
-        src="/follower-counter/index.html"
+        src="/follower-counter/index.html?v=simplified-2026-08-15"
         title="kyzo follower growth"
       />
     </main>
