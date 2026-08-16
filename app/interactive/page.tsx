@@ -19,11 +19,11 @@ type FunLinkProps = {
 
 function FunLink({ href, emoji, external, children }: FunLinkProps) {
   const className =
-    'group relative inline-block underline decoration-black/30 underline-offset-2 transition-all duration-200 hover:-rotate-2 hover:text-black hover:decoration-black hover:decoration-wavy'
+    'group inline-block underline decoration-black/30 underline-offset-2 transition-all duration-200 hover:-rotate-2 hover:text-black hover:decoration-black hover:decoration-wavy'
   const pop = (
     <span
       aria-hidden
-      className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 rotate-12 scale-0 text-lg opacity-0 transition-all duration-300 group-hover:rotate-0 group-hover:scale-125 group-hover:opacity-100">
+      className="pointer-events-none absolute right-0 top-0 translate-x-3 rotate-12 scale-0 text-lg opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:rotate-0 group-hover:scale-125 group-hover:opacity-100">
       {emoji}
     </span>
   )
@@ -48,7 +48,7 @@ export default function InteractivePage() {
     <main className="w-full max-w-md text-base leading-relaxed text-black/70">
       <p>random collection of stuff i made.</p>
       <ul className="mt-3 list-disc space-y-2 pl-4">
-        <li className="transition-transform duration-200 hover:translate-x-1">
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
           play{' '}
           <FunLink href="https://quackparty.com/" emoji="🪿" external>
             quackparty
@@ -58,32 +58,32 @@ export default function InteractivePage() {
             goose game
           </FunLink>
         </li>
-        <li className="transition-transform duration-200 hover:translate-x-1">
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
           my{' '}
           <FunLink href="/interactive/x-followers" emoji="🚢">
             yap to ship ratio
           </FunLink>
         </li>
-        <li className="transition-transform duration-200 hover:translate-x-1">
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
           <FunLink href="/interactive/weight-converter" emoji="🏋️">
             kg to lbs converter
           </FunLink>{' '}
           to help survive in 🇺🇸
         </li>
-        <li className="transition-transform duration-200 hover:translate-x-1">
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
           <FunLink href="https://sounds-kyzobuilds.vercel.app" emoji="🎶" external>
             webcam as video instrument
           </FunLink>
         </li>
-        <li className="transition-transform duration-200 hover:translate-x-1">
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
           <FunLink href="https://dreamrr.vercel.app" emoji="💭" external>
             dreamrr
           </FunLink>{' '}
-          — a hackathon,{' '}
+          — met{' '}
           <FunLink href="https://x.com/mmmi_ya" emoji="✨" external>
             mmmi_ya
           </FunLink>{' '}
-          came up with the idea and we built it together
+          on a random design hackathon, we hacked this together for fun
         </li>
       </ul>
     </main>
