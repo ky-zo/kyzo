@@ -92,8 +92,8 @@
     .range-separator { color: var(--quiet); font-weight: 300; }
 
     .range-control {
-      --progress-right: 0%;
-      --thumb-x: 0px;
+      --progress-right: calc(80% - 10px);
+      --thumb-x: calc(20% - 6.4px);
       position: relative;
       width: 100%;
       min-width: 0;
@@ -102,17 +102,18 @@
 
     .slider-track {
       position: relative;
-      height: 30px;
+      height: 32px;
       margin: 0 1px;
     }
 
     .slider-rail,
     .slider-fill {
       position: absolute;
-      top: 8px;
+      z-index: 0;
+      top: 7px;
       right: 0;
       left: 0;
-      height: 14px;
+      height: 18px;
       border-radius: 999px;
     }
 
@@ -122,36 +123,60 @@
     }
 
     .slider-fill {
+      z-index: 1;
       background: var(--blue);
       clip-path: inset(0 var(--progress-right) 0 0 round 999px);
-      transition: clip-path 220ms var(--ease-out);
+      will-change: clip-path;
+    }
+
+    .slider-stops {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: 14px;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 32px;
+      pointer-events: none;
+    }
+
+    .slider-stop {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: color-mix(in oklch, var(--ink) 18%, var(--surface));
+      transition: background-color 140ms ease;
+    }
+
+    .slider-stop.active {
+      background: color-mix(in oklch, var(--surface) 36%, var(--blue));
     }
 
     .slider-thumb {
       position: absolute;
+      z-index: 3;
       top: 0;
       left: 0;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border: 1px solid color-mix(in oklch, var(--ink) 15%, transparent);
       border-radius: 50%;
       background: var(--surface);
       box-shadow: 0 2px 7px color-mix(in oklch, var(--ink) 14%, transparent);
       transform: translate3d(var(--thumb-x), 0, 0);
-      transition: transform 220ms var(--ease-out), box-shadow 160ms var(--ease-out);
+      transition: box-shadow 160ms var(--ease-out);
       will-change: transform;
     }
 
-    .range-control[data-dragging="true"] .slider-fill,
-    .range-control[data-dragging="true"] .slider-thumb { transition-duration: 0ms; }
-
     #rangeSlider {
       position: absolute;
-      z-index: 2;
+      z-index: 4;
       top: -4px;
       left: 1px;
       width: calc(100% - 2px);
-      height: 38px;
+      height: 40px;
       margin: 0;
       cursor: grab;
       opacity: 0;
@@ -163,7 +188,7 @@
       position: absolute;
       z-index: 1;
       inset: -2px 0 auto;
-      height: 34px;
+      height: 36px;
       border-radius: 999px;
       box-shadow: var(--focus);
       pointer-events: none;
@@ -324,6 +349,9 @@
         <div class="slider-track" id="sliderTrack" aria-hidden="true">
           <span class="slider-rail"></span>
           <span class="slider-fill"></span>
+          <span class="slider-stops">
+            <i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i>
+          </span>
           <span class="slider-thumb" id="sliderThumb"></span>
         </div>
         <input id="rangeSlider" type="range" min="0" max="10" step="1" value="2" aria-label="Select chart time range" />
@@ -490,11 +518,15 @@
     const rangeSlider = document.querySelector('#rangeSlider');
     const rangeControl = document.querySelector('#rangeControl');
     const sliderTrack = document.querySelector('#sliderTrack');
+    const sliderFill = document.querySelector('.slider-fill');
+    const sliderStops = [...document.querySelectorAll('.slider-stop')];
     const rangeValue = document.querySelector('#rangeValue');
     const fmt = new Intl.NumberFormat('en-US');
     let activePeriod = 2;
     let hits = [];
     let chartFrame = 0;
+    let thumbMotion = null;
+    let fillMotion = null;
     let displayedDomain = null;
     let hasRendered = false;
     let sliderPointerActive = false;
@@ -544,11 +576,26 @@
 
     function updateSliderPosition(index, animate=true) {
       const ratio=index/(PERIODS.length-1);
-      const thumbWidth=sliderThumb.offsetWidth||30;
+      const thumbWidth=sliderThumb.offsetWidth||32;
       const distance=Math.max(0,sliderTrack.clientWidth-thumbWidth);
-      rangeControl.dataset.dragging=animate?'false':'true';
-      rangeControl.style.setProperty('--progress-right',`${(1-ratio)*100}%`);
-      rangeControl.style.setProperty('--thumb-x',`${distance*ratio}px`);
+      const thumbCenter=thumbWidth/2+distance*ratio;
+      const fillRight=Math.max(0,sliderTrack.clientWidth-thumbCenter);
+      const targetTransform=`translate3d(${distance*ratio}px, 0, 0)`;
+      const targetClip=`inset(0 ${fillRight}px 0 0 round 999px)`;
+      const shouldAnimate=animate&&hasRendered&&!reduceMotion;
+      const currentTransform=getComputedStyle(sliderThumb).transform;
+      const currentClip=getComputedStyle(sliderFill).clipPath;
+      thumbMotion?.cancel();
+      fillMotion?.cancel();
+      rangeControl.dataset.dragging=String(!animate);
+      sliderFill.style.clipPath=targetClip;
+      sliderThumb.style.transform=targetTransform;
+      if(shouldAnimate) {
+        const timing={duration:170,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
+        thumbMotion=sliderThumb.animate([{transform:currentTransform},{transform:targetTransform}],timing);
+        fillMotion=sliderFill.animate([{clipPath:currentClip},{clipPath:targetClip}],timing);
+      }
+      sliderStops.forEach((stop,stopIndex)=>stop.classList.toggle('active',stopIndex<=index));
     }
 
     function render(index=activePeriod, animateSlider=true, animateGraph=true) {
@@ -720,7 +767,7 @@
     rangeSlider.addEventListener('pointerdown',()=>{sliderPointerActive=true;rangeControl.dataset.dragging='true';});
     rangeSlider.addEventListener('pointerup',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';updateSliderPosition(activePeriod,true);});
     rangeSlider.addEventListener('pointercancel',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';});
-    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),false,sliderPointerActive));
+    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),true,sliderPointerActive));
     document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
     addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
 
