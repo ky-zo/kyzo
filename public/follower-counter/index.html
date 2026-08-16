@@ -66,8 +66,16 @@
       margin: 0 auto;
     }
 
-    .page-header { margin-bottom: 22px; }
-    .page-header h1 {
+    .range-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .range-title {
       margin: 0;
       color: var(--ink);
       font-size: 14px;
@@ -76,18 +84,12 @@
       line-height: 1.3;
     }
 
-    .page-header p { display: none; }
-
     .range-panel {
       margin-bottom: 14px;
     }
 
-    .range-meta {
-      margin-bottom: 10px;
-      font-size: 12px;
-    }
-
     .range-value { font-weight: 500; color: var(--ink); }
+    .range-separator { color: var(--quiet); font-weight: 300; }
 
     .range-control {
       --progress-right: 0%;
@@ -225,9 +227,9 @@
     }
 
     .value {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 700;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.02em;
       line-height: 1.05;
     }
 
@@ -247,7 +249,7 @@
     }
 
     #chart { display: block; width: 100%; height: 100%; overflow: visible; }
-    #chart text { font-family: inherit; fill: var(--quiet); font-size: 12px; }
+    #chart text { font-family: inherit; fill: var(--quiet); font-size: 26px; font-weight: 300; }
     #chart .grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
     #chart .plot-boundary { stroke: var(--rule); stroke-width: 1; }
     #chart .base { stroke: var(--rule-strong); stroke-width: 1; }
@@ -282,12 +284,10 @@
 
     @media (max-width: 680px) {
       body { padding: 4px 0 16px; }
-      .page-header { margin-bottom: 22px; }
-      .page-header h1 { font-size: 14px; }
       .range-panel { margin-bottom: 14px; }
       .range { min-height: 40px; padding: 8px 0 0; font-size: 12px; }
       .chart-head { padding: 14px 0 2px; gap: 16px; }
-      .value { font-size: 24px; }
+      .value { font-size: 18px; }
       .plot { height: 280px; margin: 6px 0 0; }
     }
 
@@ -314,13 +314,10 @@
 </head>
 <body>
   <main class="shell">
-    <header class="page-header">
-      <h1>follower growth</h1>
-      <p>@ky__zo</p>
-    </header>
-
     <section class="range-panel" aria-label="Follower history range">
       <div class="range-meta">
+        <h1 class="range-title">follower growth</h1>
+        <span class="range-separator" aria-hidden="true">·</span>
         <span class="range-value" id="rangeValue">Since April 2023</span>
       </div>
       <div class="range-control" id="rangeControl" data-dragging="false">
@@ -566,7 +563,7 @@
       if(period.all) cutoff.setTime(HISTORY_START.getTime());
 
       const canonicalRaw=historyFrom(cutoff);
-      const W=1040,H=380,m={t:21,r:50,b:47,l:2};
+      const W=1040,H=380,m={t:21,r:62,b:47,l:2};
       const iw=W-m.l-m.r,ih=H-m.t-m.b;
       const values=canonicalRaw.map(p=>p.value);
       const min=Math.min(...values),max=Math.max(...values);
@@ -621,7 +618,7 @@
       const tickMarkup=ticks.map(value=>{
         const y=targetY(value);
         const grid=Math.abs(y-m.t)>.5?`<line class="grid" x1="${m.l}" x2="${m.l+iw}" y1="${y}" y2="${y}"/>`:'';
-        return `${grid}<text x="${m.l+iw+11}" y="${y+4}">${compact(value)}</text>`;
+        return `${grid}<text x="${m.l+iw+11}" y="${y+9}">${compact(value)}</text>`;
       }).join('');
 
       svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
