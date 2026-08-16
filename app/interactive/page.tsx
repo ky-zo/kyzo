@@ -56,10 +56,16 @@ function FunLink({ href, emoji, external, children }: FunLinkProps) {
       {emoji}
     </span>
   )
+  const externalIcon = external ? (
+    <span aria-hidden className="ml-0.5 inline-block text-[0.7em] text-black/40">
+      ↗
+    </span>
+  ) : null
   if (external) {
     return (
       <a href={href} target="_blank" rel="noreferrer" className={className}>
         {label}
+        {externalIcon}
         {pop}
       </a>
     )
@@ -74,7 +80,7 @@ function FunLink({ href, emoji, external, children }: FunLinkProps) {
 
 export default function InteractivePage() {
   return (
-    <main className="w-full max-w-md text-base leading-relaxed text-black/70">
+    <main className="w-full max-w-md text-sm leading-relaxed text-black/70">
       <p>random collection of stuff i made.</p>
       <ul className="mt-3 list-disc space-y-2 pl-4">
         <li className="relative transition-transform duration-200 hover:translate-x-1">

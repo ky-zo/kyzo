@@ -25,7 +25,7 @@ export default function RecommendationsList() {
 		<div className="flex w-full flex-col gap-6">
 			{cats.map((cat) => (
 				<section key={cat.name}>
-					<h2 className="text-base text-black">{cat.name}</h2>
+					<h2 className="text-sm text-black">{cat.name}</h2>
 					<div className="mt-2 flex flex-col gap-3 border-l border-black/10 pl-3">
 						{cat.subcategories.map((sub) => (
 							<div key={sub.name}>
@@ -42,9 +42,10 @@ export default function RecommendationsList() {
 													href={item.url}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="break-all text-[11px] normal-case text-black/30 hover:text-black/60 hover:underline"
+													className="break-all text-[11px] normal-case text-black/30 underline decoration-black/15 underline-offset-2 hover:text-black/60 hover:decoration-black/40"
 												>
 													{item.url}
+													<span aria-hidden className="ml-0.5 inline-block">↗</span>
 												</a>
 											)}
 										</li>
