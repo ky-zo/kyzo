@@ -92,8 +92,6 @@
     .range-separator { color: var(--quiet); font-weight: 300; }
 
     .range-control {
-      --progress-right: calc(80% - 10px);
-      --thumb-x: calc(20% - 6.4px);
       position: relative;
       width: 100%;
       min-width: 0;
@@ -106,8 +104,7 @@
       margin: 0 1px;
     }
 
-    .slider-rail,
-    .slider-fill {
+    .slider-rail {
       position: absolute;
       z-index: 0;
       top: 7px;
@@ -122,11 +119,25 @@
       box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--ink) 8%, transparent);
     }
 
+    .slider-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(20% + 9.6px);
+      height: 32px;
+      pointer-events: none;
+      will-change: width;
+    }
+
     .slider-fill {
+      position: absolute;
       z-index: 1;
+      top: 7px;
+      left: 0;
+      width: 100%;
+      height: 18px;
+      border-radius: 999px;
       background: var(--blue);
-      clip-path: inset(0 var(--progress-right) 0 0 round 999px);
-      will-change: clip-path;
     }
 
     .slider-stops {
@@ -158,16 +169,14 @@
       position: absolute;
       z-index: 3;
       top: 0;
-      left: 0;
+      right: -16px;
       width: 32px;
       height: 32px;
       border: 1px solid color-mix(in oklch, var(--ink) 15%, transparent);
       border-radius: 50%;
       background: var(--surface);
       box-shadow: 0 2px 7px color-mix(in oklch, var(--ink) 14%, transparent);
-      transform: translate3d(var(--thumb-x), 0, 0);
       transition: box-shadow 160ms var(--ease-out);
-      will-change: transform;
     }
 
     #rangeSlider {
@@ -348,11 +357,13 @@
       <div class="range-control" id="rangeControl" data-dragging="false">
         <div class="slider-track" id="sliderTrack" aria-hidden="true">
           <span class="slider-rail"></span>
-          <span class="slider-fill"></span>
+          <span class="slider-progress" id="sliderProgress">
+            <span class="slider-fill"></span>
+            <span class="slider-thumb" id="sliderThumb"></span>
+          </span>
           <span class="slider-stops">
             <i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i><i class="slider-stop"></i>
           </span>
-          <span class="slider-thumb" id="sliderThumb"></span>
         </div>
         <input id="rangeSlider" type="range" min="0" max="10" step="1" value="2" aria-label="Select chart time range" />
         <span class="slider-focus" aria-hidden="true"></span>
@@ -518,15 +529,14 @@
     const rangeSlider = document.querySelector('#rangeSlider');
     const rangeControl = document.querySelector('#rangeControl');
     const sliderTrack = document.querySelector('#sliderTrack');
-    const sliderFill = document.querySelector('.slider-fill');
+    const sliderProgress = document.querySelector('#sliderProgress');
     const sliderStops = [...document.querySelectorAll('.slider-stop')];
     const rangeValue = document.querySelector('#rangeValue');
     const fmt = new Intl.NumberFormat('en-US');
     let activePeriod = 2;
     let hits = [];
     let chartFrame = 0;
-    let thumbMotion = null;
-    let fillMotion = null;
+    let progressMotion = null;
     let displayedDomain = null;
     let hasRendered = false;
     let sliderPointerActive = false;
@@ -583,20 +593,14 @@
       const thumbWidth=sliderThumb.offsetWidth||32;
       const distance=Math.max(0,sliderTrack.clientWidth-thumbWidth);
       const thumbCenter=thumbWidth/2+distance*ratio;
-      const fillRight=Math.max(0,sliderTrack.clientWidth-thumbCenter);
-      const targetTransform=`translate3d(${distance*ratio}px, 0, 0)`;
-      const targetClip=`inset(0 ${fillRight}px 0 0 round 999px)`;
+      const targetWidth=`${thumbCenter}px`;
       const shouldAnimate=animate&&hasRendered&&!reduceMotion;
-      const currentTransform=getComputedStyle(sliderThumb).transform;
-      const currentClip=getComputedStyle(sliderFill).clipPath;
-      thumbMotion?.cancel();
-      fillMotion?.cancel();
-      sliderFill.style.clipPath=targetClip;
-      sliderThumb.style.transform=targetTransform;
+      const currentWidth=getComputedStyle(sliderProgress).width;
+      progressMotion?.cancel();
+      sliderProgress.style.width=targetWidth;
       if(shouldAnimate) {
         const timing={duration,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
-        thumbMotion=sliderThumb.animate([{transform:currentTransform},{transform:targetTransform}],timing);
-        fillMotion=sliderFill.animate([{clipPath:currentClip},{clipPath:targetClip}],timing);
+        progressMotion=sliderProgress.animate([{width:currentWidth},{width:targetWidth}],timing);
       }
       sliderStops.forEach((stop,stopIndex)=>stop.classList.toggle('active',stopIndex<=index));
     }
