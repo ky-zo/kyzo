@@ -9,7 +9,6 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "followers:seed": "tsx scripts/build-follower-seed.ts",
-    "strava:seed": "tsx --env-file=.env.local scripts/build-strava-seed.ts",
     "garmin:login": "tsx --env-file=.env.local scripts/garmin-login.ts",
     "garmin:backfill": "tsx --env-file=.env.local scripts/garmin-backfill.ts"
   },

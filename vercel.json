@@ -8,10 +8,6 @@
     {
       "path": "/api/cron/followers",
       "schedule": "17 9 * * *"
-    },
-    {
-      "path": "/api/cron/strava",
-      "schedule": "41 9 * * *"
     }
   ]
 }
