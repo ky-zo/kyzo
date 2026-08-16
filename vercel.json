@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/garmin",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/followers",
+      "schedule": "17 9 * * *"
     }
   ]
 }

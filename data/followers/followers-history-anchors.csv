@@ -1,0 +1,10 @@
+date,followers,precision,status,source,source_url,notes
+2023-08-11,132,exact screenshot,observed,"Tweet analytics screenshot",https://x.com/ky__zo/status/1689997869074247680,"Attached analytics card visibly shows Followers 132"
+2023-11-30,250,exact export,observed,"Typefully follower export",,"Earliest retained Typefully snapshot"
+2024-03-26,1200,reported milestone,observed,"Tweet text",https://x.com/ky__zo/status/1772614634215997904,"Tweet states: I hit 1200 followers today"
+2024-06-29,2000,reported milestone,observed,"Tweet text",https://x.com/ky__zo/status/1806962133416165455,"Tweet states: celebrating 2000 followers"
+2024-07-07,2731,exact screenshot,observed,"Tweet screenshot of Typefully",https://x.com/ky__zo/status/1810184372491792529,"Attached Typefully chart visibly shows Followers 2,731"
+2024-12-28,10046,exact screenshot,observed,"Tweet analytics screenshot",https://x.com/ky__zo/status/1872979441367818379,"Attached analytics card visibly shows Followers 10,046"
+2025-10-21,12199,exact screenshot,observed,"Tweet screenshot of Typefully",https://x.com/ky__zo/status/1980796834798059869,"Attached Typefully chart visibly shows Followers 12,199"
+2025-11-30,12447,exact export,observed,"Typefully follower export",,"Latest retained Typefully snapshot before the export gap"
+2026-08-15,16435,exact export,observed,"Typefully follower export after reactivation",,"Current follower count"

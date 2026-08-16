@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f8fa" />
+  <title>kyzo — follower growth</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: oklch(0.982 0.005 255);
+      --surface: oklch(0.998 0.002 255);
+      --surface-muted: oklch(0.969 0.007 255);
+      --ink: oklch(0.205 0.022 258);
+      --muted: oklch(0.49 0.025 256);
+      --quiet: oklch(0.64 0.022 256);
+      --rule: oklch(0.91 0.01 255);
+      --rule-strong: oklch(0.84 0.014 255);
+      --blue: oklch(0.62 0.195 250);
+      --blue-dark: oklch(0.49 0.19 251);
+      --green: oklch(0.61 0.155 151);
+      --danger: oklch(0.61 0.205 27);
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      --radius: 15px;
+      --focus: 0 0 0 3px color-mix(in oklch, var(--blue) 24%, transparent);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      overflow-x: hidden;
+      background: var(--canvas);
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      padding: clamp(22px, 4.5vw, 58px);
+      overflow-x: hidden;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "SF Pro Display", "Avenir Next", Avenir, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, input, summary { font: inherit; }
+    button, summary { -webkit-tap-highlight-color: transparent; }
+
+    .shell {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--surface-muted);
+      box-shadow: 0 0 0 1px color-mix(in oklch, var(--ink) 10%, transparent);
+    }
+
+    .identity { min-width: 0; }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      line-height: 1.05;
+    }
+
+    .name {
+      font-size: 17px;
+      font-weight: 720;
+      letter-spacing: -0.025em;
+    }
+
+    .verified {
+      width: 16px;
+      height: 16px;
+      color: var(--blue);
+    }
+
+    .handle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .updated {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--green) 14%, transparent);
+    }
+
+    .range-panel {
+      margin-bottom: 24px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .range-meta {
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .range-value { font-weight: 680; color: var(--ink); }
+
+    .range-control {
+      --progress: 1;
+      --thumb-x: 0px;
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      padding-top: 1px;
+    }
+
+    .slider-track {
+      position: relative;
+      height: 18px;
+      margin: 0 7px;
+    }
+
+    .slider-rail,
+    .slider-fill {
+      position: absolute;
+      top: 7px;
+      right: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 999px;
+    }
+
+    .slider-rail { background: var(--rule-strong); }
+
+    .slider-fill {
+      background: var(--blue);
+      transform: scaleX(var(--progress));
+      transform-origin: left center;
+      transition: transform 220ms var(--ease-out);
+    }
+
+    .slider-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 17px;
+      height: 17px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      background: var(--surface);
+      box-shadow: 0 2px 5px color-mix(in oklch, var(--blue-dark) 20%, transparent);
+      transform: translate3d(var(--thumb-x), 0, 0);
+      transition: transform 220ms var(--ease-out), box-shadow 160ms var(--ease-out);
+      will-change: transform;
+    }
+
+    .range-control[data-dragging="true"] .slider-fill,
+    .range-control[data-dragging="true"] .slider-thumb { transition-duration: 0ms; }
+
+    #rangeSlider {
+      position: absolute;
+      z-index: 2;
+      top: -8px;
+      left: 7px;
+      width: calc(100% - 14px);
+      height: 38px;
+      margin: 0;
+      cursor: grab;
+      opacity: 0;
+    }
+
+    #rangeSlider:active { cursor: grabbing; }
+
+    #rangeSlider:focus-visible + .slider-focus {
+      position: absolute;
+      z-index: 1;
+      inset: -3px 0 auto;
+      height: 25px;
+      border-radius: 8px;
+      box-shadow: var(--focus);
+      pointer-events: none;
+    }
+
+    .ranges {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1px;
+    }
+
+    .range {
+      flex: 0 0 31px;
+      min-height: 36px;
+      padding: 6px 1px 2px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--quiet);
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 150ms ease, background-color 150ms ease, transform 130ms var(--ease-out);
+    }
+
+    .range.active { color: var(--blue-dark); font-weight: 720; }
+    .range:active { transform: scale(0.96); }
+    .range:focus-visible { outline: none; box-shadow: var(--focus); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .range:hover { color: var(--ink); background: var(--surface-muted); }
+    }
+
+    .chart-card {
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 25px 28px 5px;
+    }
+
+    .metric-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .value-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .value {
+      font-size: 32px;
+      font-weight: 680;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .delta {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .period-block { text-align: right; }
+    .period-label { color: var(--ink); font-size: 12px; font-weight: 630; }
+
+    .plot {
+      position: relative;
+      height: clamp(315px, 38vw, 410px);
+      margin: 8px 23px 0 27px;
+    }
+
+    #chart { display: block; width: 100%; height: 100%; overflow: visible; }
+    #chart text { font-family: inherit; fill: var(--quiet); font-size: 11px; }
+    #chart .grid { stroke: var(--rule); stroke-width: 1; }
+    #chart .plot-boundary { stroke: var(--rule); stroke-width: 1; }
+    #chart .base { stroke: var(--rule-strong); stroke-width: 1; }
+    #chart .observed-area { fill: url(#observedFill); }
+    #chart .observed-line { fill: none; stroke: var(--blue); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    #chart .point-layer { transition: opacity 120ms var(--ease-out); }
+    #chart .focus-line { stroke: color-mix(in oklch, var(--ink) 18%, transparent); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; }
+    #chart .focus { fill: var(--surface); stroke: var(--ink); stroke-width: 2; opacity: 0; }
+
+    .tooltip {
+      position: absolute;
+      z-index: 3;
+      min-width: 168px;
+      max-width: 236px;
+      padding: 9px 11px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, calc(-100% - 11px)) scale(0.97);
+      transform-origin: center bottom;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      background: color-mix(in oklch, var(--surface) 96%, transparent);
+      box-shadow: 0 5px 8px color-mix(in oklch, var(--ink) 9%, transparent);
+      transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out);
+      backdrop-filter: blur(7px);
+    }
+
+    .tooltip.visible { opacity: 1; transform: translate(-50%, calc(-100% - 11px)) scale(1); }
+    .tooltip-date { color: var(--muted); font-size: 10px; }
+    .tooltip-entry { margin-top: 4px; }
+    .tooltip-value { color: var(--ink); font-size: 13px; font-weight: 680; }
+
+    @media (max-width: 680px) {
+      body { padding: 19px 12px 28px; }
+      .profile { margin-bottom: 23px; }
+      .updated { align-self: flex-start; font-size: 10px; }
+      .updated .updated-prefix { display: none; }
+      .range-panel { margin-bottom: 18px; }
+      .range { min-height: 40px; padding: 8px 0 0; font-size: 9px; }
+      .chart-head { padding: 20px 17px 3px; gap: 16px; }
+      .value { font-size: 28px; }
+      .period-block { max-width: 45%; }
+      .period-label { font-size: 10px; }
+      .plot { height: 320px; margin: 7px 11px 0 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .slider-track { margin-inline: 0; }
+      #rangeSlider { left: 0; width: 100%; }
+      .range { flex-basis: 17px; }
+      .range:nth-child(2),
+      .range:nth-child(4),
+      .range:nth-child(6),
+      .range:nth-child(8),
+      .range:nth-child(10) { visibility: hidden; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="profile">
+      <img class="avatar" src="https://pbs.twimg.com/profile_images/1949750659940507649/ct319x_A_x96.jpg" alt="kyzo profile photo" width="46" height="46" />
+      <div class="identity">
+        <div class="name-row">
+          <span class="name">kyzo</span>
+          <svg class="verified" viewBox="0 0 22 22" aria-label="Verified account"><path fill="currentColor" d="M20.4 11c0 1.2-1.5 2.1-1.9 3.1-.4 1.1.2 2.7-.6 3.5-.8.8-2.4.2-3.5.6-1 .4-1.9 1.9-3.1 1.9s-2.1-1.5-3.1-1.9c-1.1-.4-2.7.2-3.5-.6-.8-.8-.2-2.4-.6-3.5C3.5 13.1 2 12.2 2 11s1.5-2.1 1.9-3.1c.4-1.1-.2-2.7.6-3.5.8-.8 2.4-.2 3.5-.6C9 3.4 9.9 1.9 11.1 1.9s2.1 1.5 3.1 1.9c1.1.4 2.7-.2 3.5.6.8.8.2 2.4.6 3.5.6 1 2.1 1.9 2.1 3.1Z"/><path fill="white" d="m9.5 14.9-3.2-3.2 1.4-1.4 1.8 1.8 4.8-4.8 1.4 1.4-6.2 6.2Z"/></svg>
+        </div>
+        <div class="handle">@ky__zo</div>
+      </div>
+      <div class="updated"><span class="status-dot" aria-hidden="true"></span><span><span class="updated-prefix">Updated </span><span id="updatedAt">Aug 15, 2026</span></span></div>
+    </header>
+
+    <section class="range-panel" aria-label="Follower history range">
+      <div class="range-meta">
+        <span class="range-value" id="rangeValue">Since April 2023</span>
+      </div>
+      <div class="range-control" id="rangeControl" data-dragging="false">
+        <div class="slider-track" id="sliderTrack" aria-hidden="true">
+          <span class="slider-rail"></span>
+          <span class="slider-fill"></span>
+          <span class="slider-thumb" id="sliderThumb"></span>
+        </div>
+        <input id="rangeSlider" type="range" min="0" max="10" step="1" value="10" aria-label="Select chart time range" />
+        <span class="slider-focus" aria-hidden="true"></span>
+        <nav class="ranges" aria-label="Time ranges">
+          <button class="range" data-index="0">7d</button>
+          <button class="range" data-index="1">14d</button>
+          <button class="range" data-index="2">1m</button>
+          <button class="range" data-index="3">2m</button>
+          <button class="range" data-index="4">3m</button>
+          <button class="range" data-index="5">6m</button>
+          <button class="range" data-index="6">9m</button>
+          <button class="range" data-index="7">12m</button>
+          <button class="range" data-index="8">2y</button>
+          <button class="range" data-index="9">3y</button>
+          <button class="range active" data-index="10" aria-pressed="true">All</button>
+        </nav>
+      </div>
+    </section>
+
+    <section class="chart-card" aria-labelledby="metricTitle">
+      <header class="chart-head">
+        <div>
+          <div class="metric-label" id="metricTitle">Followers</div>
+          <div class="value-row"><span class="value" id="currentValue">16,435</span><span class="delta" id="growthValue">+16.4K</span></div>
+        </div>
+        <div class="period-block">
+          <div class="period-label" id="periodLabel">Apr 1, 2023 — Aug 15, 2026</div>
+        </div>
+      </header>
+
+      <div class="plot">
+        <svg id="chart" role="img" aria-label="Follower history for the selected time range"></svg>
+        <div class="tooltip" id="tooltip" role="status" aria-live="polite">
+          <div class="tooltip-date"></div>
+          <div class="tooltip-entries"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const NET = [-1,0,10,1,-1,3,2,2,2,5,-1,8,7,7,6,3,5,0,2,5,1,1,2,1,11,1,13,2,75,19,5,0,-1,-1,6,-1,-1,0,214,89,62,19,1,3,0,-6,11,-4,4,1,3,27,31,5,2,11,5,3,87,276,36,4,-1,2,1,76,100,42,53,22,5,2,53,8,34,25,8,4,2,2,3,14,6,1,-5,1,9,10,22,8,5,0,0,29,26,0,5,112,64,23,14,60,6,-4,1,0,2,0,8,1,-2,42,23,2,3,2,-2,15,13,15,5,5,85,166,95,32,12,20,6,3,53,11,3,-3,2,4,-3,0,-4,2,-3,1,-1,0,7,97,15,42,96,35,71,50,12,6,0,0,1,7,3,1,1,0,4,0,-2,2,7,-2,-1,0,-2,-1,-3,11,45,6,-1,0,-1,3,-3,-1,3,1,153,123,-3,29,3,-6,30,34,8,3,1,2,-1,0,-2,-3,1,0,2,-2,-4,-3,-1,-1,0,1,0,0,-1,25,2,0,115,40,8,2,8,20,2,14,8,7,0,11,5,7,2,17,23,12,17,7,7,70,13,5,10,12,1,-1,2,9,5,17,6,29,7,6,3,3,1,169,114,63,88,54,22,8,4,6,5,-3,2,3,4,2,3,-1,2,20,2,3,6,6,64,65,11,8,5,2,-3,1,2,-2,8,20,7,2,1,-1,0,-1,2,3,0,0,-1,1,-1,-5,1,0,2,-2,1,-3,3,-4,-1,0,0,125,23,15,3,6,13,4,-1,-1,-1,-3,1,1,0,0,1,13,3,4,4,3,1,5,7,4,6,2,3,24,8,95,1,2,2,4,2,7,4,-1,20,230,47,6,7,1,8,327,75,17,27];
+
+    let CURRENT = 16435;
+    const PERIODS = [
+      {label:'7 days', days:7}, {label:'14 days', days:14},
+      {label:'1 month', months:1}, {label:'2 months', months:2},
+      {label:'3 months', months:3}, {label:'6 months', months:6},
+      {label:'9 months', months:9}, {label:'12 months', months:12},
+      {label:'2 years', years:2}, {label:'3 years', years:3},
+      {label:'Since April 2023', all:true}
+    ];
+
+    const TYPEFULLY = [
+      ['2023-11-30',250],['2023-12-31',273],['2024-01-31',314],
+      ['2024-02-29',1054],['2024-03-31',1272],['2024-04-30',1538],
+      ['2024-05-31',1688],['2024-06-30',2096],['2024-07-31',3130],
+      ['2024-08-17',8583],['2024-08-31',8808],['2024-09-30',9649],
+      ['2024-10-31',9761],['2024-11-30',9926],['2024-12-31',10196],
+      ['2025-01-31',10191],['2025-02-28',10522],['2025-03-31',10616],
+      ['2025-04-30',10694],['2025-05-31',10884],['2025-06-30',10868],
+      ['2025-07-31',10891],['2025-08-16',10990],['2025-08-31',11030],
+      ['2025-09-30',11537],['2025-10-31',12434],['2025-11-30',12447],
+      ['2026-08-15',16435]
+    ].map(([date,value])=>({
+      date:new Date(date+'T12:00:00'), value, kind:'typefully', source:'Typefully',
+      precision:'Exact export', note:'Retained follower snapshot', url:''
+    }));
+
+    const TWEET_EVIDENCE = [
+      {date:'2023-08-11',value:132,precision:'Exact screenshot',note:'Analytics card shows Followers 132',url:'https://x.com/ky__zo/status/1689997869074247680'},
+      {date:'2024-03-26',value:1200,precision:'Reported milestone',note:'“I hit 1200 followers today”',url:'https://x.com/ky__zo/status/1772614634215997904'},
+      {date:'2024-06-29',value:2000,precision:'Reported milestone',note:'“celebrating 2000 followers”',url:'https://x.com/ky__zo/status/1806962133416165455'},
+      {date:'2024-07-07',value:2731,precision:'Exact screenshot',note:'Archived Typefully chart shows 2,731',url:'https://x.com/ky__zo/status/1810184372491792529'},
+      {date:'2024-12-28',value:10046,precision:'Exact screenshot',note:'Analytics card shows Followers 10,046',url:'https://x.com/ky__zo/status/1872979441367818379'},
+      {date:'2025-10-21',value:12199,precision:'Exact screenshot',note:'Archived Typefully chart shows 12,199',url:'https://x.com/ky__zo/status/1980796834798059869'}
+    ].map(point=>({...point,date:new Date(point.date+'T12:00:00'),kind:'tweet',source:'Tweet evidence'}));
+
+    const HISTORY_START = new Date('2023-04-01T12:00:00');
+    const START_POINT = {
+      date:HISTORY_START, value:0, kind:'start', source:'Starting point',
+      precision:'Baseline', note:'Follower history starts at zero', url:''
+    };
+    const OBSERVED = [START_POINT,...TYPEFULLY,...TWEET_EVIDENCE].sort((a,b)=>a.date-b.date);
+    const X_DAILY = [];
+    let xRunning = CURRENT - NET.reduce((sum,value)=>sum+value,0);
+    X_DAILY.push({date:new Date('2025-08-15T12:00:00'),value:xRunning,kind:'x',source:'X daily net',precision:'Reconstructed'});
+    NET.forEach((net,i)=>{
+      const date=new Date('2025-08-16T12:00:00');
+      date.setDate(date.getDate()+i);
+      xRunning+=net;
+      X_DAILY.push({date,value:xRunning,kind:'x',source:'X daily net',precision:'Reconstructed'});
+    });
+
+    const DAY = 86400000;
+    const CALIBRATION_START = new Date('2025-08-16T12:00:00');
+
+    function buildCanonicalHistory() {
+      const xByDate=new Map(X_DAILY.map(point=>[point.date.getTime(),point.value]));
+      const historical=OBSERVED.filter(point=>point.date<CALIBRATION_START);
+      const anchors=OBSERVED.filter(point=>point.date>=CALIBRATION_START);
+      const calibrated=[...historical];
+
+      anchors.slice(0,-1).forEach((start,index)=>{
+        const end=anchors[index+1];
+        const days=Math.round((end.date-start.date)/DAY);
+        const rawStart=xByDate.get(start.date.getTime());
+        const rawEnd=xByDate.get(end.date.getTime());
+        const observedChange=end.value-start.value;
+        const rawChange=rawEnd-rawStart;
+        const reconciliation=observedChange-rawChange;
+
+        if(index===0) calibrated.push(start);
+        for(let day=1;day<=days;day++) {
+          const date=new Date(start.date);
+          date.setDate(date.getDate()+day);
+          if(day===days) {
+            calibrated.push(end);
+            continue;
+          }
+          const rawValue=xByDate.get(date.getTime());
+          const progress=day/days;
+          calibrated.push({
+            date,
+            value:Math.round(start.value+(rawValue-rawStart)+reconciliation*progress),
+            kind:'canonical',
+            source:'Canonical history',
+            precision:'Daily movement between known counts'
+          });
+        }
+      });
+
+      return calibrated.sort((a,b)=>a.date-b.date);
+    }
+
+    let CANONICAL = buildCanonicalHistory();
+
+    function historyFrom(cutoff) {
+      const cutoffTime=cutoff instanceof Date?cutoff.getTime():cutoff;
+      const firstVisible=CANONICAL.findIndex(point=>point.date.getTime()>=cutoffTime);
+      if(firstVisible<0) return [CANONICAL.at(-1)];
+      if(firstVisible===0||CANONICAL[firstVisible].date.getTime()===cutoffTime) return CANONICAL.slice(firstVisible);
+
+      const previous=CANONICAL[firstVisible-1];
+      const next=CANONICAL[firstVisible];
+      const span=next.date.getTime()-previous.date.getTime();
+      const progress=span?Math.max(0,Math.min(1,(cutoffTime-previous.date.getTime())/span)):0;
+      const boundary={
+        date:new Date(cutoffTime),
+        value:Math.round(previous.value+(next.value-previous.value)*progress),
+        kind:'boundary',
+        source:'Range boundary',
+        precision:'Interpolated between known counts'
+      };
+      return [boundary,...CANONICAL.slice(firstVisible)];
+    }
+
+    const svg = document.querySelector('#chart');
+    const tooltip = document.querySelector('#tooltip');
+    const periodLabel = document.querySelector('#periodLabel');
+    const growthValue = document.querySelector('#growthValue');
+    const rangeSlider = document.querySelector('#rangeSlider');
+    const rangeControl = document.querySelector('#rangeControl');
+    const sliderTrack = document.querySelector('#sliderTrack');
+    const rangeValue = document.querySelector('#rangeValue');
+    const fmt = new Intl.NumberFormat('en-US');
+    let activePeriod = 10;
+    let hits = [];
+    let chartFrame = 0;
+    let displayedDomain = null;
+    let hasRendered = false;
+    let sliderPointerActive = false;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const short = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const compact = n => n >= 1000 ? `${(n/1000).toFixed(n%1000 ? 1 : 0)}K` : fmt.format(n);
+    const niceStep = value => {
+      const power = 10 ** Math.floor(Math.log10(Math.max(1,value)));
+      const scaled = value / power;
+      return (scaled <= 1 ? 1 : scaled <= 2 ? 2 : scaled <= 5 ? 5 : 10) * power;
+    };
+    const niceStepDown = value => {
+      const power = 10 ** Math.floor(Math.log10(Math.max(1,value)));
+      const scaled = value / power;
+      const factor = [1,2,2.5,5,10].filter(candidate=>candidate<=scaled).at(-1) || 1;
+      return factor * power;
+    };
+
+    const SMOOTHING=.28;
+    function geometryPath(points) {
+      if(!points.length) return '';
+      if(points.length===1) return `M${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+      const factor=SMOOTHING/6;
+      let result=`M${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+      for(let index=0;index<points.length-1;index++) {
+        const previous=points[Math.max(0,index-1)];
+        const current=points[index];
+        const next=points[index+1];
+        const following=points[Math.min(points.length-1,index+2)];
+        const minY=Math.min(current.y,next.y);
+        const maxY=Math.max(current.y,next.y);
+        const control1={
+          x:current.x+(next.x-previous.x)*factor,
+          y:Math.max(minY,Math.min(maxY,current.y+(next.y-previous.y)*factor))
+        };
+        const control2={
+          x:next.x-(following.x-current.x)*factor,
+          y:Math.max(minY,Math.min(maxY,next.y-(following.y-current.y)*factor))
+        };
+        result+=` C${control1.x.toFixed(1)},${control1.y.toFixed(1)} ${control2.x.toFixed(1)},${control2.y.toFixed(1)} ${next.x.toFixed(1)},${next.y.toFixed(1)}`;
+      }
+      return result;
+    }
+    const areaPath=(points,bottom)=>`${geometryPath(points)} L${points.at(-1).x.toFixed(1)},${bottom} L${points[0].x.toFixed(1)},${bottom} Z`;
+    const easeInOutQuart=value=>value<.5?8*value**4:1-(-2*value+2)**4/2;
+
+    function updateSliderPosition(index, animate=true) {
+      const ratio=index/(PERIODS.length-1);
+      const thumbWidth=17;
+      const distance=Math.max(0,sliderTrack.clientWidth-thumbWidth);
+      rangeControl.dataset.dragging=animate?'false':'true';
+      rangeControl.style.setProperty('--progress',ratio);
+      rangeControl.style.setProperty('--thumb-x',`${distance*ratio}px`);
+    }
+
+    function render(index=activePeriod, animateSlider=true, animateGraph=true) {
+      activePeriod=index;
+      tooltip.classList.remove('visible');
+      const period=PERIODS[index];
+      const displayEnd=CANONICAL.at(-1).date;
+      const cutoff=new Date(displayEnd);
+      if(period.days) cutoff.setDate(cutoff.getDate()-(period.days-1));
+      if(period.months) cutoff.setMonth(cutoff.getMonth()-period.months);
+      if(period.years) cutoff.setFullYear(cutoff.getFullYear()-period.years);
+      if(period.all) cutoff.setTime(HISTORY_START.getTime());
+
+      const canonicalRaw=historyFrom(cutoff);
+      const W=1040,H=380,m={t:21,r:67,b:47,l:2};
+      const iw=W-m.l-m.r,ih=H-m.t-m.b;
+      const values=canonicalRaw.map(p=>p.value);
+      const min=Math.min(...values),max=Math.max(...values);
+      const movement=Math.max(1,max-min);
+      const tightRange=Boolean(period.days||period.months||period.years===2);
+      let step,yMin,yMax,tickStart;
+      if(tightRange) {
+        const padding=Math.max(4,movement*.125);
+        yMin=Math.max(0,min-padding);
+        yMax=max+padding;
+        step=niceStepDown((yMax-yMin)/4);
+        yMax=Math.max(yMax,(Math.floor(max/step)+1)*step);
+        tickStart=Math.ceil(yMin/step)*step;
+      } else {
+        const padding=Math.max(12,movement*.16,max*.011);
+        step=niceStep((movement+padding*2)/4);
+        yMin=Math.max(0,Math.floor((min-padding)/step)*step);
+        yMax=Math.ceil((max+padding)/step)*step;
+        tickStart=yMin;
+      }
+      if(yMax<=yMin) yMax=yMin+step;
+      const targetDomain={cutoff:cutoff.getTime(),yMin,yMax};
+      const fromDomain=displayedDomain?{...displayedDomain}:{...targetDomain};
+      const projectHistory=domain=>{
+        return historyFrom(domain.cutoff).map(point=>({
+          ...point,
+          x:m.l+(point.date.getTime()-domain.cutoff)/Math.max(1,displayEnd.getTime()-domain.cutoff)*iw,
+          y:m.t+(1-(point.value-domain.yMin)/(domain.yMax-domain.yMin))*ih
+        }));
+      };
+      const targetX=date=>m.l+(date.getTime()-targetDomain.cutoff)/Math.max(1,displayEnd.getTime()-targetDomain.cutoff)*iw;
+      const targetY=value=>m.t+(1-(value-targetDomain.yMin)/(targetDomain.yMax-targetDomain.yMin))*ih;
+      const canonicalHits=canonicalRaw.map(point=>({...point,x:targetX(point.date),y:targetY(point.value)}));
+      hits=canonicalHits;
+      const initialGeometry=projectHistory(fromDomain);
+      const shouldZoom=hasRendered&&animateGraph&&!reduceMotion;
+      const canonicalPath=initialGeometry.length>1?`<path id="linePath" class="observed-line" d="${geometryPath(initialGeometry)}"/>`:'';
+      const canonicalArea=initialGeometry.length>1?`<path id="areaPath" class="observed-area" d="${areaPath(initialGeometry,m.t+ih)}"/>`:'';
+
+      const ticks=[];
+      for(let value=tickStart;value<=yMax+step*.001;value+=step) ticks.push(Number(value.toPrecision(12)));
+      const labelCount=period.days?Math.min(period.days,7):(period.months&&period.months<=3)?6:7;
+      const labels=Array.from({length:labelCount},(_,i)=>{
+        const date=new Date(cutoff.getTime()+(displayEnd-cutoff)*i/(labelCount-1));
+        return {date,x:m.l+iw*i/(labelCount-1)};
+      });
+      const labelText=date=>period.days||(period.months&&period.months<=3)
+        ? date.toLocaleDateString('en-US',{month:'short',day:'numeric'})
+        : period.months
+          ? date.toLocaleDateString('en-US',{month:'short'})
+          : date.toLocaleDateString('en-US',{month:'short',year:'2-digit'}).replace(' ',' ’');
+      const tickMarkup=ticks.map(value=>{
+        const y=targetY(value);
+        const grid=Math.abs(y-m.t)>.5?`<line class="grid" x1="${m.l}" x2="${m.l+iw}" y1="${y}" y2="${y}"/>`:'';
+        return `${grid}<text x="${m.l+iw+11}" y="${y+4}">${compact(value)}</text>`;
+      }).join('');
+
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+      svg.setAttribute('aria-label',`${period.label} follower history ending ${short(displayEnd)}`);
+      svg.innerHTML=`
+        <defs>
+          <linearGradient id="observedFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1597f4" stop-opacity=".105"/><stop offset="1" stop-color="#1597f4" stop-opacity=".006"/></linearGradient>
+          <clipPath id="plotClip"><rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/></clipPath>
+        </defs>
+        <line id="topBoundary" class="plot-boundary" x1="${m.l}" x2="${m.l+iw}" y1="${m.t}" y2="${m.t}"/>
+        ${tickMarkup}
+        <g class="series" clip-path="url(#plotClip)">${canonicalArea}${canonicalPath}<g id="pointLayer" class="point-layer" style="opacity:${shouldZoom?0:1}"></g></g>
+        <line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${m.t+ih}" y2="${m.t+ih}"/>
+        ${labels.map(label=>`<circle cx="${label.x}" cy="${m.t+ih+9}" r="3.3" fill="var(--rule-strong)"/><text x="${label.x}" y="${m.t+ih+33}" text-anchor="middle">${labelText(label.date)}</text>`).join('')}
+        <line id="focusLine" class="focus-line" y1="${m.t}" y2="${m.t+ih}"/>
+        <circle id="focusDot" class="focus" r="4.8"/>
+        <rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>
+      `;
+
+      const first=canonicalRaw[0];
+      const growth=CURRENT-first.value;
+      growthValue.textContent=`${growth>=0?'+':'−'}${Math.abs(growth)>=1000?(Math.abs(growth)/1000).toFixed(1)+'K':fmt.format(Math.abs(growth))}`;
+      growthValue.style.color=growth>=0?'var(--green)':'var(--danger)';
+      periodLabel.textContent=`${short(cutoff)} — ${short(displayEnd)}`;
+      rangeValue.textContent=period.label;
+      rangeSlider.value=index;
+      updateSliderPosition(index,animateSlider);
+      document.querySelectorAll('.range').forEach((button,i)=>{
+        const active=i===index;
+        button.classList.toggle('active',active);
+        button.setAttribute('aria-pressed',String(active));
+      });
+
+      const focusLine=document.querySelector('#focusLine');
+      const focusDot=document.querySelector('#focusDot');
+      const hit=document.querySelector('#hit');
+      const line=document.querySelector('#linePath');
+      const area=document.querySelector('#areaPath');
+      const pointLayer=document.querySelector('#pointLayer');
+      if(chartFrame) cancelAnimationFrame(chartFrame);
+
+      if(shouldZoom&&line&&area) {
+        hit.style.pointerEvents='none';
+        const started=performance.now();
+        const duration=260;
+        const frame=now=>{
+          const progress=Math.min(1,(now-started)/duration);
+          const eased=easeInOutQuart(progress);
+          displayedDomain={
+            cutoff:fromDomain.cutoff+(targetDomain.cutoff-fromDomain.cutoff)*eased,
+            yMin:fromDomain.yMin+(targetDomain.yMin-fromDomain.yMin)*eased,
+            yMax:fromDomain.yMax+(targetDomain.yMax-fromDomain.yMax)*eased
+          };
+          const frameGeometry=projectHistory(displayedDomain);
+          line.setAttribute('d',geometryPath(frameGeometry));
+          area.setAttribute('d',areaPath(frameGeometry,m.t+ih));
+          if(progress<1) {
+            chartFrame=requestAnimationFrame(frame);
+            return;
+          }
+          chartFrame=0;
+          displayedDomain={...targetDomain};
+          if(pointLayer) pointLayer.style.opacity='1';
+          hit.style.pointerEvents='auto';
+        };
+        chartFrame=requestAnimationFrame(frame);
+      } else {
+        displayedDomain={...targetDomain};
+        if(!hasRendered&&!reduceMotion&&line&&area) {
+          const length=line.getTotalLength();
+          line.animate([
+            {strokeDasharray:length,strokeDashoffset:length},
+            {strokeDasharray:length,strokeDashoffset:0}
+          ],{duration:420,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+          area.animate([{opacity:0},{opacity:1}],{duration:320,easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+        }
+      }
+      hasRendered=true;
+      hit.addEventListener('pointermove',event=>{
+        const rect=svg.getBoundingClientRect();
+        const mx=(event.clientX-rect.left)/rect.width*W;
+        const point=hits.reduce((best,candidate)=>Math.abs(candidate.x-mx)<Math.abs(best.x-mx)?candidate:best,hits[0]);
+        focusLine.setAttribute('x1',point.x); focusLine.setAttribute('x2',point.x); focusLine.style.opacity=1;
+        focusDot.setAttribute('cx',point.x); focusDot.setAttribute('cy',point.y); focusDot.style.opacity=1;
+        tooltip.querySelector('.tooltip-date').textContent=short(point.date);
+        tooltip.querySelector('.tooltip-entries').innerHTML=`<div class="tooltip-entry"><span class="tooltip-value">${fmt.format(point.value)}</span></div>`;
+        tooltip.style.left=`${Math.min(92,Math.max(8,point.x/W*100))}%`;
+        tooltip.style.top=`${Math.min(94,Math.max(16,point.y/H*100))}%`;
+        tooltip.classList.add('visible');
+      });
+      hit.addEventListener('pointerleave',()=>{
+        focusLine.style.opacity=0; focusDot.style.opacity=0; tooltip.classList.remove('visible');
+      });
+    }
+
+    rangeSlider.addEventListener('pointerdown',()=>{sliderPointerActive=true;rangeControl.dataset.dragging='true';});
+    rangeSlider.addEventListener('pointerup',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';updateSliderPosition(activePeriod,true);});
+    rangeSlider.addEventListener('pointercancel',()=>{sliderPointerActive=false;rangeControl.dataset.dragging='false';});
+    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),false,sliderPointerActive));
+    document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
+    addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
+
+    async function loadLiveHistory() {
+      const response=await fetch(`/api/followers?t=${Date.now()}`,{cache:'no-store'});
+      if(!response.ok) throw new Error(`Follower history returned HTTP ${response.status}`);
+      const history=await response.json();
+      if(!Array.isArray(history.points)||!history.points.length||!Number.isFinite(history.currentFollowers)) {
+        throw new Error('Follower history response was invalid');
+      }
+      CURRENT=history.currentFollowers;
+      document.querySelector('#currentValue').textContent=fmt.format(CURRENT);
+      CANONICAL=history.points.map(point=>({
+        date:new Date(`${point.date}T12:00:00`),
+        value:point.followers,
+        kind:point.kind,
+        source:point.source||'Follower history'
+      })).sort((a,b)=>a.date-b.date);
+      const updated=new Date(history.updatedAt);
+      if(!Number.isNaN(updated.getTime())) {
+        document.querySelector('#updatedAt').textContent=updated.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      }
+    }
+
+    loadLiveHistory().catch(error=>console.error('Using embedded follower history',error)).finally(()=>render());
+  </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+.shortcut {
+  appearance: none;
+  display: grid;
+  width: 112px;
+  min-height: 108px;
+  place-items: center;
+  align-content: start;
+  gap: 5px;
+  padding: 7px 5px;
+  border: 0;
+  background: transparent;
+  color: oklch(22% 0.018 255);
+  font: inherit;
+  text-transform: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.iconPlate {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+}
+
+.shortcutGraphic {
+  display: block;
+  width: 58px;
+  height: 58px;
+  filter: drop-shadow(1px 1px 0 oklch(100% 0 0));
+  image-rendering: pixelated;
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.shortcutLabel {
+  max-width: 104px;
+  padding: 2px 4px 3px;
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.shortcut[data-selected='true'] .shortcutLabel {
+  background: #000080;
+  color: #f7f7f2;
+}
+
+.shortcut:focus {
+  outline: none;
+}
+
+.shortcut:focus-visible .shortcutLabel {
+  outline: 1px dotted oklch(22% 0.018 255);
+  outline-offset: 2px;
+}
+
+.shortcut:active .shortcutGraphic {
+  transform: scale(0.97);
+}
+
+.window {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  width: min(1040px, calc(100vw - 64px));
+  height: min(690px, calc(100dvh - 64px));
+  padding: 3px;
+  border: 0;
+  background: #c0c0c0;
+  box-shadow:
+    inset 2px 2px 0 #f7f7f2,
+    inset -2px -2px 0 #111827,
+    inset 3px 3px 0 #dfdfdf,
+    inset -3px -3px 0 #808080,
+    7px 9px 0 color-mix(in oklch, oklch(22% 0.018 255) 20%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -48%) scale(0.985);
+  visibility: hidden;
+  transition:
+    opacity 120ms cubic-bezier(0.7, 0, 0.84, 0),
+    transform 120ms cubic-bezier(0.7, 0, 0.84, 0),
+    visibility 0s linear 120ms;
+  text-transform: none;
+}
+
+.window[data-open='true'] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  visibility: visible;
+  transition:
+    opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s;
+}
+
+.titleBar {
+  display: flex;
+  height: 27px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 3px 3px 5px;
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  color: #f7f7f2;
+  font-family: 'MS Sans Serif', Tahoma, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.titleIdentity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 5px;
+}
+
+.titleIcon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  image-rendering: pixelated;
+}
+
+.closeButton {
+  position: relative;
+  display: grid;
+  width: 21px;
+  height: 19px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0 0 2px;
+  border: 0;
+  background: #c0c0c0;
+  box-shadow:
+    inset 1px 1px 0 #f7f7f2,
+    inset -1px -1px 0 #111827,
+    inset 2px 2px 0 #dfdfdf,
+    inset -2px -2px 0 #808080;
+  color: #111827;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.closeButton::before {
+  position: absolute;
+  inset: -8px;
+  content: '';
+}
+
+.closeButton:active {
+  padding: 1px 0 1px 1px;
+  box-shadow:
+    inset 1px 1px 0 #111827,
+    inset -1px -1px 0 #f7f7f2,
+    inset 2px 2px 0 #808080,
+    inset -2px -2px 0 #dfdfdf;
+}
+
+.closeButton:focus {
+  outline: none;
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid #f7f7f2;
+  outline-offset: 2px;
+}
+
+.windowBody {
+  height: calc(100% - 27px);
+  padding: 3px;
+  background: #c0c0c0;
+}
+
+.dashboard {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: oklch(97% 0.008 255);
+  box-shadow:
+    inset 2px 2px 0 #808080,
+    inset -2px -2px 0 #f7f7f2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shortcut:hover {
+    cursor:
+      url('/windows-95-pointer.svg') 2 2,
+      pointer;
+  }
+
+  .shortcut:hover .shortcutGraphic {
+    transform: translateY(-2px);
+  }
+
+  .closeButton:hover {
+    background: #d4d4d4;
+  }
+}
+
+@media (max-width: 640px) {
+  .window {
+    top: max(8px, env(safe-area-inset-top));
+    left: 8px;
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    transform: translateY(8px) scale(0.99);
+  }
+
+  .window[data-open='true'] {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shortcutGraphic,
+  .window,
+  .window[data-open='true'] {
+    transition-duration: 1ms;
+  }
+}

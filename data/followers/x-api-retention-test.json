@@ -1,0 +1,29 @@
+{
+  "tested_at": "2026-08-15",
+  "five_year_request": {
+    "requested_from": "2021-08-15T00:00:00.000Z",
+    "requested_to_exclusive": "2026-08-16T00:00:00.000Z",
+    "http_status": 200,
+    "exact_current_followers": 16435,
+    "current_time_series_first_timestamp": "2025-08-16T00:00:00.000Z",
+    "current_time_series_last_timestamp": "2026-08-14T00:00:00.000Z",
+    "legacy_first_timestamp": "2025-08-16T00:00:00Z",
+    "legacy_last_timestamp": "2026-08-15T00:00:00Z",
+    "legacy_nonempty_days": 363,
+    "follows": 7038,
+    "unfollows": 1145,
+    "net_growth": 5893,
+    "previous_totals_rows": 0,
+    "legacy_previous_rows": 0
+  },
+  "older_window_request": {
+    "requested_from": "2024-08-16T00:00:00.000Z",
+    "requested_to_exclusive": "2025-08-16T00:00:00.000Z",
+    "http_status": 200,
+    "current_time_series_rows": 0,
+    "previous_totals_rows": 0,
+    "legacy_current_rows": 0,
+    "legacy_previous_rows": 0
+  },
+  "conclusion": "The authenticated backend accepts arbitrary date variables but exposes only the latest year. Older yearly windows return no analytics rows."
+}

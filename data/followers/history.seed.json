@@ -1,0 +1,2369 @@
+{
+  "version": 1,
+  "account": {
+    "id": "945756809356300294",
+    "username": "ky__zo"
+  },
+  "updatedAt": "2026-08-15T00:00:00.000Z",
+  "currentFollowers": 16435,
+  "points": [
+    {
+      "date": "2023-04-01",
+      "followers": 0,
+      "kind": "baseline",
+      "source": "User-defined start"
+    },
+    {
+      "date": "2023-08-11",
+      "followers": 132,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2023-11-30",
+      "followers": 250,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2023-12-31",
+      "followers": 273,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-01-31",
+      "followers": 314,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-02-29",
+      "followers": 1054,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-03-26",
+      "followers": 1200,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2024-03-31",
+      "followers": 1272,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-04-30",
+      "followers": 1538,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-05-31",
+      "followers": 1688,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-06-29",
+      "followers": 2000,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2024-06-30",
+      "followers": 2096,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-07-07",
+      "followers": 2731,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2024-07-31",
+      "followers": 3130,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-08-17",
+      "followers": 8583,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-08-31",
+      "followers": 8808,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-09-30",
+      "followers": 9649,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-10-31",
+      "followers": 9761,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-11-30",
+      "followers": 9926,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2024-12-28",
+      "followers": 10046,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2024-12-31",
+      "followers": 10196,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-01-31",
+      "followers": 10191,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-02-28",
+      "followers": 10522,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-03-31",
+      "followers": 10616,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-04-30",
+      "followers": 10694,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-05-31",
+      "followers": 10884,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-06-30",
+      "followers": 10868,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-07-31",
+      "followers": 10891,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-08-16",
+      "followers": 10990,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-08-17",
+      "followers": 10989,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-18",
+      "followers": 10998,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-19",
+      "followers": 10998,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-20",
+      "followers": 10996,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-21",
+      "followers": 10998,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-22",
+      "followers": 10999,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-23",
+      "followers": 11000,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-24",
+      "followers": 11002,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-25",
+      "followers": 11006,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-26",
+      "followers": 11004,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-27",
+      "followers": 11011,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-28",
+      "followers": 11017,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-29",
+      "followers": 11023,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-30",
+      "followers": 11028,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-08-31",
+      "followers": 11030,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-09-01",
+      "followers": 11034,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-02",
+      "followers": 11034,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-03",
+      "followers": 11035,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-04",
+      "followers": 11039,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-05",
+      "followers": 11040,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-06",
+      "followers": 11040,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-07",
+      "followers": 11041,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-08",
+      "followers": 11042,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-09",
+      "followers": 11052,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-10",
+      "followers": 11052,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-11",
+      "followers": 11065,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-12",
+      "followers": 11066,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-13",
+      "followers": 11140,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-14",
+      "followers": 11159,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-15",
+      "followers": 11163,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-16",
+      "followers": 11162,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-17",
+      "followers": 11161,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-18",
+      "followers": 11159,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-19",
+      "followers": 11164,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-20",
+      "followers": 11163,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-21",
+      "followers": 11161,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-22",
+      "followers": 11160,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-23",
+      "followers": 11374,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-24",
+      "followers": 11462,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-25",
+      "followers": 11523,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-26",
+      "followers": 11542,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-27",
+      "followers": 11542,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-28",
+      "followers": 11544,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-29",
+      "followers": 11544,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-09-30",
+      "followers": 11537,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-10-01",
+      "followers": 11547,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-02",
+      "followers": 11542,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-03",
+      "followers": 11545,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-04",
+      "followers": 11546,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-05",
+      "followers": 11548,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-06",
+      "followers": 11574,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-07",
+      "followers": 11604,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-08",
+      "followers": 11608,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-09",
+      "followers": 11609,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-10",
+      "followers": 11619,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-11",
+      "followers": 11624,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-12",
+      "followers": 11626,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-13",
+      "followers": 11712,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-14",
+      "followers": 11987,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-15",
+      "followers": 12022,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-16",
+      "followers": 12025,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-17",
+      "followers": 12023,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-18",
+      "followers": 12025,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-19",
+      "followers": 12025,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-20",
+      "followers": 12100,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-21",
+      "followers": 12199,
+      "kind": "observed",
+      "source": "Tweet or export evidence"
+    },
+    {
+      "date": "2025-10-22",
+      "followers": 12239,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-23",
+      "followers": 12291,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-24",
+      "followers": 12311,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-25",
+      "followers": 12314,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-26",
+      "followers": 12315,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-27",
+      "followers": 12366,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-28",
+      "followers": 12372,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-29",
+      "followers": 12404,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-30",
+      "followers": 12428,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-10-31",
+      "followers": 12434,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-11-01",
+      "followers": 12424,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-02",
+      "followers": 12413,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-03",
+      "followers": 12401,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-04",
+      "followers": 12391,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-05",
+      "followers": 12391,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-06",
+      "followers": 12384,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-07",
+      "followers": 12371,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-08",
+      "followers": 12352,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-09",
+      "followers": 12340,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-10",
+      "followers": 12335,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-11",
+      "followers": 12332,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-12",
+      "followers": 12340,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-13",
+      "followers": 12335,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-14",
+      "followers": 12326,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-15",
+      "followers": 12313,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-16",
+      "followers": 12299,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-17",
+      "followers": 12314,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-18",
+      "followers": 12327,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-19",
+      "followers": 12313,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-20",
+      "followers": 12305,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-21",
+      "followers": 12403,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-22",
+      "followers": 12454,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-23",
+      "followers": 12463,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-24",
+      "followers": 12463,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-25",
+      "followers": 12510,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-26",
+      "followers": 12502,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-27",
+      "followers": 12485,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-28",
+      "followers": 12472,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-29",
+      "followers": 12459,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-11-30",
+      "followers": 12447,
+      "kind": "observed",
+      "source": "Typefully"
+    },
+    {
+      "date": "2025-12-01",
+      "followers": 12447,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-02",
+      "followers": 12455,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-03",
+      "followers": 12456,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-04",
+      "followers": 12454,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-05",
+      "followers": 12497,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-06",
+      "followers": 12520,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-07",
+      "followers": 12522,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-08",
+      "followers": 12525,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-09",
+      "followers": 12527,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-10",
+      "followers": 12525,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-11",
+      "followers": 12540,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-12",
+      "followers": 12553,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-13",
+      "followers": 12568,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-14",
+      "followers": 12573,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-15",
+      "followers": 12579,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-16",
+      "followers": 12664,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-17",
+      "followers": 12830,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-18",
+      "followers": 12925,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-19",
+      "followers": 12957,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-20",
+      "followers": 12969,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-21",
+      "followers": 12989,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-22",
+      "followers": 12995,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-23",
+      "followers": 12998,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-24",
+      "followers": 13052,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-25",
+      "followers": 13063,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-26",
+      "followers": 13066,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-27",
+      "followers": 13063,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-28",
+      "followers": 13065,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-29",
+      "followers": 13069,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-30",
+      "followers": 13066,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2025-12-31",
+      "followers": 13066,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-01",
+      "followers": 13062,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-02",
+      "followers": 13064,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-03",
+      "followers": 13062,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-04",
+      "followers": 13063,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-05",
+      "followers": 13062,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-06",
+      "followers": 13062,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-07",
+      "followers": 13069,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-08",
+      "followers": 13166,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-09",
+      "followers": 13181,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-10",
+      "followers": 13223,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-11",
+      "followers": 13319,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-12",
+      "followers": 13355,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-13",
+      "followers": 13426,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-14",
+      "followers": 13476,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-15",
+      "followers": 13488,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-16",
+      "followers": 13494,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-17",
+      "followers": 13494,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-18",
+      "followers": 13494,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-19",
+      "followers": 13495,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-20",
+      "followers": 13502,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-21",
+      "followers": 13505,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-22",
+      "followers": 13507,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-23",
+      "followers": 13508,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-24",
+      "followers": 13508,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-25",
+      "followers": 13512,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-26",
+      "followers": 13512,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-27",
+      "followers": 13510,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-28",
+      "followers": 13512,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-29",
+      "followers": 13519,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-30",
+      "followers": 13517,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-01-31",
+      "followers": 13516,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-01",
+      "followers": 13517,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-02",
+      "followers": 13515,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-03",
+      "followers": 13514,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-04",
+      "followers": 13511,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-05",
+      "followers": 13522,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-06",
+      "followers": 13567,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-07",
+      "followers": 13573,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-08",
+      "followers": 13572,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-09",
+      "followers": 13572,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-10",
+      "followers": 13572,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-11",
+      "followers": 13575,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-12",
+      "followers": 13572,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-13",
+      "followers": 13571,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-14",
+      "followers": 13574,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-15",
+      "followers": 13575,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-16",
+      "followers": 13728,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-17",
+      "followers": 13851,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-18",
+      "followers": 13848,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-19",
+      "followers": 13877,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-20",
+      "followers": 13881,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-21",
+      "followers": 13875,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-22",
+      "followers": 13905,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-23",
+      "followers": 13939,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-24",
+      "followers": 13947,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-25",
+      "followers": 13950,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-26",
+      "followers": 13951,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-27",
+      "followers": 13953,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-02-28",
+      "followers": 13952,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-01",
+      "followers": 13953,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-02",
+      "followers": 13951,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-03",
+      "followers": 13948,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-04",
+      "followers": 13949,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-05",
+      "followers": 13949,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-06",
+      "followers": 13951,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-07",
+      "followers": 13949,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-08",
+      "followers": 13945,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-09",
+      "followers": 13942,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-10",
+      "followers": 13941,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-11",
+      "followers": 13941,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-12",
+      "followers": 13941,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-13",
+      "followers": 13942,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-14",
+      "followers": 13942,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-15",
+      "followers": 13942,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-16",
+      "followers": 13941,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-17",
+      "followers": 13966,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-18",
+      "followers": 13968,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-19",
+      "followers": 13968,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-20",
+      "followers": 14084,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-21",
+      "followers": 14124,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-22",
+      "followers": 14132,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-23",
+      "followers": 14134,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-24",
+      "followers": 14142,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-25",
+      "followers": 14162,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-26",
+      "followers": 14164,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-27",
+      "followers": 14178,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-28",
+      "followers": 14186,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-29",
+      "followers": 14193,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-30",
+      "followers": 14194,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-03-31",
+      "followers": 14205,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-01",
+      "followers": 14210,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-02",
+      "followers": 14217,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-03",
+      "followers": 14219,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-04",
+      "followers": 14236,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-05",
+      "followers": 14259,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-06",
+      "followers": 14271,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-07",
+      "followers": 14288,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-08",
+      "followers": 14296,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-09",
+      "followers": 14303,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-10",
+      "followers": 14373,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-11",
+      "followers": 14386,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-12",
+      "followers": 14391,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-13",
+      "followers": 14401,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-14",
+      "followers": 14413,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-15",
+      "followers": 14414,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-16",
+      "followers": 14413,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-17",
+      "followers": 14415,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-18",
+      "followers": 14425,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-19",
+      "followers": 14430,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-20",
+      "followers": 14447,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-21",
+      "followers": 14453,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-22",
+      "followers": 14482,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-23",
+      "followers": 14489,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-24",
+      "followers": 14495,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-25",
+      "followers": 14498,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-26",
+      "followers": 14501,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-27",
+      "followers": 14502,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-28",
+      "followers": 14672,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-29",
+      "followers": 14786,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-04-30",
+      "followers": 14849,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-01",
+      "followers": 14937,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-02",
+      "followers": 14991,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-03",
+      "followers": 15013,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-04",
+      "followers": 15021,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-05",
+      "followers": 15025,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-06",
+      "followers": 15031,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-07",
+      "followers": 15037,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-08",
+      "followers": 15034,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-09",
+      "followers": 15036,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-10",
+      "followers": 15039,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-11",
+      "followers": 15043,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-12",
+      "followers": 15045,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-13",
+      "followers": 15048,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-14",
+      "followers": 15047,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-15",
+      "followers": 15049,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-16",
+      "followers": 15069,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-17",
+      "followers": 15072,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-18",
+      "followers": 15075,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-19",
+      "followers": 15081,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-20",
+      "followers": 15087,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-21",
+      "followers": 15151,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-22",
+      "followers": 15216,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-23",
+      "followers": 15227,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-24",
+      "followers": 15235,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-25",
+      "followers": 15240,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-26",
+      "followers": 15243,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-27",
+      "followers": 15240,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-28",
+      "followers": 15241,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-29",
+      "followers": 15243,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-30",
+      "followers": 15241,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-05-31",
+      "followers": 15249,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-01",
+      "followers": 15269,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-02",
+      "followers": 15276,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-03",
+      "followers": 15278,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-04",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-05",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-06",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-07",
+      "followers": 15278,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-08",
+      "followers": 15280,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-09",
+      "followers": 15283,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-10",
+      "followers": 15283,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-11",
+      "followers": 15283,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-12",
+      "followers": 15282,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-13",
+      "followers": 15283,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-14",
+      "followers": 15283,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-15",
+      "followers": 15278,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-16",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-17",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-18",
+      "followers": 15281,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-19",
+      "followers": 15279,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-20",
+      "followers": 15280,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-21",
+      "followers": 15277,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-22",
+      "followers": 15280,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-23",
+      "followers": 15276,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-24",
+      "followers": 15276,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-25",
+      "followers": 15276,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-26",
+      "followers": 15276,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-27",
+      "followers": 15401,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-28",
+      "followers": 15424,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-29",
+      "followers": 15439,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-06-30",
+      "followers": 15442,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-01",
+      "followers": 15448,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-02",
+      "followers": 15461,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-03",
+      "followers": 15466,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-04",
+      "followers": 15465,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-05",
+      "followers": 15464,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-06",
+      "followers": 15463,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-07",
+      "followers": 15460,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-08",
+      "followers": 15461,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-09",
+      "followers": 15462,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-10",
+      "followers": 15462,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-11",
+      "followers": 15462,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-12",
+      "followers": 15463,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-13",
+      "followers": 15477,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-14",
+      "followers": 15480,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-15",
+      "followers": 15484,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-16",
+      "followers": 15488,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-17",
+      "followers": 15491,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-18",
+      "followers": 15492,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-19",
+      "followers": 15497,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-20",
+      "followers": 15504,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-21",
+      "followers": 15508,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-22",
+      "followers": 15514,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-23",
+      "followers": 15517,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-24",
+      "followers": 15520,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-25",
+      "followers": 15544,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-26",
+      "followers": 15552,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-27",
+      "followers": 15647,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-28",
+      "followers": 15648,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-29",
+      "followers": 15650,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-30",
+      "followers": 15652,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-07-31",
+      "followers": 15656,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-01",
+      "followers": 15659,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-02",
+      "followers": 15666,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-03",
+      "followers": 15670,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-04",
+      "followers": 15669,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-05",
+      "followers": 15689,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-06",
+      "followers": 15919,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-07",
+      "followers": 15966,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-08",
+      "followers": 15972,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-09",
+      "followers": 15979,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-10",
+      "followers": 15980,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-11",
+      "followers": 15989,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-12",
+      "followers": 16316,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-13",
+      "followers": 16391,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-14",
+      "followers": 16408,
+      "kind": "calibrated",
+      "source": "X daily movement between observed counts"
+    },
+    {
+      "date": "2026-08-15",
+      "followers": 16435,
+      "kind": "observed",
+      "source": "Typefully"
+    }
+  ]
+}
