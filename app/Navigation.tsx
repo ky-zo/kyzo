@@ -39,7 +39,7 @@ const Navigation = () => {
         className={`whitespace-nowrap transition-all duration-75 ${
           pathname.startsWith('/random') ? 'font-medium text-black' : 'hover:underline'
         }`}>
-        random
+        interactive
       </Link>
     </div>
   )

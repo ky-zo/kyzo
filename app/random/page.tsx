@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'random — kyzo',
+  title: 'interactive — kyzo',
   description: 'small things and experiments by kyzo',
   alternates: {
     canonical: 'https://kyzo.io/random',
