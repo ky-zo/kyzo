@@ -318,7 +318,7 @@
       <div class="range-meta">
         <h1 class="range-title">follower growth</h1>
         <span class="range-separator" aria-hidden="true">·</span>
-        <span class="range-value" id="rangeValue">Since April 2023</span>
+        <span class="range-value" id="rangeValue">1 month</span>
       </div>
       <div class="range-control" id="rangeControl" data-dragging="false">
         <div class="slider-track" id="sliderTrack" aria-hidden="true">
@@ -326,12 +326,12 @@
           <span class="slider-fill"></span>
           <span class="slider-thumb" id="sliderThumb"></span>
         </div>
-        <input id="rangeSlider" type="range" min="0" max="10" step="1" value="10" aria-label="Select chart time range" />
+        <input id="rangeSlider" type="range" min="0" max="10" step="1" value="2" aria-label="Select chart time range" />
         <span class="slider-focus" aria-hidden="true"></span>
         <nav class="ranges" aria-label="Time ranges">
           <button class="range" data-index="0">7d</button>
           <button class="range" data-index="1">14d</button>
-          <button class="range" data-index="2">1m</button>
+          <button class="range active" data-index="2" aria-pressed="true">1m</button>
           <button class="range" data-index="3">2m</button>
           <button class="range" data-index="4">3m</button>
           <button class="range" data-index="5">6m</button>
@@ -339,7 +339,7 @@
           <button class="range" data-index="7">12m</button>
           <button class="range" data-index="8">2y</button>
           <button class="range" data-index="9">3y</button>
-          <button class="range active" data-index="10" aria-pressed="true">All</button>
+          <button class="range" data-index="10">All</button>
         </nav>
       </div>
     </section>
@@ -492,7 +492,7 @@
     const sliderTrack = document.querySelector('#sliderTrack');
     const rangeValue = document.querySelector('#rangeValue');
     const fmt = new Intl.NumberFormat('en-US');
-    let activePeriod = 10;
+    let activePeriod = 2;
     let hits = [];
     let chartFrame = 0;
     let displayedDomain = null;
