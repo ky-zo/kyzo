@@ -1,4 +1,8 @@
 .shortcut {
+  position: fixed;
+  z-index: 20;
+  top: clamp(16px, 3vw, 40px);
+  right: clamp(16px, 3vw, 40px);
   appearance: none;
   display: grid;
   width: 112px;
@@ -206,6 +210,13 @@
 }
 
 @media (max-width: 640px) {
+  .shortcut {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(8px, env(safe-area-inset-right));
+    transform: scale(0.88);
+    transform-origin: top right;
+  }
+
   .window {
     top: max(8px, env(safe-area-inset-top));
     left: 8px;

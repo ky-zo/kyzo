@@ -45,9 +45,7 @@ export default function CollectionMinimalV1() {
 					)}
 				</div>
 			))}
-			<div className="mt-8">
-				<FollowerCounterDesktop />
-			</div>
+			<FollowerCounterDesktop />
 		</div>
 	);
 }
