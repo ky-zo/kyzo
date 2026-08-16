@@ -20,6 +20,13 @@ export default function RandomPage() {
             X followers graph
           </Link>
         </li>
+        <li>
+          <Link
+            href="/random/weight-converter"
+            className="normal-case text-black/70 hover:underline">
+            Weight converter
+          </Link>
+        </li>
       </ul>
     </main>
   )
