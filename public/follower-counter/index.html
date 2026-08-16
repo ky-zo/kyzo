@@ -533,6 +533,8 @@
     let sliderPointerMoved = false;
     let sliderPointerStartX = 0;
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SLIDER_CLICK_DURATION = 160;
+    const SLIDER_DRAG_DURATION = 100;
 
     const short = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     const compact = n => n >= 1000 ? `${(n/1000).toFixed(n%1000 ? 1 : 0)}K` : fmt.format(n);
@@ -576,7 +578,7 @@
     const areaPath=(points,bottom)=>`${geometryPath(points)} L${points.at(-1).x.toFixed(1)},${bottom} L${points[0].x.toFixed(1)},${bottom} Z`;
     const easeInOutQuart=value=>value<.5?8*value**4:1-(-2*value+2)**4/2;
 
-    function updateSliderPosition(index, animate=true) {
+    function updateSliderPosition(index, animate=true, duration=SLIDER_CLICK_DURATION) {
       const ratio=index/(PERIODS.length-1);
       const thumbWidth=sliderThumb.offsetWidth||32;
       const distance=Math.max(0,sliderTrack.clientWidth-thumbWidth);
@@ -592,14 +594,14 @@
       sliderFill.style.clipPath=targetClip;
       sliderThumb.style.transform=targetTransform;
       if(shouldAnimate) {
-        const timing={duration:140,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
+        const timing={duration,easing:'cubic-bezier(0.23, 1, 0.32, 1)'};
         thumbMotion=sliderThumb.animate([{transform:currentTransform},{transform:targetTransform}],timing);
         fillMotion=sliderFill.animate([{clipPath:currentClip},{clipPath:targetClip}],timing);
       }
       sliderStops.forEach((stop,stopIndex)=>stop.classList.toggle('active',stopIndex<=index));
     }
 
-    function render(index=activePeriod, animateSlider=true, animateGraph=true) {
+    function render(index=activePeriod, animateSlider=true, animateGraph=true, sliderDuration=SLIDER_CLICK_DURATION) {
       activePeriod=index;
       tooltip.classList.remove('visible');
       const period=PERIODS[index];
@@ -693,7 +695,7 @@
       periodLabel.textContent=`${short(cutoff)} — ${short(displayEnd)}`;
       rangeValue.textContent=period.label;
       rangeSlider.value=index;
-      updateSliderPosition(index,animateSlider);
+      updateSliderPosition(index,animateSlider,sliderDuration);
       document.querySelectorAll('.range').forEach((button,i)=>{
         const active=i===index;
         button.classList.toggle('active',active);
@@ -785,7 +787,12 @@
       rangeControl.dataset.dragging='false';
       updateSliderPosition(activePeriod,false);
     });
-    rangeSlider.addEventListener('input',()=>render(Number(rangeSlider.value),!sliderPointerMoved,sliderPointerActive));
+    rangeSlider.addEventListener('input',()=>render(
+      Number(rangeSlider.value),
+      true,
+      sliderPointerActive,
+      sliderPointerMoved ? SLIDER_DRAG_DURATION : SLIDER_CLICK_DURATION
+    ));
     document.querySelectorAll('.range').forEach(button=>button.addEventListener('click',event=>render(Number(button.dataset.index),true,event.detail!==0)));
     addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
 
