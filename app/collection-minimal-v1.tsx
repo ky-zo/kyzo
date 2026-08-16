@@ -1,4 +1,3 @@
-import FollowerCounterDesktop from "@/components/FollowerCounterDesktop";
 import { exp } from "@/content/exp";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +44,6 @@ export default function CollectionMinimalV1() {
 					)}
 				</div>
 			))}
-			<FollowerCounterDesktop />
 		</div>
 	);
 }
