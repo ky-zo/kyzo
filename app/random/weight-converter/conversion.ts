@@ -3,6 +3,7 @@ export const POUNDS_PER_KILOGRAM = 2.2046226218
 export const POUND_VALUES = [1, 2, 3, 4, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100]
 
 export const KILOGRAM_VALUES = [
+  0.5,
   ...Array.from({ length: 10 }, (_, index) => index + 1),
   ...Array.from({ length: 16 }, (_, index) => 12.5 + index * 2.5),
   ...Array.from({ length: 10 }, (_, index) => 55 + index * 5),
