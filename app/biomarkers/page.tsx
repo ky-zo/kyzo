@@ -55,12 +55,12 @@ async function getWeeklyVolume() {
 		const activities = await readActivities({ revalidate });
 		// The week in progress is included but marked partial, so the chart can
 		// draw it as unfinished rather than as a collapse.
-		const weeks = weeklyVolume(activities, 6, now, { includeCurrent: true });
+		const weeks = weeklyVolume(activities, 8, now, { includeCurrent: true });
 		// A week not yet trained in carries no signal at all — skip it and show
 		// six finished weeks instead of five plus an empty placeholder.
 		const current = weeks[weeks.length - 1];
 		if (current?.partial && current.gymSessions === 0 && current.runKm === 0) {
-			return weeklyVolume(activities, 6, now);
+			return weeklyVolume(activities, 8, now);
 		}
 		return weeks;
 	} catch (error) {

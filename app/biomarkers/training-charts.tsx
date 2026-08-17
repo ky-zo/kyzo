@@ -6,7 +6,7 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
  * Drawn as a line so the shape of the trend reads first — bars invited
  * comparing individual weeks, which isn't the question. The goal is the only
  * other reference on the chart, labelled on the line itself so the header can
- * carry what actually happened: the six-week average.
+ * carry what actually happened: the eight-week average.
  *
  * The week in progress is plotted too, but drawn as unfinished — dashed
  * approach, hollow dot, dimmed number. Mid-week a running total sits below a
@@ -183,8 +183,8 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 
 			<div className="mt-3 text-[10px] text-black/20">
 				{weeks[weeks.length - 1]?.partial
-					? "last 6 weeks — this week still in progress, average over completed weeks"
-					: "last 6 completed weeks"}
+					? `last ${weeks.length} weeks — this week still in progress, average over completed weeks`
+					: `last ${weeks.length} completed weeks`}
 			</div>
 		</section>
 	);
