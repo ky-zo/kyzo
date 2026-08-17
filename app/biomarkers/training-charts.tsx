@@ -17,7 +17,7 @@ import type { WeeklyVolume } from "@/lib/garmin/activities";
 
 const GOALS = {
 	gym: 2.5,
-	run: 40,
+	run: 20,
 };
 
 const WIDTH = 400;
@@ -28,6 +28,7 @@ function Chart({
 	label,
 	unit,
 	goal,
+	goalLabel,
 	weeks,
 	values,
 	format,
@@ -35,6 +36,7 @@ function Chart({
 	label: string;
 	unit: string;
 	goal: number;
+	goalLabel?: string;
 	weeks: WeeklyVolume[];
 	values: number[];
 	format: (value: number) => string;
@@ -88,7 +90,7 @@ function Chart({
 					fill="currentColor"
 					className="tabular-nums text-black/30"
 				>
-					{format(goal)}
+					{goalLabel ?? format(goal)}
 				</text>
 
 				{solid.length > 1 && (
@@ -167,6 +169,7 @@ export default function TrainingCharts({ weeks }: { weeks: WeeklyVolume[] }) {
 				label="Gym"
 				unit="/ week"
 				goal={GOALS.gym}
+				goalLabel=">2"
 				weeks={weeks}
 				values={weeks.map((week) => week.gymSessions)}
 				format={compact}
