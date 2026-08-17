@@ -9,7 +9,7 @@ type Point = {
 }
 
 const root = process.cwd()
-const dashboardPath = path.join(root, 'public/follower-counter/index.html')
+const netPath = path.join(root, 'data/followers/x-daily-net.json')
 const monthlyPath = path.join(root, 'data/followers/followers-monthly.csv')
 const anchorsPath = path.join(root, 'data/followers/followers-history-anchors.csv')
 const outputPath = path.join(root, 'data/followers/history.seed.json')
@@ -34,14 +34,11 @@ function csvPoints(csv: string, source: string): Point[] {
 }
 
 async function main() {
-  const [dashboard, monthlyCsv, anchorsCsv] = await Promise.all([readFile(dashboardPath, 'utf8'), readFile(monthlyPath, 'utf8'), readFile(anchorsPath, 'utf8')])
-
-  const netMatch = dashboard.match(/const NET = \[([^\]]+)\]/)
-  const currentMatch = dashboard.match(/const CURRENT = (\d+)/)
-  if (!netMatch || !currentMatch) throw new Error('Could not find the embedded X daily series in the dashboard')
-
-  const dailyNet = netMatch[1].split(',').map(Number)
-  const currentFollowers = Number(currentMatch[1])
+  const [netFile, monthlyCsv, anchorsCsv] = await Promise.all([readFile(netPath, 'utf8'), readFile(monthlyPath, 'utf8'), readFile(anchorsPath, 'utf8')])
+  const { currentFollowers, net: dailyNet } = JSON.parse(netFile) as { currentFollowers: number; net: number[] }
+  if (!Number.isFinite(currentFollowers) || !Array.isArray(dailyNet) || !dailyNet.length) {
+    throw new Error('Could not read the X daily series from data/followers/x-daily-net.json')
+  }
   const observed = [
     { date: '2023-04-01', followers: 0, kind: 'baseline' as const, source: 'User-defined start' },
     ...csvPoints(monthlyCsv, 'Typefully'),

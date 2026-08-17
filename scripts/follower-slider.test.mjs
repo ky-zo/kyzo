@@ -2,22 +2,24 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
-const source = readFileSync(new URL('../public/follower-counter/index.html', import.meta.url), 'utf8')
+const source = readFileSync(new URL('../app/interactive/graphs/graphs.tsx', import.meta.url), 'utf8')
+const css = readFileSync(new URL('../app/interactive/graphs/graphs.module.css', import.meta.url), 'utf8')
 
 test('the follower slider animates one shared progress element', () => {
-  assert.match(source, /<span class="slider-progress"[^>]*>[\s\S]*?<span class="slider-fill"><\/span>[\s\S]*?<span class="slider-thumb"/)
+  assert.match(css, /\.sliderProgress[\s\S]*?\.sliderFill[\s\S]*?\.sliderThumb/)
 
-  const updateSliderPosition = source.match(/function updateSliderPosition[\s\S]*?(?=\n    function render)/)?.[0]
+  const updateSliderPosition = source.match(/function updateSliderPosition[\s\S]*?(?=\n  function drawIn)/)?.[0]
 
   assert.ok(updateSliderPosition)
-  assert.match(updateSliderPosition, /progressMotion=sliderProgress\.animate/)
+  assert.match(updateSliderPosition, /progress\.animate/)
   assert.doesNotMatch(updateSliderPosition, /sliderFill\.animate|sliderThumb\.animate|clipPath|targetTransform/)
 })
 
 test('followers and cumulative GitHub contributions share one chart', () => {
-  assert.match(source, /id="followersToggle"[^>]*checked/)
-  assert.match(source, /id="githubToggle"[^>]*checked/)
-  assert.match(source, /class="github-line"/)
-  assert.match(source, /value:runningTotal\+=point\.contributions/)
-  assert.doesNotMatch(source, /id="githubChart"|contribution-bar/)
+  assert.match(source, /toggleSeries\('followers'\)/)
+  assert.match(source, /toggleSeries\('github'\)/)
+  assert.match(source, /followersLine/)
+  assert.match(source, /githubLine/)
+  assert.match(source, /toGithubSeries/)
+  assert.doesNotMatch(source, /githubChart|contribution-bar/)
 })

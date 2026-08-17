@@ -1,5 +1,12 @@
 import type { Metadata } from 'next'
 
+import { followerSeed } from '@/lib/followers/seed'
+import { readFollowerHistory } from '@/lib/followers/store'
+
+import Graphs from './graphs'
+
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'graphs | kyzo',
   description: 'kyzo follower growth over time',
@@ -8,14 +15,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function GraphsPage() {
+export default async function GraphsPage() {
+  let history = followerSeed
+  try {
+    history = await readFollowerHistory()
+  } catch {
+    history = followerSeed
+  }
+
   return (
     <main className="w-full max-w-md">
-      <iframe
-        className="block h-[590px] w-full border-0"
-        src="/follower-counter/index.html?v=graphs-2026-08-17"
-        title="kyzo follower and github activity"
-      />
+      <Graphs history={history} />
     </main>
   )
 }

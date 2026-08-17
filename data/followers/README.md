@@ -35,7 +35,7 @@ The public timeline begins at a user-defined baseline of 0 followers on April 1,
 
 The Account Analytics frontend calls the persisted GraphQL operation `accountOverviewDailyQuery` (`_P1caq0YB4SVuEtFLPDMfQ`). An authenticated five-year replay returned HTTP 200 but silently clamped both analytics series to August 16, 2025 onward. A second authenticated request targeting August 2024–August 2025 returned zero rows. This proves the backend itself retains/exposes only the latest year through this query; splitting the request into older yearly windows does not recover more history. Full protocol and response findings are in [`x-analytics-api.md`](x-analytics-api.md).
 
-The interactive dashboard now lives at `public/follower-counter/index.html` and reads the merged history from `/api/followers`.
+The interactive dashboard lives at `/interactive/graphs` and reads the merged history from `/api/followers`.
 
 ## Daily update system
 
