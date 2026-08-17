@@ -41,11 +41,10 @@ function seedFrom(text: string) {
 
 function FunLink({ href, emoji, external, children }: FunLinkProps) {
   const seed = seedFrom(href + emoji)
-  const className =
-    'group underline decoration-black/30 underline-offset-2 transition-colors duration-200 hover:text-black hover:decoration-black hover:decoration-wavy'
+  const className = 'group transition-colors duration-200 hover:text-black'
   const label = (
     <span
-      className={`inline-block transition-transform duration-200 ${LABEL_TILTS[seed % LABEL_TILTS.length]}`}>
+      className={`inline-block underline decoration-black/40 underline-offset-2 transition-[color,transform,text-decoration] duration-200 group-hover:decoration-black group-hover:decoration-wavy ${LABEL_TILTS[seed % LABEL_TILTS.length]}`}>
       {children}
     </span>
   )
