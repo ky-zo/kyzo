@@ -303,6 +303,9 @@
     .series-toggle.github { --series-color: var(--green); }
     .series-name { font-size: 12px; }
     .series-value { color: var(--ink); font-size: 12px; font-weight: 600; }
+    .series-delta { color: color-mix(in oklch, var(--series-color) 78%, var(--ink)); font-size: 12px; font-weight: 500; }
+    .series-delta:empty { display: none; }
+    .series-delta.negative { color: var(--danger); }
 
     .period-block { display: none; }
     .period-label { color: var(--ink); font-size: 12px; font-weight: 500; }
@@ -430,12 +433,14 @@
             <span class="series-check" aria-hidden="true">✓</span>
             <span class="series-name">followers</span>
             <strong class="series-value" id="currentValue">16,435</strong>
+            <span class="series-delta" id="followersDelta"></span>
           </label>
           <label class="series-toggle github">
             <input id="githubToggle" type="checkbox" disabled />
             <span class="series-check" aria-hidden="true">✓</span>
             <span class="series-name">github</span>
             <strong class="series-value" id="githubValue">loading</strong>
+            <span class="series-delta" id="githubDelta"></span>
           </label>
         </div>
         <div class="github-error" id="githubError">GitHub activity is temporarily unavailable</div>
@@ -577,6 +582,8 @@
     const sliderStops = [...document.querySelectorAll('.slider-stop')];
     const rangeValue = document.querySelector('#rangeValue');
     const githubValue = document.querySelector('#githubValue');
+    const followersDelta = document.querySelector('#followersDelta');
+    const githubDelta = document.querySelector('#githubDelta');
     const githubError = document.querySelector('#githubError');
     const followersToggle = document.querySelector('#followersToggle');
     const githubToggle = document.querySelector('#githubToggle');
@@ -692,6 +699,11 @@
 
       const followersRaw=historyFrom(cutoff);
       const githubRaw=githubFrom(cutoff,displayEnd);
+      const deltaText=change=>`${change<0?'−':'+'}${fmt.format(Math.abs(change))}`;
+      const followersChange=followersRaw.length>1?followersRaw.at(-1).value-followersRaw[0].value:0;
+      followersDelta.textContent=deltaText(followersChange);
+      followersDelta.classList.toggle('negative',followersChange<0);
+      githubDelta.textContent=githubState==='ready'?deltaText(githubRaw.reduce((sum,point)=>sum+point.contributions,0)):'';
       const showFollowers=followersToggle.checked;
       const showGithub=githubToggle.checked&&githubState==='ready';
       const visibleValues=[];
@@ -923,7 +935,11 @@
       let keyboardToggle=false;
       toggle.addEventListener('keydown',()=>{keyboardToggle=true;});
       toggle.addEventListener('pointerdown',()=>{keyboardToggle=false;});
-      toggle.addEventListener('change',()=>render(activePeriod,false,!keyboardToggle));
+      toggle.addEventListener('change',()=>{
+        const other=toggle===followersToggle?githubToggle:followersToggle;
+        if(!toggle.checked&&!other.checked&&!other.disabled) other.checked=true;
+        render(activePeriod,false,!keyboardToggle);
+      });
     });
     addEventListener('resize',()=>{updateSliderPosition(activePeriod,false);render(activePeriod,false,false);});
 

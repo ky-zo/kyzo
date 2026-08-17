@@ -13,7 +13,7 @@ export default function GraphsPage() {
     <main className="w-full max-w-md">
       <iframe
         className="block h-[590px] w-full border-0"
-        src="/follower-counter/index.html?v=graphs-2026-08-15"
+        src="/follower-counter/index.html?v=graphs-2026-08-17"
         title="kyzo follower and github activity"
       />
     </main>
