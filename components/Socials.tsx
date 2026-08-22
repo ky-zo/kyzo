@@ -1,3 +1,6 @@
+'use client'
+
+import posthog from 'posthog-js'
 import { RiLinkedinFill } from 'react-icons/ri'
 import { RxGithubLogo } from 'react-icons/rx'
 import { v4 as uuidv4 } from 'uuid'
@@ -32,6 +35,7 @@ const Socials = () => {
             target="_blank"
             key={social.id}
             href={social.link}
+            onClick={() => posthog.capture('social_link_clicked', { platform: social.name, url: social.link })}
             className="flex h-5 w-5 items-center justify-center rounded-md bg-white hover:invert">
             {social.icon}
           </a>

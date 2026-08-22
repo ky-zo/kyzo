@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { mergeXSnapshot } from '@/lib/followers/history'
 import { readFollowerHistory, writeFollowerHistory } from '@/lib/followers/store'
 import { fetchXFollowers } from '@/lib/followers/x-client'
+import { captureServerException } from '@/lib/posthog-server'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -29,6 +30,7 @@ export async function GET(request: Request) {
       window: merged.lastSync,
     })
   } catch (error) {
+    await captureServerException(error, { cron: 'followers' })
     const message = error instanceof Error ? error.message : String(error)
     return NextResponse.json({ ok: false, error: message }, { status: 502 })
   }
