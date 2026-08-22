@@ -1,21 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import posthog from 'posthog-js'
 
 import { KILOGRAM_VALUES, kilogramsToPounds, POUND_VALUES, poundsToKilograms, stepVisualIndex, valueToVisualIndex, visualIndexToStopIndex } from './conversion'
 import styles from './weight-converter.module.css'
 
 type Unit = 'lb' | 'kg'
-
-type SliderProps = {
-  label: string
-  unit: Unit
-  values: readonly number[]
-  visualIndex: number
-  direct: boolean
-  displayValue: number
-  onSelect: (index: number, animateLinkedSlider: boolean) => void
-}
 
 function formatValue(value: number) {
   if (Number.isInteger(value)) return value.toLocaleString('en-US')
@@ -26,28 +17,55 @@ function formatValue(value: number) {
   })
 }
 
-function UnitSlider({ label, unit, values, visualIndex, direct, displayValue, onSelect }: SliderProps) {
+type SliderProps = {
+  unit: Unit
+  pounds: number
+  direct: boolean
+  onUnitChange: (unit: Unit) => void
+  onSelect: (index: number, animateSlider: boolean) => void
+}
+
+const STOPS: Record<Unit, readonly number[]> = { lb: POUND_VALUES, kg: KILOGRAM_VALUES }
+
+function WeightSlider({ unit, pounds, direct, onUnitChange, onSelect }: SliderProps) {
   const keyboardInput = useRef(false)
+  const values = STOPS[unit]
+  const kilograms = poundsToKilograms(pounds)
+  const value = unit === 'lb' ? pounds : kilograms
+  const visualIndex = valueToVisualIndex(value, values)
   const progress = visualIndex / (values.length - 1)
   const style = {
     '--slider-progress': `${progress * 100}%`,
   } as CSSProperties
+  const valueText = `${formatValue(pounds)} lb, ${formatValue(kilograms)} kg`
 
   return (
     <section
       className={styles.unit}
-      aria-labelledby={`${unit}-label`}>
+      aria-labelledby="weight-label">
       <div className={styles.unitHeader}>
         <h2
-          id={`${unit}-label`}
+          id="weight-label"
           className={styles.label}>
-          {label}
+          weight
         </h2>
-        <output
-          className={styles.value}
-          aria-live="polite">
-          {formatValue(displayValue)} <span>{unit}</span>
-        </output>
+        <div
+          className={styles.readout}
+          role="radiogroup"
+          aria-label="slider unit">
+          {(['lb', 'kg'] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              role="radio"
+              aria-checked={unit === option}
+              className={styles.value}
+              data-exact={unit === option}
+              onClick={() => onUnitChange(option)}>
+              {formatValue(option === 'lb' ? pounds : kilograms)} <span>{option}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div
@@ -59,9 +77,9 @@ function UnitSlider({ label, unit, values, visualIndex, direct, displayValue, on
           aria-hidden="true">
           <div className={styles.rail} />
           <div className={styles.tickLayer}>
-            {values.map((value, index) => (
+            {values.map((stop, index) => (
               <span
-                key={value}
+                key={stop}
                 className={styles.tick}
                 data-active={index <= visualIndex}
                 style={{ left: `${(index / (values.length - 1)) * 100}%` }}
@@ -81,8 +99,8 @@ function UnitSlider({ label, unit, values, visualIndex, direct, displayValue, on
           max={values.length - 1}
           step="any"
           value={visualIndex}
-          aria-label={`${label}: ${formatValue(displayValue)} ${unit}`}
-          aria-valuetext={`${formatValue(displayValue)} ${unit}`}
+          aria-label={`weight: ${valueText}`}
+          aria-valuetext={valueText}
           onKeyDown={(event) => {
             keyboardInput.current = true
 
@@ -140,7 +158,8 @@ function clamp(value: number, min: number, max: number) {
 }
 
 function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerProps) {
-  const minIndex = Math.round(min / step)
+  // first stop on the wheel grid at or above min (0.1 lb → 1 lb, 0.1 kg → 0.5 kg)
+  const minIndex = Math.ceil(min / step - 1e-6)
   const maxIndex = Math.round(max / step)
   const valueIndex = clamp(value / step, minIndex, maxIndex)
   // the wheel rests on the stop nearest the value; when the value sits between
@@ -292,11 +311,15 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
         }}
         onKeyDown={(event) => {
           const steps =
-            event.key === 'ArrowUp' || event.key === 'ArrowRight' ? 1
-            : event.key === 'ArrowDown' || event.key === 'ArrowLeft' ? -1
-            : event.key === 'PageUp' ? 10
-            : event.key === 'PageDown' ? -10
-            : null
+            event.key === 'ArrowUp' || event.key === 'ArrowRight'
+              ? 1
+              : event.key === 'ArrowDown' || event.key === 'ArrowLeft'
+                ? -1
+                : event.key === 'PageUp'
+                  ? 10
+                  : event.key === 'PageDown'
+                    ? -10
+                    : null
 
           if (steps !== null) {
             event.preventDefault()
@@ -325,32 +348,42 @@ function UnitSpinner({ label, unit, min, max, step, value, onChange }: SpinnerPr
 }
 
 export default function WeightConverter() {
-  const [sourceUnit, setSourceUnit] = useState<Unit | 'spinner'>('lb')
-  const [animateLinkedSlider, setAnimateLinkedSlider] = useState(true)
+  const [unit, setUnit] = useState<Unit>('lb')
+  const [sliderDirect, setSliderDirect] = useState(true)
   const [pounds, setPounds] = useState(20)
   const kilograms = poundsToKilograms(pounds)
 
-  function selectPounds(index: number, animate: boolean) {
-    setSourceUnit('lb')
-    setAnimateLinkedSlider(animate)
-    setPounds(POUND_VALUES[index])
+  // one event per visit, not one per drag tick
+  const usageTracked = useRef(false)
+
+  function trackFirstUse(control: 'slider' | 'spinner') {
+    if (usageTracked.current) return
+    usageTracked.current = true
+    posthog.capture('weight_converter_used', { control })
   }
 
-  function selectKilograms(index: number, animate: boolean) {
-    setSourceUnit('kg')
-    setAnimateLinkedSlider(animate)
-    setPounds(kilogramsToPounds(KILOGRAM_VALUES[index]))
+  function selectStop(index: number, animate: boolean) {
+    trackFirstUse('slider')
+    // pointer drags snap with an animation; keyboard steps jump
+    setSliderDirect(!animate)
+    setPounds(unit === 'lb' ? POUND_VALUES[index] : kilogramsToPounds(KILOGRAM_VALUES[index]))
+  }
+
+  function switchUnit(next: Unit) {
+    // the value stays put; the track re-scales under it without animating
+    setSliderDirect(true)
+    setUnit(next)
   }
 
   function spinPounds(value: number) {
-    setSourceUnit('spinner')
-    setAnimateLinkedSlider(true)
+    trackFirstUse('spinner')
+    setSliderDirect(false)
     setPounds(value)
   }
 
   function spinKilograms(value: number) {
-    setSourceUnit('spinner')
-    setAnimateLinkedSlider(true)
+    trackFirstUse('spinner')
+    setSliderDirect(false)
     setPounds(kilogramsToPounds(value))
   }
 
@@ -358,30 +391,16 @@ export default function WeightConverter() {
     <div className={styles.converter}>
       <header className={styles.header}>
         <h1>weight converter</h1>
-        <p>slide either unit, the other follows</p>
+        <p>tap a unit to slide in it, the other follows</p>
       </header>
 
-      <div className={styles.sliders}>
-        <UnitSlider
-          label="pounds"
-          unit="lb"
-          values={POUND_VALUES}
-          visualIndex={valueToVisualIndex(pounds, POUND_VALUES)}
-          direct={sourceUnit === 'lb' || !animateLinkedSlider}
-          displayValue={pounds}
-          onSelect={selectPounds}
-        />
-
-        <UnitSlider
-          label="kilograms"
-          unit="kg"
-          values={KILOGRAM_VALUES}
-          visualIndex={valueToVisualIndex(kilograms, KILOGRAM_VALUES)}
-          direct={sourceUnit === 'kg' || !animateLinkedSlider}
-          displayValue={kilograms}
-          onSelect={selectKilograms}
-        />
-      </div>
+      <WeightSlider
+        unit={unit}
+        pounds={pounds}
+        direct={sliderDirect}
+        onUnitChange={switchUnit}
+        onSelect={selectStop}
+      />
 
       <div className={styles.spinnerSection}>
         <p className={styles.spinnerHint}>or swipe a number up and down</p>
