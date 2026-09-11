@@ -15,6 +15,18 @@ type expProps = {
 
 export const exp: expProps[] = [
 	{
+		id: "one",
+		dates: "09.2026",
+		company: {
+			name: "One",
+			href: "https://getone.one",
+		},
+		oneLiner: "one toolbar for AI terminal agents",
+		label: "macOS app",
+		status: "active",
+		year: 2026,
+	},
+	{
 		id: "kumo",
 		dates: "07.2026",
 		company: {
@@ -22,7 +34,7 @@ export const exp: expProps[] = [
 			href: "https://kumo.so",
 		},
 		oneLiner: "cloud agents",
-		status: "active",
+		status: "closed",
 		year: 2026,
 	},
 	{
@@ -34,7 +46,7 @@ export const exp: expProps[] = [
 		},
 		oneLiner: "fractional AI consulting for engineering teams",
 		label: "consulting",
-		status: "active",
+		status: "closed",
 		year: 2026,
 	},
 	{
