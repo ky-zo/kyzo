@@ -119,6 +119,12 @@ export default function InteractivePage() {
           </FunLink>{' '}
           on a random design hackathon, we hacked this together for fun
         </li>
+        <li className="relative transition-transform duration-200 hover:translate-x-1">
+          my therapist once told me i have to figure out what my values are, so i made{' '}
+          <FunLink href="https://cbt.kyzo.io" emoji="🧭" external>
+            a tool to find them
+          </FunLink>
+        </li>
       </ul>
     </main>
   )
