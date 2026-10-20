@@ -30,8 +30,8 @@ export const categories: Record<string, string> = {
 
 export const codes: Record<string, BiomarkerCode> = {
   // --- body ---
-  age: { name: "Age", category: "body", unit: "years" },
-  fitness_age: { name: "Fitness Age (Garmin)", category: "body", unit: "years" },
+  age: { name: "Age", category: "body", unit: "years", hidden: true },
+  fitness_age: { name: "Fitness Age (Garmin)", category: "body", unit: "years", hidden: true },
   height: { name: "Height", category: "body", unit: "cm", hidden: true },
   weight: { name: "Weight", category: "body", unit: "kg" },
   body_fat_pct: { name: "Body Fat", category: "body", unit: "%", reference: { low: 8, high: 19 }, threshold: { borderline: 10, abnormal: 25 } },
