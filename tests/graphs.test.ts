@@ -1,7 +1,17 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { cutoffFor, geometryPath, historyFrom, nextSeriesState, niceStep, niceStepDown, PERIODS, toGithubSeries } from '../app/interactive/graphs/chart'
+import {
+  axisTicks,
+  cutoffFor,
+  geometryPath,
+  historyFrom,
+  nextSeriesState,
+  niceStepDown,
+  PERIODS,
+  toGithubSeries,
+  yDomain,
+} from '../app/interactive/graphs/chart'
 
 test('unchecking the last series selects the other one', () => {
   assert.deepEqual(nextSeriesState('followers', true, false, true), { followersOn: false, githubOn: true })
@@ -22,9 +32,49 @@ test('historyFrom interpolates a boundary point when the cutoff sits between sam
   assert.equal(sliced[1].value, 200)
 })
 
-test('nice steps stay on 1-2-5 and 1-2-2.5-5 scales', () => {
-  assert.equal(niceStep(30), 50)
+test('tick spacing rounds down to the 1-2-2.5-5 scale', () => {
   assert.equal(niceStepDown(30), 25)
+})
+
+test('long ranges keep the latest follower count near the top of the chart', () => {
+  const points = [
+    { date: new Date('2023-04-01T12:00:00'), value: 0 },
+    { date: new Date('2023-11-01T12:00:00'), value: 219 },
+    { date: new Date('2024-11-01T12:00:00'), value: 9767 },
+    { date: new Date('2026-11-01T12:00:00'), value: 19992 },
+  ]
+  const latest = points.at(-1)!
+
+  for (const period of PERIODS.filter((period) => period.years || period.all)) {
+    const values = historyFrom(points, cutoffFor(period, latest.date)).map((point) => point.value)
+    const scale = yDomain(values)
+    const headroom = (scale.yMax - latest.value) / (scale.yMax - scale.yMin)
+
+    assert.ok(headroom > 0 && headroom < 0.15, `${period.short} should leave modest headroom`)
+    assert.ok(axisTicks(scale.tickStart, scale.yMax, scale.step).includes(20000))
+  }
+})
+
+test('crossing 20k does not jump the chart ceiling to the next tick', () => {
+  for (const start of [0, 219, 9767, 19700]) {
+    const before = yDomain([start, 19999])
+    const after = yDomain([start, 20001])
+
+    assert.ok(after.yMax >= 20001)
+    assert.ok(after.yMax - before.yMax < 10, `history starting at ${start} should scale smoothly across 20k`)
+  }
+})
+
+test('flat and zero series still have a usable scale with visible ticks', () => {
+  for (const values of [[0], [0, 1], [20000, 20000]]) {
+    const scale = yDomain(values)
+    const ticks = axisTicks(scale.tickStart, scale.yMax, scale.step)
+
+    assert.ok(scale.yMin >= 0 && scale.yMin <= Math.min(...values))
+    assert.ok(scale.yMax > Math.max(...values))
+    assert.ok(ticks.length >= 2 && ticks.length <= 8)
+    assert.ok(ticks.every((tick) => tick >= scale.yMin && tick <= scale.yMax))
+  }
 })
 
 test('geometryPath draws a move for one point and a curve for two', () => {

@@ -59,12 +59,6 @@ export function deltaText(change: number) {
   return `${change < 0 ? '−' : '+'}${fmt.format(Math.abs(change))}`
 }
 
-export function niceStep(value: number) {
-  const power = 10 ** Math.floor(Math.log10(Math.max(1, value)))
-  const scaled = value / power
-  return (scaled <= 1 ? 1 : scaled <= 2 ? 2 : scaled <= 5 ? 5 : 10) * power
-}
-
 export function niceStepDown(value: number) {
   const power = 10 ** Math.floor(Math.log10(Math.max(1, value)))
   const scaled = value / power
@@ -155,32 +149,17 @@ export function cutoffFor(period: Period, displayEnd: Date) {
   return cutoff
 }
 
-export function yDomain(values: number[], period: Period) {
+export function yDomain(values: number[]) {
   const min = Math.min(...values)
   const max = Math.max(...values)
   const movement = Math.max(1, max - min)
-  const tightRange = Boolean(period.days || period.months || period.years === 2)
-  let step: number
-  let yMin: number
-  let yMax: number
-  let tickStart: number
+  const padding = Math.max(4, movement * 0.125)
+  const yMin = Math.max(0, min - padding)
+  const yMax = max + padding
 
-  if (tightRange) {
-    const padding = Math.max(4, movement * 0.125)
-    yMin = Math.max(0, min - padding)
-    yMax = max + padding
-    step = niceStepDown((yMax - yMin) / 4)
-    yMax = Math.max(yMax, (Math.floor(max / step) + 1) * step)
-    tickStart = Math.ceil(yMin / step) * step
-  } else {
-    const padding = Math.max(12, movement * 0.16, max * 0.011)
-    step = niceStep((movement + padding * 2) / 4)
-    yMin = Math.max(0, Math.floor((min - padding) / step) * step)
-    yMax = Math.ceil((max + padding) / step) * step
-    tickStart = yMin
-  }
-
-  if (yMax <= yMin) yMax = yMin + step
+  // Round the tick spacing, not the bounds, so longer ranges and milestones don't add empty space.
+  const step = niceStepDown((yMax - yMin) / 4)
+  const tickStart = Math.ceil(yMin / step) * step
   return { yMin, yMax, step, tickStart }
 }
 

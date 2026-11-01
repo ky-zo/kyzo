@@ -104,7 +104,7 @@ export default function Graphs({ history }: { history: FollowerHistory }) {
   const showGithub = githubOn && githubState === 'ready'
   const selectedValues = [...(showFollowers ? followersRaw.map((point) => point.value) : []), ...(showGithub ? githubRaw.map((point) => point.value) : [])]
   const visibleValues = selectedValues.length ? selectedValues : [...followersRaw.map((point) => point.value), ...githubRaw.map((point) => point.value)]
-  const scale = yDomain(visibleValues.length ? visibleValues : [0, 1], period)
+  const scale = yDomain(visibleValues.length ? visibleValues : [0, 1])
   const targetDomain: Domain = { cutoff: cutoff.getTime(), yMin: scale.yMin, yMax: scale.yMax }
   const ticks = axisTicks(scale.tickStart, scale.yMax, scale.step)
   const labels = axisLabels(period, cutoff, displayEnd)
