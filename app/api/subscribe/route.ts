@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { cleanEmail, NEWSLETTER_SOURCE } from '@/lib/newsletter'
+import { cleanEmail, NEWSLETTER_SOURCE, SUBSCRIBED_COOKIE, SUBSCRIBED_COOKIE_MAX_AGE } from '@/lib/newsletter'
 import { captureServerException } from '@/lib/posthog-server'
 
 export const dynamic = 'force-dynamic'
@@ -52,8 +52,21 @@ export async function POST(request: Request) {
 
   if (!json) {
     const result = outcome.status < 300 ? 'subscribed' : outcome.status === 400 ? 'invalid' : 'error'
-    return new NextResponse(null, { status: 303, headers: { Location: `/?newsletter=${result}`, 'Cache-Control': 'no-store' } })
+    const response = new NextResponse(null, { status: 303, headers: { Location: `/?newsletter=${result}`, 'Cache-Control': 'no-store' } })
+    return outcome.status < 300 ? remember(request, response) : response
   }
   if (outcome.error) return NextResponse.json({ error: outcome.error }, { status: outcome.status, headers: { 'Cache-Control': 'no-store' } })
-  return new NextResponse(null, { status: 204, headers: { 'Cache-Control': 'no-store' } })
+  return remember(request, new NextResponse(null, { status: 204, headers: { 'Cache-Control': 'no-store' } }))
+}
+
+// Marks this browser as subscribed so the signup block stays hidden from now on.
+// Readable by the page (not httpOnly) because the pre-paint script checks it.
+function remember(request: Request, response: NextResponse) {
+  response.cookies.set(SUBSCRIBED_COOKIE, '1', {
+    path: '/',
+    maxAge: SUBSCRIBED_COOKIE_MAX_AGE,
+    sameSite: 'lax',
+    secure: new URL(request.url).protocol === 'https:',
+  })
+  return response
 }

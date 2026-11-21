@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react'
 
 import NewsletterSignup from '@/components/NewsletterSignup'
 import Socials from '@/components/Socials'
+import { HIDE_SIGNUP_SCRIPT } from '@/lib/newsletter'
 
 import Navigation from './Navigation'
 
@@ -40,8 +41,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    // The inline script below may add data-subscribed to <html> before React hydrates.
+    <html
+      lang="en"
+      suppressHydrationWarning>
       <body className={`bg-[#FEFEFE] font-light ${GeistSans.className}`}>
+        <script dangerouslySetInnerHTML={{ __html: HIDE_SIGNUP_SCRIPT }} />
         <div className="flex min-h-[100dvh] w-full flex-col items-center justify-start gap-6 p-4 text-sm lowercase sm:p-10">
           <div className="flex w-full max-w-md flex-col gap-4">
             <div className="text-2xl">

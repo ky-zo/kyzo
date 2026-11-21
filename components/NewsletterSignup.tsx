@@ -123,6 +123,7 @@ const NewsletterSignup = () => {
   // One card: what you get, then the form to get it. A grey fill lets the white input stand out.
   return (
     <section
+      id="newsletter"
       aria-labelledby="newsletter-heading"
       className="flex w-full max-w-md flex-col rounded-2xl border border-black/[0.06] bg-gradient-to-b from-[#fafaf9] to-[#f3f3f1] px-4 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-14px_rgba(0,0,0,0.18)]">
       <h2
