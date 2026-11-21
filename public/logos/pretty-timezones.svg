@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e3a"/>
+      <stop offset="50%" style="stop-color:#141428"/>
+      <stop offset="100%" style="stop-color:#0d0d1c"/>
+    </linearGradient>
+    <linearGradient id="clockGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#c0c0d0"/>
+    </linearGradient>
+    <radialGradient id="clockAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.06)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+    </radialGradient>
+    <linearGradient id="barGradientGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2dd46a"/>
+      <stop offset="100%" style="stop-color:#34c759"/>
+    </linearGradient>
+    <linearGradient id="barGradientYellow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f5c842"/>
+      <stop offset="100%" style="stop-color:#ffd60a"/>
+    </linearGradient>
+    <linearGradient id="barGradientOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff9500"/>
+      <stop offset="100%" style="stop-color:#ff8800"/>
+    </linearGradient>
+    <linearGradient id="barGradientRed" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff5c4d"/>
+      <stop offset="100%" style="stop-color:#ff3b30"/>
+    </linearGradient>
+    <!-- macOS-style squircle clip -->
+    <clipPath id="iconMask">
+      <rect x="0" y="0" width="512" height="512" rx="112" ry="112"/>
+    </clipPath>
+  </defs>
+
+  <!-- Full-bleed background clipped to squircle -->
+  <g clip-path="url(#iconMask)">
+    <!-- Background gradient -->
+    <rect x="0" y="0" width="512" height="512" fill="url(#bgGradient)"/>
+
+    <!-- Subtle radial highlight top-left for depth -->
+    <circle cx="180" cy="180" r="220" fill="rgba(255,255,255,0.025)"/>
+
+    <!-- Subtle border highlight -->
+    <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+    <!-- Soft aura behind clock (no filter, no box artifact) -->
+    <circle cx="256" cy="236" r="120" fill="url(#clockAura)"/>
+
+    <!-- Clock icon — no filter -->
+    <g transform="translate(256, 236) scale(8.5)">
+      <!-- Clock hands -->
+      <path d="M0 -6 L0 0 L4 2" fill="none" stroke="url(#clockGlow)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Main arc — solid sweep from top clockwise to bottom-right -->
+      <circle cx="0" cy="0" r="10" fill="none" stroke="url(#clockGlow)" stroke-width="2.4" stroke-linecap="round"
+              stroke-dasharray="47 16" stroke-dashoffset="-8"/>
+
+      <!-- Fading trail segments — smoother opacity cascade -->
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(255,255,255,0.50)" stroke-width="2.4" stroke-linecap="round"
+              stroke-dasharray="4 59" stroke-dashoffset="44"/>
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.4" stroke-linecap="round"
+              stroke-dasharray="5 58" stroke-dashoffset="52"/>
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="2.4" stroke-linecap="round"
+              stroke-dasharray="6 57" stroke-dashoffset="62"/>
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="2.4" stroke-linecap="round"
+              stroke-dasharray="7 56" stroke-dashoffset="72"/>
+    </g>
+
+    <!-- Timezone indicator bar — continuous flowing strip, no filter -->
+    <g transform="translate(108, 394)">
+      <!-- Unified pill background for seamless feel -->
+      <rect x="0" y="0" width="296" height="12" rx="6" fill="rgba(0,0,0,0.3)"/>
+
+      <!-- Green segment (working hours) -->
+      <rect x="2" y="1" width="88" height="10" rx="5" fill="url(#barGradientGreen)"/>
+
+      <!-- Yellow segment (transition) -->
+      <rect x="92" y="1" width="62" height="10" rx="5" fill="url(#barGradientYellow)"/>
+
+      <!-- Orange segment (late) -->
+      <rect x="156" y="1" width="52" height="10" rx="5" fill="url(#barGradientOrange)"/>
+
+      <!-- Red segment (off hours) -->
+      <rect x="210" y="1" width="84" height="10" rx="5" fill="url(#barGradientRed)" opacity="0.85"/>
+    </g>
+  </g>
+</svg>

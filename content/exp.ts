@@ -7,6 +7,8 @@ type expProps = {
 		href: string;
 	};
 
+	// Square icon under /public/logos. Without one the row shows the first letter.
+	logo?: string;
 	oneLiner?: string;
 	label?: string;
 	status: "closed" | "quit" | "active" | "acquired";
@@ -15,7 +17,21 @@ type expProps = {
 
 export const exp: expProps[] = [
 	{
+		id: "pinyin-everything",
+		logo: "/logos/pinyin-everything.png",
+		dates: "11.2026",
+		company: {
+			name: "Pinyin Everything",
+			href: "https://apps.apple.com/app/pinyin-everything/id6832428944",
+		},
+		oneLiner: "screenshot any Chinese, read it with pinyin and meanings",
+		label: "iOS app",
+		status: "active",
+		year: 2026,
+	},
+	{
 		id: "one",
+		logo: "/logos/one.png",
 		dates: "09.2026",
 		company: {
 			name: "One",
@@ -28,6 +44,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "kumo",
+		logo: "/logos/kumo.svg",
 		dates: "07.2026",
 		company: {
 			name: "kumo",
@@ -39,18 +56,20 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "agentic-engineer",
+		logo: "/logos/agentic-engineer.png",
 		dates: "04.2026",
 		company: {
 			name: "Agentic Engineer",
 			href: "https://agentic-engineer.ai",
 		},
-		oneLiner: "fractional AI consulting for engineering teams",
+		oneLiner: "never really did anything with it but landing is nice",
 		label: "consulting",
 		status: "closed",
 		year: 2026,
 	},
 	{
 		id: "pretty-sports",
+		logo: "/logos/pretty-sports.png",
 		dates: "03.2026",
 		company: {
 			name: "Pretty Sports",
@@ -63,6 +82,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "pretty-timezones",
+		logo: "/logos/pretty-timezones.svg",
 		dates: "02.2026",
 		company: {
 			name: "Pretty Timezones",
@@ -75,6 +95,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "openrec",
+		logo: "/logos/openrec.png",
 		dates: "01.2026",
 		company: {
 			name: "OpenRec",
@@ -87,6 +108,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "stravisuals",
+		logo: "/logos/stravisuals.png",
 		dates: "03.2024",
 		company: {
 			name: "Stravisuals",
@@ -99,6 +121,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "fluar",
+		logo: "/logos/fluar.png",
 		dates: "02.2025",
 		company: {
 			name: "fluar",
@@ -111,6 +134,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "copycopter",
+		logo: "/logos/copycopter.png",
 		dates: "01.2024",
 		company: {
 			name: "copycopter",
@@ -123,6 +147,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "yove",
+		logo: "/logos/yove.png",
 		dates: "08.2023",
 		company: {
 			name: "Yove",
@@ -147,6 +172,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "flyfile",
+		logo: "/logos/flyfile.svg",
 		dates: "06.2023",
 		company: {
 			name: "flyfile",
@@ -159,6 +185,7 @@ export const exp: expProps[] = [
 	},
 	{
 		id: "epinote",
+		logo: "/logos/epinote.png",
 		dates: "07.2020-02.2023",
 		title: "COO & co-founder",
 		company: {
