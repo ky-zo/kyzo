@@ -39,7 +39,7 @@ const Navigation = () => {
         className={`whitespace-nowrap transition-all duration-75 ${
           pathname.startsWith('/interactive') ? 'font-medium text-black' : 'hover:underline'
         }`}>
-        interactive
+        side quests
       </Link>
     </div>
   )
