@@ -1,0 +1,19 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "newsletter",
+  "main": "worker.js",
+  "compatibility_date": "2026-01-15",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "nwsltr.kyzo.io", "custom_domain": true }],
+  "account_id": "3ed83265f0088dca320423607832e134",
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "newsletter",
+      "database_id": "af747c83-50a6-4a1a-a059-9081bd925d7c",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

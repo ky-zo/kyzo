@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/react'
 
+import NewsletterSignup from '@/components/NewsletterSignup'
 import Socials from '@/components/Socials'
 
 import Navigation from './Navigation'
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <h3>founder</h3>
             <Socials />
           </div>
+          <NewsletterSignup />
           <Navigation />
           {children}
         </div>

@@ -114,3 +114,36 @@
 .dev-black {
   @apply border-2 border-black;
 }
+
+/* Entrance for the newsletter block: items rise out of a soft blur one after another (--i is the stagger step). */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(3px);
+  }
+}
+
+/* Reveal the dotted leaders left to right; clip-path keeps the dots from stretching like scaleX would. */
+@keyframes draw-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 200ms);
+}
+
+.rise-in .draw-in {
+  animation: draw-in 600ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 320ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in,
+  .rise-in .draw-in {
+    animation: none;
+  }
+}
